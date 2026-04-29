@@ -40,7 +40,7 @@ entity LeaveRequest{
 }
 
 User ||--o{ Attendance
-User ||---o{ LeaveRequest
+User ||--o{ LeaveRequest
 Attendance ||--o{ AttendanceEditRequest
 
 
