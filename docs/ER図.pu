@@ -1,0 +1,47 @@
+@startuml
+title 勤怠管理アプリ
+
+entity User {
+  + user_id : int
+  --
+  name : string
+  role : integer(enum)
+  password_digest : string
+  core_time_start : time
+  core_time_end : time
+}
+
+entity Attendance {
+  + attendance_id : int
+  --
+  day : date
+  status : integer(enum)
+  started_at : datetime
+  finished_at : datetime
+  break_minutes : integer
+}
+
+entity AttendanceEditRequest{
+  + request_id : int
+  --
+  status : integer(enum)
+  edit_type : integer(enum)
+  modify_time_start : time
+  modify_time_end : time
+}
+
+entity LeaveRequest{
+  + request_id : int
+  --
+  status : integer(enum)
+  leave_type : integer(enum)
+  start_date : date
+  end_date : date
+}
+
+User ||--o{ Attendance
+User ||---o{ LeaveRequest
+Attendance ||--o{ AttendanceEditRequest
+
+
+@enduml
