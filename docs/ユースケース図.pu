@@ -1,0 +1,37 @@
+@startuml usecase
+title 勤怠管理_ユースケース図
+
+skinparam packageStyle rect
+left to right direction
+
+actor Employee as E
+actor Manager as M
+M --|> E
+
+package 勤怠管理システム{
+  usecase 就業ルールを設定 as U_13
+  usecase 休日出勤リクエストを承認 as U_12
+  usecase 打刻修正リクエストを承認 as U_11
+  usecase 休暇リクエストの承認 as U_10
+  
+  usecase 休日出勤をリクエスト as U_6
+  usecase 休憩時間の打刻をする as U_5
+  usecase 出勤退勤の打刻をする as U_4
+  usecase 勤怠情報を確認する as U_3
+  usecase 打刻の修正をリクエスト as U_2
+  usecase 欠勤や休暇をリクエスト as U_1
+}
+
+E -- U_1
+E -- U_2
+E -- U_3
+E -- U_4
+E -- U_5
+E -- U_6
+
+M -- U_13 
+M -- U_12
+M -- U_11
+M -- U_10
+
+@enduml
