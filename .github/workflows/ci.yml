@@ -72,10 +72,11 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_DB: kintai_worktime_test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
-          POSTGRES_DB: kintai_worktime_test
+
           - 5432:5432
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
 
