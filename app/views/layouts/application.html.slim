@@ -19,4 +19,7 @@ html
     = stylesheet_link_tag :app, "data-turbo-track": "reload"
     = javascript_importmap_tags
   body
+    .app-title.navbar.navbar-expand-md.navbar-light.bg-light
+      .navbar-brand Kintai
+    .container
     = yield
