@@ -6,6 +6,10 @@ class DeviseCreateEmployees < ActiveRecord::Migration[8.1]
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""
+      # #自前カラム
+      t.string :name, null: false
+      t.references :manager, foreign_key: { to_table: :employees }
+      t.integer :paid_leave_balance, null: false, default: 0
 
       ## Recoverable
       t.string   :reset_password_token
