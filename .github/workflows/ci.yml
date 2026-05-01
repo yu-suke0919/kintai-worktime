@@ -105,7 +105,7 @@ jobs:
         run: |
           bin/rails db:create
           bin/rails db:schema:load
-          bin/rails test:system
+          bundle exec rspec
 
   system-test:
     runs-on: ubuntu-latest
