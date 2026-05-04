@@ -1,2 +1,10 @@
-h1 Employees#show
-p Find me in app/views/employees/show.html.slim
+h1 #{@employee.name}
+
+table.table.table-hover
+  tbody
+    tr
+      th= Employee.human_attribute_name(:name)
+      td= @employee.name
+    tr
+      th= Employee.human_attribute_name(:email)
+      td= @employee.email
