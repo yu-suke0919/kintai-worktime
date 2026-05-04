@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: "employees#index"
-  resource :employees
+  resources :employees
   devise_for :employees, path: "auth"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
