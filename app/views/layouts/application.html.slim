@@ -21,5 +21,18 @@ html
   body
     .app-title.navbar.navbar-expand-md.navbar-light.bg-light
       .navbar-brand Kintai
+
+      ul.navbar-nav.ms-auto
+        - if employee_signed_in?
+          li.nav-item= link_to 'ログアウト', destroy_employee_session_path, data: { turbo_method: :delete },class: 'nav-link'
+        - else
+          li.nav-item= link_to '登録', new_employee_registration_path, class: 'nav-link'
+          li.nav-item= link_to 'ログイン', new_employee_session_path, class: 'nav-link'
+      
+
     .container
+      - if flash.notice.present?
+        .alert.alert-success= flash.notice
+      - if flash.alert.present?
+        .alert.alert-danger= flash.alert
     = yield
