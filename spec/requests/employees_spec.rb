@@ -40,10 +40,7 @@ RSpec.describe "Employees", type: :request do
   end
   context "ログイン時" do
     before do
-      visit new_employee_session_path
-      fill_in 'Email', with: 'test@gmail.com'
-      fill_in 'Password', with: '111111'
-      click_button 'Log in'
+      sign_in user1
     end
     describe "GET /index" do
       let(:request_action) { get employees_path }
