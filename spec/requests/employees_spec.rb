@@ -1,31 +1,34 @@
 require 'rails_helper'
 
 RSpec.describe "Employees", type: :request do
-  describe "GET /index" do
-    it "returns http success" do
-      get "/employees/index"
-      expect(response).to have_http_status(:success)
+  let(:user1) { FactoryBot.create(:employee) }
+  shared_examples "redirect_to_login_page" do
+    it "ログインページにリダイレクトされ、alertが設定されること" do
+      request_action
+      expect(response).to have_http_status(:found)
+      expect(response).to redirect_to(new_employee_session_path)
+      expect(flash[:alert]).to be_present
     end
   end
-
-  describe "GET /show" do
-    it "returns http success" do
-      get "/employees/show"
-      expect(response).to have_http_status(:success)
+  context "非ログイン時" do
+    describe "GET /index" do
+      let(:request_action) { get employees_path }
+      it_behaves_like "redirect_to_login_page"
     end
-  end
 
-  describe "GET /new" do
-    it "returns http success" do
-      get "/employees/new"
-      expect(response).to have_http_status(:success)
+    describe "GET /show" do
+      let(:request_action) { get employee_path(user1) }
+      it_behaves_like "redirect_to_login_page"
     end
-  end
 
-  describe "GET /edit" do
-    it "returns http success" do
-      get "/employees/edit"
-      expect(response).to have_http_status(:success)
+    describe "GET /new" do
+      let(:request_action) { get new_employee_path }
+      it_behaves_like "redirect_to_login_page"
+    end
+
+    describe "GET /edit" do
+      let(:request_action) { get edit_employee_path(user1) }
+      it_behaves_like "redirect_to_login_page"
     end
   end
 end
