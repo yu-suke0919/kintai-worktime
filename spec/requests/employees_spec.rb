@@ -10,7 +10,34 @@ RSpec.describe "Employees", type: :request do
       expect(flash[:alert]).to be_present
     end
   end
+    shared_examples "http_have_success_status" do
+      request_action
+      expect(response).to have_http_status(:success)
+    end
+
   context "非ログイン時" do
+    describe "GET /index" do
+      let(:request_action) { get employees_path }
+      it_behaves_like "redirect_to_login_page"
+    end
+
+    describe "GET /show" do
+      let(:request_action) { get employee_path(user1) }
+      it_behaves_like "redirect_to_login_page"
+    end
+
+    describe "GET /new" do
+      let(:request_action) { get new_employee_path }
+      it_behaves_like "redirect_to_login_page"
+    end
+
+    describe "GET /edit" do
+      let(:request_action) { get edit_employee_path(user1) }
+      it_behaves_like "redirect_to_login_page"
+    end
+  end
+
+  context "ログイン時" do
     describe "GET /index" do
       let(:request_action) { get employees_path }
       it_behaves_like "redirect_to_login_page"
