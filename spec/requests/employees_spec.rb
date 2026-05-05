@@ -11,7 +11,7 @@ RSpec.describe "Employees", type: :request do
     end
   end
   shared_examples "have_http_status_success" do
-    it "HTTPリクエストステータスが、成功となること"
+    it "HTTPリクエストステータスが、成功となること" do
       request_action
       expect(response).to have_http_status(:success)
     end
@@ -52,17 +52,17 @@ RSpec.describe "Employees", type: :request do
 
     describe "GET /show" do
       let(:request_action) { get employee_path(user1) }
-      it_behaves_like "redirect_to_login_page"
+      it_behaves_like "have_http_status_success"
     end
 
     describe "GET /new" do
       let(:request_action) { get new_employee_path }
-      it_behaves_like "redirect_to_login_page"
+      it_behaves_like "have_http_status_success"
     end
 
     describe "GET /edit" do
       let(:request_action) { get edit_employee_path(user1) }
-      it_behaves_like "redirect_to_login_page"
+      it_behaves_like "have_http_status_success"
     end
   end
 end
