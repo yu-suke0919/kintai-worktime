@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get "employees/index"
+    get "employees/show"
+    get "employees/edit"
+  end
   root to: "employees#index"
   resources :employees
   devise_for :employees, path: "auth"
