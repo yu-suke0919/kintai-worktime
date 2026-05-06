@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   namespace :admin do
-    get "employees/index"
-    get "employees/show"
-    get "employees/edit"
+    resources :employees, except: :create
   end
   root to: "employees#index"
   resources :employees
