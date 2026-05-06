@@ -1,2 +1,23 @@
 h1 Admin::Employees#index
-p Find me in app/views/admin/employees/index.html.slim
+
+table.table.table-hover
+  thead.thead-default
+    tr
+      th style="width: 20%" = Employee.human_attribute_name(:name)
+      th style="width: 10%" = Employee.human_attribute_name(:role)
+      th style="width: 10%" = Employee.human_attribute_name(:subordinate?)
+      th style="width: 20%" = Employee.human_attribute_name(:登録ボタン)
+      /th style="width: 70%" = Employee.human_attribute_name(:description)
+  tbody
+    - @employees.each do |employee|
+      tr
+        td= link_to employee.name, employee
+        td= employee.role
+        td= employee.manager_id == @manager.id
+        td
+          - if employee.manager_id != @manager.id
+            = button_to '部下に登録',admin_employee_path(employee),method: :patch,params: { manager_id: current_employee.id }
+          - else
+            = button_to '部下登録解除',admin_employee_path(employee),method: :patch,params: { manager_id: nil }
+      
+      
