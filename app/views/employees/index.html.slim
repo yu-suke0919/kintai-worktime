@@ -1,5 +1,19 @@
 h1 Employees#index
-p Find me in app/views/employees/index.html.slim
-
 p あなたの名前は#{@employee.name}です
 p あなたのRoleは#{@employee.role}です
+
+- if @employee.role == 'manager'
+  p あなたはマネージャー権限を持っています
+
+  table.table.table-hover
+    thead.thead-default
+      tr
+        th style="width: 20%" = Employee.human_attribute_name(:name)
+        th style="width: 10%" = Employee.human_attribute_name(:role)
+        /th style="width: 70%" = Employee.human_attribute_name(:description)
+    tbody
+      - @employee.subordinates.each do |employee|
+        tr
+          td= link_to employee.name, employee
+          td= employee.role
+          /td= article.description
