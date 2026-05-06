@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :employees, except: :create
+  end
   root to: "employees#index"
   resources :employees
   devise_for :employees, path: "auth"
