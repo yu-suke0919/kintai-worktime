@@ -4,7 +4,7 @@ p あなたのRoleは#{@employee.role}です
 
 - if @employee.role == 'manager'
   p あなたはマネージャー権限を持っています
-
+  = link_to "部下登録画面",admin_employees_path
   table.table.table-hover
     thead.thead-default
       tr
