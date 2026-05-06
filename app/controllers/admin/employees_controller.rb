@@ -1,6 +1,7 @@
 class Admin::EmployeesController < ApplicationController
   before_action :admin_role_required
   # before_action :set_manager
+  before_action :set_employee, only: %i[update]
   def index
     @manager = current_employee
     @employees = Employee.order(
@@ -15,6 +16,11 @@ class Admin::EmployeesController < ApplicationController
   end
 
   def update
+    if @employee.update(manager_id: params[:manager_id])
+        redirect_to admin_employees_path, notice: "社員情報を更新しました"
+    else
+        render :edit, status: :unprocessable_entity
+    end
   end
 
   def edit
