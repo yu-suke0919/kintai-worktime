@@ -1,4 +1,5 @@
 class Admin::EmployeesController < ApplicationController
+  before_action :authenticate_employee!
   before_action :admin_role_required
   # before_action :set_manager
   before_action :set_employee, only: %i[update]
