@@ -3,7 +3,7 @@ class AttendancesController < ApplicationController
   before_action :owner_or_admin_required
   before_action :set_attendance, only: [ :show, :update ]
   def index
-    @attendances = Attendance.find_by(employee_id: params[:id])
+    @attendances = Attendance.find_by(employee_id: params[:employee_id])
   end
 
   def show
@@ -26,7 +26,11 @@ class AttendancesController < ApplicationController
   private
 
   def set_attendance
-    @attendance = Attendance.find_or_initialize_by(employee_id: params[:id], worked_on: params[:data])
+    @attendance = Attendance.find_or_initialize_by(employee_id: params[:id], worked_on: params[:date])
+  end
+
+  def owner_or_admin_required
+    redirect_to employee_attendances_path(current_employee) if current_employee.id != params[:employee_id].to_i && current_employee.role == "member"
   end
 
   def attendance_params
