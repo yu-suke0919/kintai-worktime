@@ -32,8 +32,8 @@ entity Attendance {
   status : integer(enum)
   started_at : datetime
   finished_at : datetime
-  break_minutes : integer
-  
+  break_started_at : datetime
+  break_finished_at : datetime
 }
 
 entity AttendanceEditRequest{
