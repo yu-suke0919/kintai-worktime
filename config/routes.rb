@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "attendances/index"
+  get "attendances/show"
+  get "attendances/edit"
   namespace :admin do
     resources :employees, except: :create
   end
