@@ -1,12 +1,11 @@
 Rails.application.routes.draw do
-  get "attendances/index"
-  get "attendances/show"
-  get "attendances/edit"
   namespace :admin do
     resources :employees, except: :create
   end
   root to: "employees#index"
-  resources :employees
+  resources :employees do
+    resources :attendances, only: [ :index, :show, :update ]
+  end
   devise_for :employees, path: "auth"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
