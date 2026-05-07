@@ -30,7 +30,7 @@ class Admin::EmployeesController < ApplicationController
   private
 
   def admin_role_required
-    redirect_to employees_url, alert: "権限がありません" if current_employee.id < 1
+    redirect_to employees_url, alert: "権限がありません" if current_employee.role == "member"
   end
 
   def set_employee
