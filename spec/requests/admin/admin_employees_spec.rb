@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Employees", type: :request do
   let(:user_not_manager) { FactoryBot.create(:employee) }
-  let(:user_manager) { FactoryBot.create(:employee, role: :manager) }
+  let(:user_manager) { FactoryBot.create(:employee, email: "manager@email", role: :manager) }
   shared_examples "redirect_to_login_page" do
     it "ログインページにリダイレクトされ、alertが設定されること" do
       request_action
@@ -11,6 +11,16 @@ RSpec.describe "Employees", type: :request do
       expect(flash[:alert]).to be_present
     end
   end
+
+  shared_examples "redirect_to_employee_index_page" do
+    it "従業員indexにリダイレクトされ、alertが設定されること" do
+      request_action
+      expect(response).to have_http_status(:found)
+      expect(response).to redirect_to(employees_path)
+      expect(flash[:alert]).to be_present
+    end
+  end
+
   shared_examples "have_http_status_success" do
     it "HTTPリクエストステータスが、成功となること" do
       request_action
@@ -34,9 +44,29 @@ RSpec.describe "Employees", type: :request do
       it_behaves_like "redirect_to_login_page"
     end
   end
-  context "ログイン時" do
+  context "権限を持たない非マネージャーがログイン時" do
     before do
       sign_in user_not_manager
+    end
+    describe "GET /index" do
+      let(:request_action) { get admin_employees_path }
+      it_behaves_like "redirect_to_employee_index_page"
+    end
+
+    describe "GET /show" do
+      let(:request_action) { get admin_employee_path(user_not_manager) }
+      it_behaves_like "redirect_to_employee_index_page"
+    end
+
+    describe "GET /edit" do
+      let(:request_action) { get edit_admin_employee_path(user_not_manager) }
+      it_behaves_like "redirect_to_employee_index_page"
+    end
+  end
+
+  context "マネージャーがログイン時" do
+    before do
+      sign_in user_manager
     end
     describe "GET /index" do
       let(:request_action) { get admin_employees_path }
