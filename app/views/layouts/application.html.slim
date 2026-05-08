@@ -24,6 +24,9 @@ html
 
       ul.navbar-nav.ms-auto
         - if employee_signed_in?
+          li.nav-item= link_to current_employee.name, employees_path, class: 'nav-link'
+          li.nav-item= link_to '勤怠登録', employee_attendance_path(current_employee,Date.today), class: 'nav-link'
+          li.nav-item= link_to '勤怠データ表示', employee_attendances_path(current_employee), class: 'nav-link'
           li.nav-item= link_to 'ログアウト', destroy_employee_session_path, data: { turbo_method: :delete },class: 'nav-link'
         - else
           li.nav-item= link_to '登録', new_employee_registration_path, class: 'nav-link'
