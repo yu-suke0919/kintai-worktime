@@ -1,6 +1,6 @@
 h1 Attendances#index
 p Find me in app/views/attendances/index.html.slim
-= link_to '勤怠登録',employee_attendance_path(@employee,@attendance)
+= link_to '勤怠登録',employee_attendance_path(@employee,Date.current)
 table.table.table-hover
   thead.thead-default
     tr
