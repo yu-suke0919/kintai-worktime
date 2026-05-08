@@ -1,7 +1,7 @@
 class AttendancesController < ApplicationController
   before_action :authenticate_employee!
   before_action :owner_or_admin_required
-  before_action :set_attendance, only: [ :index, :show, :update ]
+  before_action :set_attendance, only: [ :show, :update ]
   def index
     @attendances = Attendance.where(employee_id: params[:employee_id])
     @employee = Employee.find(params[:employee_id])
@@ -34,7 +34,7 @@ class AttendancesController < ApplicationController
   end
 
   def owner_or_admin_required
-    redirect_to employee_attendances_path(current_employee) if current_employee.id != params[:employee_id].to_i && current_employee.role == "member"
+    redirect_to employee_attendances_path(current_employee), alert: "エラーが発生しました" if current_employee.id != params[:employee_id].to_i && current_employee.role == "member"
   end
 
   def attendance_params
