@@ -13,14 +13,16 @@ ja:
       employee_rule: 従業員ルール
       leave_request: 休暇申請
       attendance_edit_request: 勤怠データ修正申請
-    attribute:
+    attributes:
       employee:
+        id: 従業員ID
         name: 名前
         role: 役職
         manager_id: マネージャーID
         manager_name: マネージャーの名前
         paid_holiday_count: 有給日数
       attendance:
+        id: 勤怠データID
         employee_id: 従業員ID
         employee_name: 従業員名
         status: 勤怠データ状態
