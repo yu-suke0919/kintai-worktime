@@ -1,2 +1,23 @@
 h1 Attendances#index
 p Find me in app/views/attendances/index.html.slim
+= link_to '勤怠登録',employee_attendance_path(@employee,@attendance)
+table.table.table-hover
+  thead.thead-default
+    tr
+      th style="width: 30%" = Attendance.human_attribute_name(:worked_on)
+      th style="width: 10%" = Attendance.human_attribute_name(:status)
+      th style="width: 15%" = Attendance.human_attribute_name(:started_at)
+      th style="width: 15%" = Attendance.human_attribute_name(:finished_at)
+      th style="width: 15%" = Attendance.human_attribute_name(:break_started_at)
+      th style="width: 15%" = Attendance.human_attribute_name(:break_finished_at)
+
+  tbody
+    - @attendances.each do |a|
+      tr
+        td= a.worked_on
+        td= a.status
+        td= l a.started_at,format: :short
+        td= l a.finished_at,format: :short
+        td= l a.break_started_at,format: :short
+        td= l a.break_finished_at,format: :short
+        
