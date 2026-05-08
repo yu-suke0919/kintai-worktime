@@ -2,7 +2,7 @@ h1 Attendances#show
 p Find me in app/views/attendances/show.html.slim
 - @attendance.attributes.each do |key, value|
   p
-    strong = "#{key}: "
+    strong = "#{Attendance.human_attribute_name(key)}: "
     = value
 
 = button_to '出勤',
