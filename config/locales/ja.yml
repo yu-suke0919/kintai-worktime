@@ -7,6 +7,31 @@ ja:
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
+    models:
+      employee: 従業員
+      attendance: 勤怠データ
+      employee_rule: 従業員ルール
+      leave_request: 休暇申請
+      attendance_edit_request: 勤怠データ修正申請
+    attribute:
+      employee:
+        name: 名前
+        role: 役職
+        manager_id: マネージャーID
+        manager_name: マネージャーの名前
+        paid_holiday_count: 有給日数
+      attendance:
+        employee_id: 従業員ID
+        employee_name: 従業員名
+        status: 勤怠データ状態
+        worked_on: 日付
+        started_at: 始業時間
+        finished_at: 終業時間
+        break_started_at: 休憩開始時間
+        break_finished_at: 休憩終了時間
+      employee_rule:  
+      leave_request:
+      attendance_edit_request:
   date:
     abbr_day_names:
     - 日
