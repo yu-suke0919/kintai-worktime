@@ -1,2 +1,30 @@
 h1 Attendances#show
 p Find me in app/views/attendances/show.html.slim
+- @attendance.attributes.each do |key, value|
+  p
+    strong = "#{key}: "
+    = value
+
+= button_to '出勤',
+  employee_attendance_path(@employee, Date.current),
+  method: :patch,
+  params: { column_name: "started_at" },
+  class: 'btn btn-primary mr-3'
+
+= button_to '退勤',
+  employee_attendance_path(@employee, Date.current),
+  method: :patch,
+  params: { column_name: "finished_at" },
+  class: 'btn btn-primary mr-3'
+
+= button_to '休憩開始',
+  employee_attendance_path(@employee, Date.current),
+  method: :patch,
+  params: { column_name: "break_started_at" },
+  class: 'btn btn-primary mr-3'
+
+= button_to '休憩終了',
+  employee_attendance_path(@employee, Date.current),
+  method: :patch,
+  params: { column_name: "break_finished_at" },
+  class: 'btn btn-primary mr-3'
