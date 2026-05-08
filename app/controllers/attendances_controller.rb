@@ -1,7 +1,7 @@
 class AttendancesController < ApplicationController
   before_action :authenticate_employee!
   before_action :owner_or_admin_required
-  before_action :set_attendance, only: [ :index, :show, :update ]
+  before_action :set_attendance, only: [ :show, :update ]
   def index
     @attendances = Attendance.where(employee_id: params[:employee_id])
     @employee = Employee.find(params[:employee_id])
