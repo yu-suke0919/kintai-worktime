@@ -5,8 +5,8 @@ class CreateAttendanceEditRequests < ActiveRecord::Migration[8.1]
       t.references :employee, null: false, foreign_key: true
       t.integer :approved_by_id
       t.datetime :approved_at
-      t.integer :status
-      t.integer :edit_type
+      t.integer :status, null: false, default: 0
+      t.integer :edit_type, null: false, default: 0
       t.datetime :requested_started_at
       t.datetime :requested_finished_at
       t.text :reason
