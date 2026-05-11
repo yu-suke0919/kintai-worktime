@@ -1,16 +1,12 @@
 Rails.application.routes.draw do
-  get "attendance_edit_requests/index"
-  get "attendance_edit_requests/show"
-  get "attendance_edit_requests/new"
-  get "attendance_edit_requests/create"
-  get "attendance_edit_requests/edit"
-  get "attendance_edit_requests/update"
   namespace :admin do
     resources :employees, except: :create
   end
   root to: "employees#index"
   resources :employees do
-    resources :attendances, only: [ :index, :show, :update ], param: :worked_on
+    resources :attendances, only: [ :index, :show, :update ], param: :worked_on do
+      resources :attendance_edit_requests
+    end
   end
   devise_for :employees, path: "auth"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
