@@ -43,6 +43,7 @@ entity AttendanceEditRequest{
   approve_manager_id : int
   status : integer(enum)
   edit_type : integer(enum)
+  date:day
   modify_time_start : time
   modify_time_end : time
 }
