@@ -62,6 +62,10 @@ ja:
         sign_in: "ログイン"
         sign_in_with_provider: "%{provider}でログイン"
         sign_up: "アカウント登録"
+    failure:
+      unauthenticated: ログインしてください。
+      not_found_in_database: メールアドレスかパスワードが違います。
+      invalid: メールアドレスかパスワードが違います。
     unlocks:
       new:
         resend_unlock_instructions: "アカウントの凍結解除方法を再送する"
