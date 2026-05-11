@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get "attendance_edit_requests/index"
+  get "attendance_edit_requests/show"
+  get "attendance_edit_requests/new"
+  get "attendance_edit_requests/create"
+  get "attendance_edit_requests/edit"
+  get "attendance_edit_requests/update"
   namespace :admin do
     resources :employees, except: :create
   end
