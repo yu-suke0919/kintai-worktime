@@ -10,9 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_07_025820) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_11_044043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "attendance_edit_requests", force: :cascade do |t|
+    t.datetime "approved_at"
+    t.integer "approved_by_id"
+    t.bigint "attendance_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "edit_type", default: 0, null: false
+    t.bigint "employee_id", null: false
+    t.text "reason"
+    t.datetime "requested_finished_at"
+    t.datetime "requested_started_at"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["attendance_id"], name: "index_attendance_edit_requests_on_attendance_id"
+    t.index ["employee_id"], name: "index_attendance_edit_requests_on_employee_id"
+  end
 
   create_table "attendances", force: :cascade do |t|
     t.datetime "break_finished_at"
@@ -45,6 +61,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_07_025820) do
     t.index ["reset_password_token"], name: "index_employees_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "attendance_edit_requests", "attendances"
+  add_foreign_key "attendance_edit_requests", "employees"
   add_foreign_key "attendances", "employees"
   add_foreign_key "employees", "employees", column: "manager_id"
 end
