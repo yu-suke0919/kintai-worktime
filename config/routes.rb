@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   end
   root to: "employees#index"
   resources :employees do
-    resources :attendances, only: [ :index, :show, :update ], param: :worked_on
+    resources :attendances, only: [ :index, :show, :update ], param: :worked_on do
+      resources :attendance_edit_requests, except: :index
+    end
+    resources :attendance_edit_requests, only: :index
   end
   devise_for :employees, path: "auth"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

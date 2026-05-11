@@ -39,12 +39,14 @@ entity Attendance {
 entity AttendanceEditRequest{
   + request_id : int
   --
+  attendance_id : int
   employee_id : int
-  approve_manager_id : int
+  approved_by_id : int
+  approved_at : datetime
   status : integer(enum)
   edit_type : integer(enum)
-  modify_time_start : time
-  modify_time_end : time
+  requested_started_at : datetime
+  requested_finished_at : datetime
 }
 
 entity LeaveRequest{
