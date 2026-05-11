@@ -45,7 +45,6 @@ entity AttendanceEditRequest{
   approved_at : datetime
   status : integer(enum)
   edit_type : integer(enum)
-  worked_on : date
   requested_started_at : datetime
   requested_finished_at : datetime
 }
