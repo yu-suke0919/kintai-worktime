@@ -16,8 +16,8 @@ table.table.table-hover
       tr
         td= a.worked_on
         td= a.status
-        td= l a.started_at,format: :short if a.started_at.present?
-        td= l a.finished_at,format: :short if a.started_at.present?
-        td= l a.break_started_at,format: :short if a.started_at.present?
-        td= l a.break_finished_at,format: :short if a.started_at.present?
+        td= l a.started_at,format: :short_time if a.started_at.present?
+        td= l a.finished_at,format: :short_time if a.started_at.present?
+        td= l a.break_started_at,format: :short_time if a.started_at.present?
+        td= l a.break_finished_at,format: :short_time if a.started_at.present?
         
