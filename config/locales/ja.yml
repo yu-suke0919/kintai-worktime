@@ -28,9 +28,13 @@ ja:
         status: 勤怠データ状態
         worked_on: 日付
         started_at: 始業時間
+        started_at_short: 始業
         finished_at: 終業時間
+        finished_at_short: 終業
         break_started_at: 休憩開始時間
+        break_started_at_short: 休憩開始
         break_finished_at: 休憩終了時間
+        break_finished_at_short: 休憩終了
       employee_rule:  
       leave_request:
       attendance_edit_request:
@@ -210,4 +214,5 @@ ja:
       default: "%Y年%m月%d日(%a) %H時%M分%S秒 %z"
       long: "%Y/%m/%d %H:%M"
       short: "%m/%d %H:%M"
+      short_time: "%H:%M"
     pm: 午後
