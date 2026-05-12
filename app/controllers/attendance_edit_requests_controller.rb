@@ -1,5 +1,5 @@
 class AttendanceEditRequestsController < ApplicationController
-  before_action set_attendance, only: [ :show, :new, :edit, :create, :update ]
+  before_action :set_attendance, only: [ :show, :new, :edit, :create, :update ]
   def index
   end
 
