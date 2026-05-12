@@ -6,10 +6,11 @@ table.table.table-hover
     tr
       th style="width: 30%" = Attendance.human_attribute_name(:worked_on)
       th style="width: 10%" = Attendance.human_attribute_name(:status)
-      th style="width: 15%" = Attendance.human_attribute_name(:started_at)
-      th style="width: 15%" = Attendance.human_attribute_name(:finished_at)
-      th style="width: 15%" = Attendance.human_attribute_name(:break_started_at)
-      th style="width: 15%" = Attendance.human_attribute_name(:break_finished_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:started_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:finished_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:break_started_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:break_finished_at)
+      th style="width: 20%" = 'a'
 
   tbody
     - @attendances.each do |a|
@@ -20,4 +21,5 @@ table.table.table-hover
         td= l a.finished_at,format: :short_time if a.started_at.present?
         td= l a.break_started_at,format: :short_time if a.started_at.present?
         td= l a.break_finished_at,format: :short_time if a.started_at.present?
+        td= link_to '時刻修正申請',new_employee_attendance_attendance_edit_request_path(@employee,a.worked_on),class: 'btn btn-primary mr-3'
         
