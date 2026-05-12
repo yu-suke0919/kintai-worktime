@@ -1,5 +1,5 @@
 class AttendanceEditRequestsController < ApplicationController
-  before_action current_attendance only: [ :show, :new, :edit, :create, :update ]
+  before_action set_attendance, only: [ :show, :new, :edit, :create, :update ]
   def index
   end
 
@@ -20,7 +20,7 @@ class AttendanceEditRequestsController < ApplicationController
 
   private
 
-  def current_attendance
+  def set_attendance
     @attendance = Attendance.find_by(employee_id: params[:employee_id], worked_on: params[:worked_on])
   end
 end
