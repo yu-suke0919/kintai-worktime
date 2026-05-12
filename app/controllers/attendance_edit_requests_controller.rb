@@ -7,6 +7,7 @@ class AttendanceEditRequestsController < ApplicationController
   end
 
   def new
+    @edit_request = AttendanceEditRequest.new
   end
 
   def create
@@ -21,6 +22,7 @@ class AttendanceEditRequestsController < ApplicationController
   private
 
   def set_attendance
-    @attendance = Attendance.find_by(employee_id: params[:employee_id], worked_on: params[:worked_on])
+    @employee = current_employee
+    @attendance = @employee.attendances.find_by(worked_on: params[:attendance_worked_on])
   end
 end
