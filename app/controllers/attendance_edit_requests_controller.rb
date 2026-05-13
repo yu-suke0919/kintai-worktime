@@ -1,6 +1,7 @@
 class AttendanceEditRequestsController < ApplicationController
   before_action :set_attendance, only: [ :show, :new, :edit, :create, :update ]
   def index
+    @has_request_attendances = current_employee.attendances.select { |a|a.attendance_edit_request.present? }
   end
 
   def show
@@ -11,7 +12,7 @@ class AttendanceEditRequestsController < ApplicationController
   end
 
   def create
-    @edit_request = @attendance.attendance_edit_requests.new(edit_request_params)
+    @edit_request = @attendance.build_attendance_edit_request(edit_request_params)
     @edit_request.employee_id = @employee.id
     if @edit_request.save
       redirect_to employee_attendances_path, notice: "勤怠修正申請を完了しました。"
