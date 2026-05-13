@@ -1,5 +1,11 @@
 h1 AttendanceEditRequests#new
 p Find me in app/views/attendance_edit_requests/new.html.slim
+
+- if @edit_request.errors.present?
+  ul#error_explanation
+    - @edit_request.errors.full_messages.each do |message|
+      li= message
+
 div(
   data-controller="edit-request"
   data-edit-request-started-at-value=@attendance.started_at&.in_time_zone&.strftime("%Y-%m-%dT%H:%M")
@@ -7,7 +13,7 @@ div(
   data-edit-request-break-started-at-value=@attendance.break_started_at&.in_time_zone&.strftime("%Y-%m-%dT%H:%M")
   data-edit-request-break-finished-at-value=@attendance.break_finished_at&.in_time_zone&.strftime("%Y-%m-%dT%H:%M")
 )
-  = form_with model: [@employee, @attendance,@edit_request], local: true do |f|
+  = form_with model: @edit_request,url: employee_attendance_attendance_edit_requests_path(@employee, @attendance.worked_on), local: true do |f|
     .form-group
       = f.label :requested_started_at, '出勤時間'
       = datetime_local_field_tag :current_started_at,
