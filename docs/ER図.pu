@@ -36,17 +36,22 @@ entity Attendance {
   break_finished_at : datetime
 }
 
-entity AttendanceEditRequest{
-  + request_id : int
+entity AttendanceEditRequest {
+  + id : integer
   --
-  attendance_id : int
-  employee_id : int
-  approved_by_id : int
+  attendance_id : integer
+  employee_id : integer
+  approved_by_id : integer
   approved_at : datetime
+  'edit_type : integer(enum)
   status : integer(enum)
-  edit_type : integer(enum)
+  reason : text
   requested_started_at : datetime
   requested_finished_at : datetime
+  requested_break_started_at : datetime
+  requested_break_finished_at : datetime
+  created_at : datetime
+  updated_at : datetime
 }
 
 entity LeaveRequest{
