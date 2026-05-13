@@ -8,13 +8,18 @@ export default class extends Controller {
     breakStartedAt: String,
     breakFinishedAt: String
   }
+  connect() {
+    this.changeText()
+  }
+
     changeText(event) {
-    if (event.target.value === "work_time") {
+    var value = event?.target?.value || "notSelected"
+    if (value === "work_time" || value === "notSelected") {
       this.output1Target.textContent = "出勤時間"
       this.output2Target.textContent = "退勤時間"
       this.output1DatetimeTarget.value = this.startedAtValue
       this.output2DatetimeTarget.value = this.finishedAtValue
-    } else if (event.target.value === "break_time") {
+    } else if (value=== "break_time") {
       this.output1Target.textContent = "休憩開始時間"
       this.output2Target.textContent = "休憩終了時間"
       this.output1DatetimeTarget.value = this.breakStartedAtValue
