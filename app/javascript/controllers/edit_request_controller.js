@@ -13,6 +13,7 @@ export default class extends Controller {
   }
 
     changeText(event) {
+      return
     var value = event?.target?.value || "notSelected"
     if (value === "work_time" || value === "notSelected") {
       this.output1Target.textContent = "出勤時間"
