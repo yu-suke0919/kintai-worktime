@@ -1,2 +1,30 @@
 h1 AttendanceEditRequests#index
 p Find me in app/views/attendance_edit_requests/index.html.slim
+
+table.table.table-hover
+  thead.thead-default
+    tr
+      th style="width: 15%" = Attendance.human_attribute_name(:worked_on)
+      th style="width: 5%" = Attendance.human_attribute_name(:status)
+      th style="width: 10%" = Attendance.human_attribute_name(:started_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:finished_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:break_started_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:break_finished_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:requested_started_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:requested_finished_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:requested_break_started_at)
+      th style="width: 10%" = Attendance.human_attribute_name(:requested_break_finished_at)
+
+  tbody
+    - @has_request_attendances.each do |a|
+      tr
+        td= a.worked_on
+        td= a.status
+        td= l a.started_at,format: :short_time if a.started_at.present?
+        td= l a.finished_at,format: :short_time if a.finished_at.present?
+        td= l a.break_started_at,format: :short_time if a.break_started_at.present?
+        td= l a.break_finished_at,format: :short_time if a.break_finished_at.present?
+        td= l a.attendance_edit_request.requested_started_at,format: :short_time if a.attendance_edit_request.requested_started_at.present?
+        td= l a.attendance_edit_request.requested_finished_at,format: :short_time if a.attendance_edit_request.requested_finished_at.present?
+        td= l a.attendance_edit_request.requested_break_started_at,format: :short_time if a.attendance_edit_request.requested_break_started_at.present?
+        td= l a.attendance_edit_request.requested_break_finished_at,format: :short_time if a.attendance_edit_request.requested_break_finished_at.present?

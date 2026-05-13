@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_11_044043) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_13_014936) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,9 +19,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_11_044043) do
     t.integer "approved_by_id"
     t.bigint "attendance_id", null: false
     t.datetime "created_at", null: false
-    t.integer "edit_type", default: 0, null: false
     t.bigint "employee_id", null: false
     t.text "reason"
+    t.datetime "requested_break_finished_at"
+    t.datetime "requested_break_started_at"
     t.datetime "requested_finished_at"
     t.datetime "requested_started_at"
     t.integer "status", default: 0, null: false
