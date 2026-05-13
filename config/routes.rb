@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   namespace :admin do
-    resources :attendance_edit_requests
-    resources :employees, except: :create
+    resources :employees, except: :create do
+      resources :attendance_edit_requests
+    end
   end
   root to: "employees#index"
   resources :employees do
