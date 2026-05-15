@@ -19,10 +19,19 @@ class AttendancesController < ApplicationController
       "break_started_at" => :break_started_at,
       "break_finished_at" => :break_finished_at
     }
+    original_allowed_column = {
+      "started_at" => :original_started_at,
+      "finished_at" => :original_finished_at,
+      "break_started_at" => :original_break_started_at,
+      "break_finished_at" => :original_break_finished_at
+    }
     target_column = allowed_column[column_name]
-    raise ActionController::BadRequest if target_column.nil?
+    original_target_column = original_allowed_column[column_name]
 
-    @attendance.update!(target_column => Time.current)
+    raise ActionController::BadRequest if target_column.nil?
+    raise ActionController::BadRequest if original_target_column.nil?
+
+    @attendance.update!(target_column => Time.current, original_target_column => Time.current)
     @employee = Employee.find(@attendance.employee_id)
     redirect_to employee_attendance_path(@employee, Date.current)
   end

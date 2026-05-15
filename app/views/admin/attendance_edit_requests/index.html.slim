@@ -4,7 +4,7 @@ p Find me in app/views/attendance_edit_requests/index.html.slim
 table.table.table-hover
   thead.thead-default
     tr
-      th style="width: 15%" = Attendance.human_attribute_name(:worked_on)
+      th style="width: 10%" = Attendance.human_attribute_name(:worked_on)
       th style="width: 5%" = Attendance.human_attribute_name(:status)
       th style="width: 10%" = Attendance.human_attribute_name(:started_at)
       th style="width: 10%" = Attendance.human_attribute_name(:finished_at)
@@ -14,6 +14,7 @@ table.table.table-hover
       th style="width: 10%" = Attendance.human_attribute_name(:requested_finished_at)
       th style="width: 10%" = Attendance.human_attribute_name(:requested_break_started_at)
       th style="width: 10%" = Attendance.human_attribute_name(:requested_break_finished_at)
+      th style="width: 10%" = "承認"
 
   tbody
     - @has_request_attendances.each do |a|
@@ -28,3 +29,4 @@ table.table.table-hover
         td= l a.attendance_edit_request.requested_finished_at,format: :short_time if a.attendance_edit_request.requested_finished_at.present?
         td= l a.attendance_edit_request.requested_break_started_at,format: :short_time if a.attendance_edit_request.requested_break_started_at.present?
         td= l a.attendance_edit_request.requested_break_finished_at,format: :short_time if a.attendance_edit_request.requested_break_finished_at.present?
+        td= button_to "承認",approve_edit_request_admin_employee_attendance_edit_request_path(a.employee,a)
