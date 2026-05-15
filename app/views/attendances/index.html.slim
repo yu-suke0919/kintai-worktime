@@ -17,9 +17,9 @@ table.table.table-hover
       tr
         td= a.worked_on
         td= a.status
-        td= l a.started_at,format: :short_time if a.started_at.present?
-        td= l a.finished_at,format: :short_time if a.started_at.present?
-        td= l a.break_started_at,format: :short_time if a.started_at.present?
-        td= l a.break_finished_at,format: :short_time if a.started_at.present?
+        td= l a.started_at,format: :short_time if !a.started_at.blank?
+        td= l a.finished_at,format: :short_time if !a.finished_at.blank?
+        td= l a.break_started_at,format: :short_time if !a.break_started_at.blank?
+        td= l a.break_finished_at,format: :short_time if !a.break_finished_at.blank?
         td= link_to '時刻修正申請',new_employee_attendance_attendance_edit_request_path(@employee,a.worked_on),class: 'btn btn-primary mr-3'
         
