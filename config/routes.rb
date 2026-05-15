@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   namespace :admin do
-    resources :employees, except: :create
+    resources :employees, except: :create do
+      resources :attendance_edit_requests do
+        post "approve_edit_request", on: :member
+      end
+    end
   end
   root to: "employees#index"
   resources :employees do

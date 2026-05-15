@@ -6,6 +6,7 @@ table.table.table-hover
       th style="width: 20%" = Employee.human_attribute_name(:name)
       th style="width: 10%" = Employee.human_attribute_name(:role)
       th style="width: 10%" = Employee.human_attribute_name(:subordinate?)
+      th style="width: 20%" = "a"
       th style="width: 20%" = Employee.human_attribute_name(:登録ボタン)
       /th style="width: 70%" = Employee.human_attribute_name(:description)
   tbody
@@ -14,6 +15,7 @@ table.table.table-hover
         td= link_to employee.name, employee
         td= employee.role
         td= employee.manager_id == @manager.id
+        td= link_to "勤怠修正一覧", admin_employee_attendance_edit_requests_path(employee.id)
         td
           - if employee.manager_id != @manager.id
             = button_to '部下に登録',admin_employee_path(employee),method: :patch,params: { manager_id: current_employee.id }

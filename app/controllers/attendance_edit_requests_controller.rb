@@ -1,9 +1,8 @@
 class AttendanceEditRequestsController < ApplicationController
   before_action :set_attendance, only: [ :show, :new, :edit, :create, :update ]
   def index
-    @has_request_attendances = current_employee.attendances.select { |a|a.attendance_edit_request.present? }
+    @has_request_attendances = current_employee.has_request_attendances
   end
-
   def show
   end
 
