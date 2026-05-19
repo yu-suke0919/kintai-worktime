@@ -59,6 +59,15 @@ RSpec.describe "AttendanceEditRequests", type: :request do
       let(:logged_in_employee) { user_1 }
       it_behaves_like "have_http_status_success"
     end
+
+    describe "GET user_1/attendances/2026-05-01/attendance_edit_request/edit" do
+      let(:request_action) { get edit_employee_attendance_attendance_edit_request_path(user_1, '2026-05-01') }
+      let(:logged_in_employee) { user_1 }
+      it_behaves_like "have_http_status_success"
+    end
+
+
+
     describe "GET user_2/attendance_edit_request/index" do
       let(:request_action) { get employee_attendance_edit_requests_path(user_2) }
       let(:logged_in_employee) { user_1 }
@@ -87,51 +96,3 @@ RSpec.describe "AttendanceEditRequests", type: :request do
     end
   end
 end
-
-
-
-# require 'rails_helper'
-
-# RSpec.describe "AttendanceEditRequests", type: :request do
-#   describe "GET /index" do
-#     it "returns http success" do
-#       get "/attendance_edit_requests/index"
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
-#   describe "GET /show" do
-#     it "returns http success" do
-#       get "/attendance_edit_requests/show"
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
-#   describe "GET /new" do
-#     it "returns http success" do
-#       get "/attendance_edit_requests/new"
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
-#   describe "GET /create" do
-#     it "returns http success" do
-#       get "/attendance_edit_requests/create"
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
-#   describe "GET /edit" do
-#     it "returns http success" do
-#       get "/attendance_edit_requests/edit"
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-
-#   describe "GET /update" do
-#     it "returns http success" do
-#       get "/attendance_edit_requests/update"
-#       expect(response).to have_http_status(:success)
-#     end
-#   end
-# end
