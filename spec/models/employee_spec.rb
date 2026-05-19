@@ -1,11 +1,25 @@
 require 'rails_helper'
 
 RSpec.describe Employee, type: :model do
-  let(:user1) { FactoryBot.create(:employee) }
-  describe '新規登録' do
-    it 'FactoryBotでのユーサー登録が可能かどうか' do
-      expect(user1).to be_valid
-    end
+  let(:user_1) { FactoryBot.create(:employee) }
+  let(:user_2_manager) { FactoryBot.create(:employee, email: "test2@gmail.com", role: 1) }
+  let(:user_3_admin) { FactoryBot.create(:employee, email: "test3@gmail.com", role: 2) }
+  let(:user_99_super_super_admin) { FactoryBot.create(:employee, email: "test@99gmail.com", role: 99) }
+  it 'enumで定義していないroleを持つユーザーを弾くかどうか' do
+    expect(user_1).to be_valid
+    expect(user_2_manager).to be_valid
+    expect(user_3_admin).to be_valid
+    expect { user_99_super_super_admin }.to raise_error(ArgumentError, "'99' is not a valid role")
+  end
+
+
+  it 'has_request_attendancesでrequestを持つattendanceを取得できるか' do
+    user_1.attendances.create(worked_on: '2026-05-01')
+    user_1.attendances.create(worked_on: '2026-05-02')
+    user_1.attendances.create(worked_on: '2026-05-03')
+    user_1.attendances.find_by(worked_on: '2026-05-02').create_attendance_edit_request(employee_id: user_1.id)
+    user_1.attendances.find_by(worked_on: '2026-05-03').create_attendance_edit_request(employee_id: user_1.id)
+    expect(user_1.has_request_attendances.count).to eq 2
   end
 end
 
