@@ -36,7 +36,7 @@ class AttendanceEditRequestsController < ApplicationController
   end
 
   def ensure_owner!
-    redirect_to employee_attendances_path(current_employee), alert: "自分以外の勤怠の修正はできません。" if params[:employee_id] != current_employee.id
+    redirect_to employee_attendances_path(current_employee), alert: "自分以外の勤怠の修正はできません。" if params[:employee_id].to_i != current_employee.id
   end
 
   def edit_request_params
