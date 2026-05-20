@@ -3,7 +3,7 @@ class Employee < ApplicationRecord
 
   belongs_to :manager, class_name: "Employee", optional: true
   has_many :subordinates, class_name: "Employee", foreign_key: "manager_id", dependent: :nullify
-  has_many :attendances, class_name: "Attendance"
+  has_many :attendances
 
   def has_request_attendances
     self.attendances.select { |a|a.attendance_edit_request.present? }
