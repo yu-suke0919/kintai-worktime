@@ -1,6 +1,6 @@
 h1 Admin::Employees#index
 
-- if @employee.role == 'manager'
+- if @manager.role == 'manager'
   p あなたはマネージャー権限を持っています
   = link_to "部下登録画面",admin_employees_path
   table.table.table-hover
@@ -10,7 +10,7 @@ h1 Admin::Employees#index
         th style="width: 10%" = Employee.human_attribute_name(:role)
         /th style="width: 70%" = Employee.human_attribute_name(:description)
     tbody
-      - @employee.subordinates.each do |employee|
+      - @manager.subordinates.each do |employee|
         tr
           td= link_to employee.name, employee
           td= employee.role
