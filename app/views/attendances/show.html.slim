@@ -1,30 +1,61 @@
-h1 Attendances#show
-p Find me in app/views/attendances/show.html.slim
-- @attendance.attributes.each do |key, value|
-  p
-    strong = "#{Attendance.human_attribute_name(key)}: "
-    = value
+p お疲れさまです。#{@employee.name}さん
 
-= button_to '出勤',
-  employee_attendance_path(@employee, Date.current),
-  method: :patch,
-  params: { column_name: "started_at" },
-  class: 'btn btn-primary mr-3'
+table.table.table-hover
+  thead.thead-default
+    tr
+      th style="width: 20%" = Attendance.human_attribute_name(:worked_on)
+      th style="width: 20%" = Attendance.human_attribute_name(:status)
+      th style="width: 15%" = Attendance.human_attribute_name(:started_at)
+      th style="width: 15%" = Attendance.human_attribute_name(:finished_at)
+      th style="width: 15%" = Attendance.human_attribute_name(:break_started_at)
+      th style="width: 15%" = Attendance.human_attribute_name(:break_finished_at)
 
-= button_to '退勤',
-  employee_attendance_path(@employee, Date.current),
-  method: :patch,
-  params: { column_name: "finished_at" },
-  class: 'btn btn-primary mr-3'
+  tbody
+    tr
+      td= @attendance.worked_on
+      td= @attendance.status
+      td= l @attendance.started_at,format: :short_time if !@attendance.started_at.blank?
+      td= l @attendance.finished_at,format: :short_time if !@attendance.finished_at.blank?
+      td= l @attendance.break_started_at,format: :short_time if !@attendance.break_started_at.blank?
+      td= l @attendance.break_finished_at,format: :short_time if !@attendance.break_finished_at.blank?      
 
-= button_to '休憩開始',
-  employee_attendance_path(@employee, Date.current),
-  method: :patch,
-  params: { column_name: "break_started_at" },
-  class: 'btn btn-primary mr-3'
+.container
+  .row.justify-content-center
+    .col-4
+      = button_to '出勤',
+        employee_attendance_path(@employee, Date.current),
+        method: :patch,
+        params: { update_parameter_name: "started_at" },
+        class: 'btn btn-primary btn-lg',
+        disabled: @attendance.started_at.present?
+    .col-4
+      = button_to '退勤',
+        employee_attendance_path(@employee, Date.current),
+        method: :patch,
+        params: { update_parameter_name: "finished_at" },
+        class: 'btn btn-primary btn-lg',
+        disabled: (@attendance.started_at.blank? || @attendance.finished_at.present?)
 
-= button_to '休憩終了',
-  employee_attendance_path(@employee, Date.current),
-  method: :patch,
-  params: { column_name: "break_finished_at" },
-  class: 'btn btn-primary mr-3'
+.container
+  .row.justify-content-center
+    .col-4
+      = button_to '休憩開始',
+        employee_attendance_path(@employee, Date.current),
+        method: :patch,
+        params: { update_parameter_name: "break_started_at" },
+        class: 'btn btn-outline-primary btn-lg'
+    .col-4
+      = button_to '休憩終了',
+        employee_attendance_path(@employee, Date.current),
+        method: :patch,
+        params: { update_parameter_name: "break_finished_at" },
+        class: 'btn btn-outline-primary btn-lg'
+
+- if @attendance.updated_at >= 5.minutes.ago
+  .container
+    p 押し間違えましたか？5分以内であれば打刻を取り消せます。
+    = button_to '直近の打刻を取り消し',
+      employee_attendance_path(@employee, Date.current),
+      method: :patch,
+      params: { update_parameter_name: "delete_recent_columns" },
+      class: 'btn btn-outline-danger btn-lg'
