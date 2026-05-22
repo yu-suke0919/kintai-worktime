@@ -1,6 +1,6 @@
 class AttendancesController < ApplicationController
   before_action :authenticate_employee!
-  before_action :owner_or_admin_required
+  before_action :owner_or_admin_required, except: :show_today
   before_action :set_attendance, only: [ :show, :update ]
   ALLOWED_COLUMN = {
     "started_at" => :started_at,
@@ -57,6 +57,10 @@ class AttendancesController < ApplicationController
     redirect_to employee_attendance_path(@employee, @attendance.worked_on)
   end
 
+  def show_today
+    redirect_to employee_attendance_path(current_employee.id, Date.today)
+  end
+
   private
 
   def set_attendance
@@ -64,6 +68,6 @@ class AttendancesController < ApplicationController
   end
 
   def owner_or_admin_required
-    redirect_to employee_attendances_path(current_employee), alert: "エラーが発生しました" if current_employee.id != params[:employee_id].to_i && current_employee.role == "member"
+    redirect_to employee_attendances_path(current_employee), alert: "エラーが発生しましたb" if current_employee.id != params[:employee_id].to_i && current_employee.role == "member"
   end
 end
