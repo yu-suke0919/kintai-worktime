@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       end
     end
   end
-  root to: "employees#index"
+  root to: "attendances#index"
   resources :employees do
     resources :attendances, only: [ :index, :show, :update ], param: :worked_on do
       resource :attendance_edit_request
