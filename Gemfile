@@ -24,6 +24,7 @@ gem "html2slim", github: "slim-template/html2slim"
 gem "bootstrap"
 gem "dartsass-rails"
 gem "devise"
+gem "kaminari"
 
 gem "rails-i18n"
 gem "devise-i18n-views"

@@ -1,5 +1,6 @@
 class AttendancesController < ApplicationController
   before_action :authenticate_employee!
+  before_action :set_employee, except: :show_today
   before_action :owner_or_admin_required, except: :show_today
   before_action :set_attendance, only: [ :show, :update ]
   ALLOWED_COLUMN = {
@@ -16,12 +17,10 @@ class AttendancesController < ApplicationController
   }.freeze
 
   def index
-    @attendances = Attendance.where(employee_id: params[:employee_id])
-    @employee = Employee.find(params[:employee_id])
+    @attendances = @employee.attendances.order(worked_on: :desc).page(params[:page]).per(10)
   end
 
   def show
-    @employee = Employee.find(params[:employee_id])
   end
   def update
     column_name = params.require(:update_parameter_name)
@@ -53,7 +52,7 @@ class AttendancesController < ApplicationController
 
       @attendance.update!(target_column => Time.current, original_target_column => Time.current)
     end
-    @employee = Employee.find(@attendance.employee_id)
+
     redirect_to employee_attendance_path(@employee, @attendance.worked_on)
   end
 
@@ -62,6 +61,9 @@ class AttendancesController < ApplicationController
   end
 
   private
+  def set_employee
+    @employee = Employee.find(params[:employee_id])
+  end
 
   def set_attendance
     @attendance = Attendance.find_or_create_by(employee_id: params[:employee_id], worked_on: params[:worked_on])
