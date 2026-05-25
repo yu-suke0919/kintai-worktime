@@ -1,6 +1,8 @@
-h1 AttendanceEditRequests#new
-p Find me in app/views/attendance_edit_requests/new.html.slim
-
+.text-center.mb-3
+  h1 勤怠修正申請画面
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 打刻時間を修正する申請を提出できます。
+    p.m-0 あなたを管理しているユーザーによって申請の承認/却下が行われます。
 - if @edit_request.errors.present?
   ul#error_explanation
     - @edit_request.errors.full_messages.each do |message|
@@ -13,37 +15,49 @@ div(
   data-edit-request-break-started-at-value=@attendance.break_started_at&.in_time_zone&.strftime("%Y-%m-%dT%H:%M")
   data-edit-request-break-finished-at-value=@attendance.break_finished_at&.in_time_zone&.strftime("%Y-%m-%dT%H:%M")
 )
-  = form_with model: @edit_request,url: employee_attendance_attendance_edit_request_path(@employee, @attendance.worked_on), local: true do |f|
-    .form-group
+= form_with model: @edit_request,url: employee_attendance_attendance_edit_request_path(@employee, @attendance.worked_on), local: true,class:'container-md' do |f|
+  .row.justify-content-center.align-items-center
+    .col-3
+    .col-4.text-center
+      | 打刻時間
+    .col-1
+    .col-4.text-center
+      | 修正後の時間
+  .row.justify-content-center.align-items-center
+    .col-3.text-center
       = f.label :requested_started_at, '出勤時間'
-      = datetime_local_field_tag :current_started_at,
-        @attendance.started_at&.strftime('%Y-%m-%dT%H:%M'),
-        disabled: true
+    .col-4
+      = datetime_local_field_tag :current_started_at,@attendance.started_at&.strftime('%Y-%m-%dT%H:%M'),class: 'form-control',disabled: true
+    .col-1.text-center
       = '→'
-      = f.datetime_local_field :requested_started_at,value:@attendance.started_at,include_seconds:false
-
-    .form-group
+    .col-4
+      = f.datetime_local_field :requested_started_at,value:@attendance.started_at,include_seconds:false,class: 'form-control'
+  .row.justify-content-center.align-items-center
+    .col-3.text-center
       = f.label :requested_finished_at, '退勤時間'
-      = datetime_local_field_tag :current_finished_at,
-        @attendance.finished_at&.strftime('%Y-%m-%dT%H:%M'),
-        disabled: true
+    .col-4
+      = datetime_local_field_tag :current_finished_at,@attendance.finished_at&.strftime('%Y-%m-%dT%H:%M'),class: 'form-control',disabled: true
+    .col-1.text-center
       = '→'
-      = f.datetime_local_field :requested_finished_at,value:@attendance.finished_at,include_seconds:false
-
-    .form-group
+    .col-4
+      = f.datetime_local_field :requested_finished_at,value:@attendance.finished_at,include_seconds:false,class: 'form-control'
+  .row.justify-content-center.align-items-center
+    .col-3.text-center
       = f.label :requested_break_started_at, '休憩開始時間'
-      = datetime_local_field_tag :current_break_started_at,
-        @attendance.break_started_at&.strftime('%Y-%m-%dT%H:%M'),
-        disabled: true
+    .col-4
+      = datetime_local_field_tag :current_break_started_at,@attendance.break_started_at&.strftime('%Y-%m-%dT%H:%M'),class: 'form-control',disabled: true
+    .col-1.text-center
       = '→'
-      = f.datetime_local_field :requested_break_started_at,value:@attendance.break_started_at,include_seconds:false
-
-    .form-group
+    .col-4
+      = f.datetime_local_field :requested_break_started_at,value:@attendance.break_started_at,include_seconds:false,class: 'form-control'
+  .row.justify-content-center.align-items-center
+    .col-3.text-center
       = f.label :requested_break_finished_at, '休憩終了時間'
-      = datetime_local_field_tag :current_break_finished_at,
-        @attendance.break_finished_at&.strftime('%Y-%m-%dT%H:%M'),
-        disabled: true
+    .col-4
+      = datetime_local_field_tag :current_break_finished_at,@attendance.break_finished_at&.strftime('%Y-%m-%dT%H:%M'),class: 'form-control',disabled: true
+    .col-1.text-center
       = '→'
-      = f.datetime_local_field :requested_break_finished_at,value:@attendance.break_finished_at,include_seconds:false
-
-    = f.submit '修正申請', class: 'btn btn-primary'
+    .col-4
+      = f.datetime_local_field :requested_break_finished_at,value:@attendance.break_finished_at,include_seconds:false,class: 'form-control'
+  .row.justify-content-center
+    = f.submit '修正申請', class: 'btn btn-primary w-50 mt-3'
