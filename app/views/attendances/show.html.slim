@@ -26,30 +26,29 @@ table.table.table-hover
         employee_attendance_path(@employee, Date.current),
         method: :patch,
         params: { update_parameter_name: "started_at" },
-        class: 'btn btn-primary btn-lg',
+        class: 'btn btn-primary btn-lg w-100',
         disabled: @attendance.started_at.present?
     .col-4
       = button_to '退勤',
         employee_attendance_path(@employee, Date.current),
         method: :patch,
         params: { update_parameter_name: "finished_at" },
-        class: 'btn btn-primary btn-lg',
+        class: 'btn btn-primary btn-lg w-100',
         disabled: (@attendance.started_at.blank? || @attendance.finished_at.present?)
 
-.container
-  .row.justify-content-center
+  .row.justify-content-center.mt-3
     .col-4
       = button_to '休憩開始',
         employee_attendance_path(@employee, Date.current),
         method: :patch,
         params: { update_parameter_name: "break_started_at" },
-        class: 'btn btn-outline-primary btn-lg'
+        class: 'btn btn-outline-primary btn-lg w-100'
     .col-4
       = button_to '休憩終了',
         employee_attendance_path(@employee, Date.current),
         method: :patch,
         params: { update_parameter_name: "break_finished_at" },
-        class: 'btn btn-outline-primary btn-lg'
+        class: 'btn btn-outline-primary btn-lg w-100'
 
 - if @attendance.updated_at >= 5.minutes.ago
   .container
