@@ -1,22 +1,8 @@
 .text-center.mb-3
   h1 従業員一覧ページ
   div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 ①管理下にある従業員を確認できます。
-    p.m-0 ②全従業員の一覧を確認でき、各従業員を管理下に置くか設定できます。
-    p.m-0 管理下に置くことにより、①のテーブルに表示され確認しやすくなります。
-
-table.table.table-hover
-  thead.thead-default
-    tr
-      th style="width: 20%" = Employee.human_attribute_name(:name)
-      th style="width: 10%" = Employee.human_attribute_name(:role)
-      /th style="width: 70%" = Employee.human_attribute_name(:description)
-  tbody
-    - @manager.subordinates.each do |employee|
-      tr
-        td= link_to employee.name, employee
-        td= employee.role
-        /td= article.description
+    p.m-0 全従業員の一覧を確認でき、各従業員を自身の管理下に置くか設定できます。
+    p.m-0 管理下に置くことにより、部下一覧に表示され確認しやすくなります。
 
 table.table.table-hover
   thead.thead-default
