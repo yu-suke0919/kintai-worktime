@@ -26,6 +26,10 @@ class AttendancesController < ApplicationController
     column_name = params.require(:update_parameter_name)
 
     if column_name == "delete_recent_columns"
+      unless @attendance.working? || @attendance.normal?
+        redirect_to employee_attendance_path(@employee, @attendance.worked_on)
+        return
+      end
       if @attendance.started_at.presence && @attendance.started_at >= 5.minutes.ago
         @attendance.started_at = nil
         @attendance.original_started_at = nil
@@ -42,6 +46,12 @@ class AttendancesController < ApplicationController
         @attendance.break_finished_at = nil
         @attendance.original_break_finished_at = nil
       end
+      if @attendance.break_finished_at.nil?
+        @attendance.status = "working"
+      end
+      if @attendance.started_at.nil?
+        @attendance.status = "not_clocked"
+      end
       @attendance.save!
     else
       target_column = ALLOWED_COLUMN[column_name]
@@ -50,7 +60,14 @@ class AttendancesController < ApplicationController
       raise ActionController::BadRequest if target_column.nil?
       raise ActionController::BadRequest if original_target_column.nil?
 
+      if target_column == :started_at
+        @attendance.status = "working"
+      elsif target_column == :finished_at
+        @attendance.status = "normal"
+      end
       @attendance.update!(target_column => Time.current, original_target_column => Time.current)
+
+
     end
 
     redirect_to employee_attendance_path(@employee, @attendance.worked_on)
