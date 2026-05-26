@@ -1,10 +1,16 @@
-h1 #{@employee.name}
+.text-center.mb-3
+  h1 従業員ページ
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 従業員の情報を確認できます。
 
-table.table.table-hover
-  tbody
+table.table.d-flex.justify-content-center
+  tbody.text-center
     tr
-      th= Employee.human_attribute_name(:name)
-      td= @employee.name
+      th = Employee.human_attribute_name(:name)
+      td = @employee.name
     tr
       th= Employee.human_attribute_name(:email)
       td= @employee.email
+    tr
+      th= Employee.human_attribute_name(:manager_name)
+      td= @manager_name
