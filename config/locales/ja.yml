@@ -15,6 +15,7 @@ ja:
       attendance_edit_request: 勤怠データ修正申請
     attributes:
       employee:
+        all_employees: 全従業員
         id: 従業員ID
         name: 名前
         role: 役職
