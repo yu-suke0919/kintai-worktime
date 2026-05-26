@@ -1,0 +1,20 @@
+.text-center.mb-3
+  h1 部下一覧ページ
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 ①部下として登録している従業員を確認できます。
+    p.m-0 ②全従業員ページに遷移し、全従業員から選んで部下に登録することができます。
+    p.m-0 部下に登録することにより、①のテーブルに表示され従業員の状態を確認しやすくなります。
+
+table.table.table-hover
+  thead.thead-default
+    tr
+      th style="width: 20%" = Employee.human_attribute_name(:name)
+      th style="width: 10%" = Employee.human_attribute_name(:role)
+  tbody
+    - @subordinates.each do |employee|
+      tr
+        td= link_to employee.name, employee
+        td= employee.role
+
+.text-center.m-5
+  = link_to Employee.human_attribute_name(:all_employees),admin_employees_path
