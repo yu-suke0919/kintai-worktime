@@ -13,4 +13,4 @@ table.table.d-flex.justify-content-center
       td= @employee.email
     tr
       th= Employee.human_attribute_name(:manager_name)
-      td= @manager_name
+      td= @employee.manager&.name || "未設定"
