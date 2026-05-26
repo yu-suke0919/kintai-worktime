@@ -1,27 +1,29 @@
-h1 Attendances#index
-p Find me in app/views/attendances/index.html.slim
-= link_to '勤怠登録',employee_attendance_path(@employee,Date.current)
+.text-center.mb-3
+  h1 勤怠打刻時間一覧
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 勤怠の打刻時間を確認できます。
+    p.m-0 勤怠修正申請ボタンで勤怠や休憩の時刻を修正できます。
 
-.mb-3
+.text-center.mb-3
   = paginate @attendances
   = page_entries_info @attendances
 
 table.table.table-hover
   thead.thead-default
-    tr
+    tr.text-center
       th style="width: 30%" = Attendance.human_attribute_name(:worked_on)
       th style="width: 10%" = Attendance.human_attribute_name(:status)
       th style="width: 10%" = Attendance.human_attribute_name(:started_at)
       th style="width: 10%" = Attendance.human_attribute_name(:finished_at)
       th style="width: 10%" = Attendance.human_attribute_name(:break_started_at)
       th style="width: 10%" = Attendance.human_attribute_name(:break_finished_at)
-      th style="width: 20%" = 'a'
+      th style="width: 20%" = Attendance.human_attribute_name(:create_edit_request)
 
   tbody
     - @attendances.each do |a|
-      tr
+      tr.align-middle.text-center
         td= a.worked_on
-        td= a.status
+        td= I18n.t("enums.attendance.status.#{a.status}", default: a.status)
         td= l a.started_at,format: :short_time if !a.started_at.blank?
         td= l a.finished_at,format: :short_time if !a.finished_at.blank?
         td= l a.break_started_at,format: :short_time if !a.break_started_at.blank?
