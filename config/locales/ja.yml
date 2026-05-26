@@ -26,6 +26,8 @@ ja:
         employee_id: 従業員ID
         employee_name: 従業員名
         status: 勤怠データ状態
+        statuses:
+          not_clocked: 未打刻
         worked_on: 日付
         started_at: 始業時間
         started_at_short: 始業
@@ -35,6 +37,7 @@ ja:
         break_started_at_short: 休憩開始
         break_finished_at: 休憩終了時間
         break_finished_at_short: 休憩終了
+        create_edit_request: 勤怠修正申請作成
       employee_rule:  
       leave_request:
       attendance_edit_request:
@@ -216,3 +219,15 @@ ja:
       short: "%m/%d %H:%M"
       short_time: "%H:%M"
     pm: 午後
+  enums:
+    attendance:
+      status:
+        not_clocked: 未打刻
+        working: 勤務中
+        normal: 打刻完了
+        abnormal: 異常打刻
+        absent: 欠勤
+        paid_leave: 有給休暇
+        holiday: 休日
+        corrected: 打刻修正済
+
