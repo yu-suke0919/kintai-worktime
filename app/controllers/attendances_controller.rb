@@ -48,7 +48,8 @@ class AttendancesController < ApplicationController
       end
       if @attendance.break_finished_at.nil?
         @attendance.status = "working"
-      elsif @attendance.started_at.nil?
+      end
+      if @attendance.started_at.nil?
         @attendance.status = "not_clocked"
       end
       @attendance.save!
