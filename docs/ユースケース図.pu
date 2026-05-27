@@ -9,6 +9,7 @@ actor Manager as M
 M --|> E
 
 package 勤怠管理システム{
+  usecase コメントを発行 as U_14
   usecase 就業ルールを設定 as U_13
   usecase 休日出勤リクエストを承認 as U_12
   usecase 打刻修正リクエストを承認 as U_11
@@ -20,6 +21,7 @@ package 勤怠管理システム{
   usecase 勤怠情報を確認する as U_3
   usecase 打刻の修正をリクエスト as U_2
   usecase 欠勤や休暇をリクエスト as U_1
+  usecase コメントを確認 as U_7
 }
 
 E -- U_1
@@ -28,7 +30,9 @@ E -- U_3
 E -- U_4
 E -- U_5
 E -- U_6
+E -- U_7
 
+M -- U_14
 M -- U_13 
 M -- U_12
 M -- U_11
