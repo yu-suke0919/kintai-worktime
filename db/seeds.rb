@@ -27,9 +27,9 @@ employees.each do |employee|
   (1..31).each do |d|
     date = d.to_s.rjust(2, '0')
     attendance = employee.attendances.create!(worked_on: "2026-05-#{date}")
-    attendance.stamp_start!(time: Time.zone.local(2026, 5, d, 8, rand(0..59)))
-    attendance.stamp_break_start!(time: Time.zone.local(2026, 5, d, 12, 0))
-    attendance.stamp_break_finish!(time: Time.zone.local(2026, 5, d, 13, 0))
-    attendance.stamp_finish!(time: Time.zone.local(2026, 5, d, 17, rand(0..59)))
+    attendance.stamp_start(time: Time.zone.local(2026, 5, d, 8, rand(0..59)))
+    attendance.stamp_break_start(time: Time.zone.local(2026, 5, d, 12, 0))
+    attendance.stamp_break_finish(time: Time.zone.local(2026, 5, d, 13, 0))
+    attendance.stamp_finish(time: Time.zone.local(2026, 5, d, 17, rand(0..59)))
   end
 end
