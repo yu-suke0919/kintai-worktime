@@ -3,6 +3,11 @@
   div class="border border-primary border-2 rounded d-inline-block"
     p.m-0 勤怠の打刻ができます。
 
+- if @attendance.errors.present?
+  ul#error_explanation
+    - @attendance.errors.full_messages.each do |message|
+      li= message
+
 table.table.table-hover
   thead.thead-default
     tr
@@ -55,7 +60,7 @@ table.table.table-hover
         class: 'btn btn-outline-primary btn-lg w-100',
         disabled: @attendance.status != "working"
 
-- if @attendance.updated_at >= 5.minutes.ago
+- if @attendance.updated_at >= 5.minutes.ago && @attendance.status.in?(%w[working normal abnormal])
   .container.text-center
     p 押し間違えましたか？5分以内であれば打刻を取り消せます。
     = button_to '直近の打刻を取り消し',

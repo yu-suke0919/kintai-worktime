@@ -2,6 +2,15 @@
 ja:
   activerecord:
     errors:
+      models:
+        attendance:
+          attributes:
+            base:
+              already_started: "すでに出勤済みです"
+              already_stamped: "すでに打刻されています"
+              invalid_stamped: "不正な打刻です"
+              break_not_started: "休憩が始まっていません"
+              break_not_finished: "休憩が終了していません"
       messages:
         record_invalid: 'バリデーションに失敗しました: %{errors}'
         restrict_dependent_destroy:
