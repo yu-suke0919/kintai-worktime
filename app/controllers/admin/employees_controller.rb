@@ -13,6 +13,10 @@ class Admin::EmployeesController < ApplicationController
     )
   end
 
+  def subordinates
+    @subordinates = current_employee.subordinates
+  end
+
   def show
   end
 

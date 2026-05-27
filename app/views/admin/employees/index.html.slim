@@ -1,28 +1,16 @@
-h1 Admin::Employees#index
-
-- if @manager.role == 'manager'
-  p あなたはマネージャー権限を持っています
-  = link_to "部下登録画面",admin_employees_path
-  table.table.table-hover
-    thead.thead-default
-      tr
-        th style="width: 20%" = Employee.human_attribute_name(:name)
-        th style="width: 10%" = Employee.human_attribute_name(:role)
-        /th style="width: 70%" = Employee.human_attribute_name(:description)
-    tbody
-      - @manager.subordinates.each do |employee|
-        tr
-          td= link_to employee.name, employee
-          td= employee.role
-          /td= article.description
+.text-center.mb-3
+  h1 従業員一覧ページ
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 全従業員の一覧を確認でき、各従業員を自身の管理下に置くか設定できます。
+    p.m-0 管理下に置くことにより、部下一覧に表示され確認しやすくなります。
 
 table.table.table-hover
   thead.thead-default
     tr
       th style="width: 20%" = Employee.human_attribute_name(:name)
       th style="width: 10%" = Employee.human_attribute_name(:role)
-      th style="width: 10%" = Employee.human_attribute_name(:subordinate?)
-      th style="width: 20%" = "a"
+      th style="width: 10%" = Employee.human_attribute_name(:manager_name)
+      th style="width: 20%" = AttendanceEditRequest.model_name.human
       th style="width: 20%" = Employee.human_attribute_name(:登録ボタン)
       /th style="width: 70%" = Employee.human_attribute_name(:description)
   tbody
@@ -30,11 +18,13 @@ table.table.table-hover
       tr
         td= link_to employee.name, employee
         td= employee.role
-        td= employee.manager_id == @manager.id
+        td= employee.manager&.name || "未設定"
         td= link_to "勤怠修正一覧", admin_employee_attendance_edit_requests_path(employee.id)
         td
-          - if employee.manager_id != @manager.id
+          - if employee.manager_id.nil?
             = button_to '部下に登録',admin_employee_path(employee),method: :patch,params: { manager_id: current_employee.id }
+          - elsif employee.manager_id != current_employee.id
+            = button_to '部下に登録',admin_employee_path(employee),method: :patch,params: { manager_id: current_employee.id },data: {turbo_confirm: "すでに別のmanagerが割り当てられています。上書きし部下として設定しますか？"}
           - else
             = button_to '部下登録解除',admin_employee_path(employee),method: :patch,params: { manager_id: nil }
       

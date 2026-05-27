@@ -25,7 +25,7 @@ html
       ul.navbar-nav.ms-auto
         - if employee_signed_in?
           - if current_employee.role != "member"
-            li.nav-item= link_to employees_path, class: 'nav-link text-center d-flex flex-column' do
+            li.nav-item= link_to subordinates_admin_employees_path, class: 'nav-link text-center d-flex flex-column' do
               i.bi.bi-people.d-block.fs-2.mx-auto.my-0.lh-1
               | 部下管理
           li.nav-item= link_to employee_path(current_employee), class: 'nav-link text-center d-flex flex-column' do
