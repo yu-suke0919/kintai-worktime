@@ -11,8 +11,11 @@ class Admin::AttendanceEditRequestsController < ApplicationController
     raise if attendance.nil?
     request = attendance.attendance_edit_request
 
-    attendance.update!(started_at: request.requested_started_at, finished_at: request.requested_finished_at, break_started_at: request.requested_break_started_at, break_finished_at: request.requested_break_finished_at)
-    redirect_to admin_employees_path, notice: "勤怠時間の修正を行いました"
+    if attendance.update(started_at: request.requested_started_at, finished_at: request.requested_finished_at, break_started_at: request.requested_break_started_at, break_finished_at: request.requested_break_finished_at, status: "corrected")
+      redirect_to subordinates_admin_employees_path, notice: "勤怠時間の修正を行いました"
+    else
+      render :index, status: :unprocessable_entity
+    end
   end
 
   def show
