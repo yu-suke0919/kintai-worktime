@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get "notifications/index"
-  get "notifications/show"
   namespace :admin do
     resources :employees, except: :create do
       collection do
@@ -13,6 +11,7 @@ Rails.application.routes.draw do
   end
   root to: "attendances#show_today"
   resources :employees do
+    resources :notifications, only: [ :index, :show ]
     resources :attendances, only: [ :index, :show, :update ], param: :worked_on do
       resource :attendance_edit_request
     end
