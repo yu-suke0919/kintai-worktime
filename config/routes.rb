@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "notifications/index"
+  get "notifications/show"
   namespace :admin do
     resources :employees, except: :create do
       collection do
