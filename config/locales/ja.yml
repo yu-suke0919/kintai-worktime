@@ -48,6 +48,15 @@ ja:
         break_finished_at: 休憩終了時間
         break_finished_at_short: 休憩終了
         create_edit_request: 勤怠修正申請作成
+      notification:
+        created_at: 作成日時
+        message_text: 承認/否認理由
+        notifiable_id: 申請ID
+        notifiable_type: 申請種別
+        notification_type: 申請状態
+        read_at: 既読状態
+        recipient_employee_id: 対象者ID
+        updated_at: 更新日時
       employee_rule:  
       leave_request:
       attendance_edit_request:
