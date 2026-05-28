@@ -16,6 +16,7 @@ class AttendanceEditRequestsController < ApplicationController
     @edit_request = @attendance.build_attendance_edit_request(edit_request_params)
     @edit_request.employee_id = @employee.id
     if @edit_request.save
+      @edit_request.notifications.create!(notification_type: 0, recipient_employee: current_employee, message_text: "message_text_desu")
       redirect_to employee_attendances_path, notice: "勤怠修正申請を完了しました。"
     else
       render :new, status: :unprocessable_entity
@@ -23,9 +24,16 @@ class AttendanceEditRequestsController < ApplicationController
   end
 
   def edit
+    @edit_request = @attendance.attendance_edit_request
   end
 
   def update
+    if @attendance.attendance_edit_request.update(edit_request_params)
+      @attendance.attendance_edit_request.notifications.create!(notification_type: 0, recipient_employee: current_employee, message_text: "message_text_desu")
+      redirect_to employee_attendances_path, notice: "勤怠修正申請修正を完了しました。"
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   private
