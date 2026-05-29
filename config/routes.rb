@@ -11,12 +11,12 @@ Rails.application.routes.draw do
   end
   root to: "attendances#show_today"
   resources :employees do
-    resources :notifications, only: [ :index, :show ]
     resources :attendances, only: [ :index, :show, :update ], param: :worked_on do
       resource :attendance_edit_request
     end
     resources :attendance_edit_requests, only: :index
   end
+  resources :notifications, only: [ :index, :show ]
   devise_for :employees, path: "auth"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
