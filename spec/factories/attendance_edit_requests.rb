@@ -5,7 +5,6 @@ FactoryBot.define do
     approved_by_id { 1 }
     approved_at { "2026-05-11 13:40:43" }
     status { 1 }
-    edit_type { 1 }
     requested_started_at { "2026-05-11 13:40:43" }
     requested_finished_at { "2026-05-11 13:40:43" }
     reason { "MyText" }
