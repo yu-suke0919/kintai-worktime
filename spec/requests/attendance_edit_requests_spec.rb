@@ -63,6 +63,11 @@ RSpec.describe "AttendanceEditRequests", type: :request do
     describe "GET user_1/attendances/2026-05-01/attendance_edit_request/edit" do
       let(:request_action) { get edit_employee_attendance_attendance_edit_request_path(user_1, '2026-05-01') }
       let(:logged_in_employee) { user_1 }
+      before do
+        attendance = Attendance.find_by(employee: user_1, worked_on: "2026-05-01")
+        FactoryBot.create(:attendance_edit_request, attendance: attendance, employee: user_1,)
+      end
+
       it_behaves_like "have_http_status_success"
     end
 
