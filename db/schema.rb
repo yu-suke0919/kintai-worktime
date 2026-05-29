@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_15_013835) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_28_012415) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -66,8 +66,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_013835) do
     t.index ["reset_password_token"], name: "index_employees_on_reset_password_token", unique: true
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "message_text"
+    t.bigint "notifiable_id", null: false
+    t.string "notifiable_type", null: false
+    t.integer "notification_type"
+    t.datetime "read_at"
+    t.bigint "recipient_employee_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["recipient_employee_id"], name: "index_notifications_on_recipient_employee_id"
+  end
+
   add_foreign_key "attendance_edit_requests", "attendances"
   add_foreign_key "attendance_edit_requests", "employees"
   add_foreign_key "attendances", "employees"
   add_foreign_key "employees", "employees", column: "manager_id"
+  add_foreign_key "notifications", "employees", column: "recipient_employee_id"
 end

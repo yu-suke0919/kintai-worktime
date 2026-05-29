@@ -1,0 +1,28 @@
+.text-center.mb-3
+  h1 通知ページ
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 勤怠修正や休暇申請を行なった後の承認/否認結果が届きます。
+
+
+table.table.table-hover
+  thead.thead-default
+    tr.text-center
+
+      th style="width: 10%" = Notification.human_attribute_name(:notifiable_type)
+      th style="width: 5%" = Notification.human_attribute_name(:notifiable_id)
+      th style="width: 5%" = Notification.human_attribute_name(:created_at)
+      th style="width: 5%" = Notification.human_attribute_name(:notification_type)
+      th style="width: 55%" = Notification.human_attribute_name(:message_text)
+      th style="width: 10%" = Notification.human_attribute_name(:updated_at)
+
+
+  tbody
+    - @notifications.each do |n|
+      tr.align-middle.text-center
+        td= n.notifiable.class.model_name.human
+        td= n.notifiable_id
+        td= l n.created_at,format: :short_time
+        td= I18n.t("enums.notification.status.#{n.notification_type}")
+        td= simple_format(n.message_text)
+        td= l n.updated_at,format: :short_time
+        

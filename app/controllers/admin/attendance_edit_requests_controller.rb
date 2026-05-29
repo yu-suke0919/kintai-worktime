@@ -12,6 +12,10 @@ class Admin::AttendanceEditRequestsController < ApplicationController
     request = attendance.attendance_edit_request
 
     if attendance.update(started_at: request.requested_started_at, finished_at: request.requested_finished_at, break_started_at: request.requested_break_started_at, break_finished_at: request.requested_break_finished_at, status: "corrected")
+      request.notifications.create(
+        notification_type: 1,
+        recipient_employee: current_employee,
+        message_text: "打刻時間修正を承認しました。\nby#{current_employee.name}")
       redirect_to subordinates_admin_employees_path, notice: "勤怠時間の修正を行いました"
     else
       render :index, status: :unprocessable_entity

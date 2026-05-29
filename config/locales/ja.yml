@@ -21,7 +21,7 @@ ja:
       attendance: 勤怠データ
       employee_rule: 従業員ルール
       leave_request: 休暇申請
-      attendance_edit_request: 勤怠データ修正申請
+      attendance_edit_request: 打刻時間修正申請
     attributes:
       employee:
         all_employees: 全従業員
@@ -36,8 +36,6 @@ ja:
         employee_id: 従業員ID
         employee_name: 従業員名
         status: 勤怠データ状態
-        statuses:
-          not_clocked: 未打刻
         worked_on: 日付
         started_at: 始業時間
         started_at_short: 始業
@@ -48,6 +46,15 @@ ja:
         break_finished_at: 休憩終了時間
         break_finished_at_short: 休憩終了
         create_edit_request: 勤怠修正申請作成
+      notification:
+        created_at: 作成日時
+        message_text: 通知内容
+        notifiable_id: 申請ID
+        notifiable_type: 申請種別
+        notification_type: 申請状態
+        read_at: 既読状態
+        recipient_employee_id: 対象者ID
+        updated_at: 更新日時
       employee_rule:  
       leave_request:
       attendance_edit_request:
@@ -240,4 +247,9 @@ ja:
         paid_leave: 有給休暇
         holiday: 休日
         corrected: 打刻修正済
+    notification:
+      status:
+        pending: 申請中
+        approved: 承認
+        rejected: 否認
 

@@ -31,6 +31,9 @@ html
           li.nav-item= link_to employee_path(current_employee), class: 'nav-link text-center d-flex flex-column' do
             i.bi.bi-person.d-block.fs-2.mx-auto.my-0.lh-1
             | #{current_employee.name}さんの情報
+          li.nav-item= link_to employee_notifications_path(current_employee), class: 'nav-link text-center d-flex flex-column' do
+            i.bi.bi-bell.d-block.fs-2.mx-auto.my-0.lh-1
+            | #{current_employee.name}さんの通知
           li.nav-item= link_to employee_attendance_path(current_employee,Date.today), class: 'nav-link text-center d-flex flex-column' do 
             i.bi.bi-calendar-check.d-block.fs-2.mx-auto.my-0.lh-1
             | 勤怠登録
