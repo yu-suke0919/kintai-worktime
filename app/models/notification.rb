@@ -3,7 +3,7 @@ class Notification < ApplicationRecord
   belongs_to :notifiable, polymorphic: true
 
   enum :notification_type, {
-    unread: 0,
+    pending: 0,
     approved: 1,
     rejected: 2
   }
