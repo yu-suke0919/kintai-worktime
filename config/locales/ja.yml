@@ -22,6 +22,7 @@ ja:
       employee_rule: 従業員ルール
       leave_request: 休暇申請
       attendance_edit_request: 打刻時間修正申請
+      employee_rule: 就業規則
     attributes:
       employee:
         all_employees: 全従業員
