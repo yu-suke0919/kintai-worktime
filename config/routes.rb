@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
   namespace :admin do
-    get "employee_rules/new"
-    get "employee_rules/index"
     resources :employees, except: :create do
       collection do
         get :subordinates
@@ -9,6 +7,7 @@ Rails.application.routes.draw do
       resources :attendance_edit_requests do
         post "approve_edit_request", on: :member
       end
+      resource :employee_rules, only: [ :index, new ]
     end
   end
   root to: "attendances#show_today"
