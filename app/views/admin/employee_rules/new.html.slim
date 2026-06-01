@@ -1,2 +1,31 @@
-h1 Admin::EmployeeRules#new
-p Find me in app/views/admin/employee_rules/new.html.slim
+.text-center.mb-3
+  h1 #{@employee.name}さんの就業規則作成ページ
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 就業規則の作成ページです。
+
+.d-flex.justify-content-center
+  = form_with model: [:admin,@employee,@rule],class:'col-6' do |f|
+    .form-group
+      = f.label :effective_from
+      = f.date_field :effective_from, class: 'form-control', id:'effective_from'
+    .form-group
+      = f.label :expires_on
+      = f.date_field :expires_on, class: 'form-control', id:'expires_on'
+    .form-group
+      = f.label :required_workdays_mask
+      = f.check_box  class: 'form-control', id:'required_workdays_mask_checkbox'
+    .form-group
+      = f.label :scheduled_work_minutes
+      = f.number_field :scheduled_work_minutes, class: 'form-control', id:'scheduled_work_minutes'
+    .form-group
+      = f.label :core_time_start
+      = f.time_field :core_time_start, class: 'form-control', id:'core_time_start'
+    .form-group
+      = f.label :core_time_end
+      = f.time_field :core_time_end, class: 'form-control', id:'core_time_end'
+    .form-group
+      = f.label :break_minutes
+      = f.number_field :break_minutes, class: 'form-control', id:'break_minutes'
+
+    .text-end
+      = f.submit nil, class: 'btn btn-primary'
