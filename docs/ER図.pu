@@ -20,18 +20,20 @@ entity EmployeeRule {
   core_time_start : time
   core_time_end : time
   break_minutes : int
+  effective_from : date
   expires_on : date
 }
 
-entity EmployeeWorkDate{
+entity EmployeeWorkDateException{
   + id: int
   --
-  employee_rule_id : int
+  employee_id : int
   work_date : Date
+  exception_type : int
 }
 
-Employee ||--||EmployeeRule
-EmployeeRule ||--o{EmployeeWorkDate
+Employee ||--o{EmployeeRule
+Employee ||--o{EmployeeWorkDateException
 
 entity Attendance {
   + attendance_id : int
