@@ -12,6 +12,7 @@ table.table.table-hover
       th style="width: 10%" = Employee.human_attribute_name(:role)
       th style="width: 5%" = '修正申請件数'
       th style="width: 10%" = AttendanceEditRequest.model_name.human
+      th style="width: 10%" = EmployeeRule.model_name.human
   tbody
     - @subordinates.each do |employee|
       tr
@@ -22,6 +23,7 @@ table.table.table-hover
           td= "勤怠修正一覧"
         - else
           td= link_to "勤怠修正一覧", admin_employee_attendance_edit_requests_path(employee.id)
+        td= link_to EmployeeRule.model_name.human, admin_employee_employee_rules_path(employee.id)
 
 .text-center.m-5
   = link_to Employee.human_attribute_name(:all_employees),admin_employees_path
