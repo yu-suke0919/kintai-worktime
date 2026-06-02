@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       resources :attendance_edit_requests do
         post "approve_edit_request", on: :member
       end
-      resources :employee_rules, only: [ :index, :new ]
+      resources :employee_rules, only: [ :index, :new, :create ]
     end
   end
   root to: "attendances#show_today"
