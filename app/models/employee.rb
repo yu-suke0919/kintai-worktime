@@ -6,6 +6,7 @@ class Employee < ApplicationRecord
   has_many :attendances, dependent: :destroy
   has_many :notifications, foreign_key: :recipient_employee_id, dependent: :destroy, inverse_of: :recipient_employee
   has_many :employee_rules, dependent: :destroy
+  has_many :employee_work_date_exceptions, dependent: :destroy
 
   def has_request_attendances
     self.attendances.select { |a|a.attendance_edit_request.present? }
