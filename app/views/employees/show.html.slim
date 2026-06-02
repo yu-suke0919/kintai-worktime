@@ -15,7 +15,8 @@ table.table.d-flex.justify-content-center
       th= Employee.human_attribute_name(:manager_name)
       td= @employee.manager&.name || "未設定"
 
-p 現在の出勤ルール
+.text-center
+  p 現在の出勤ルール
 table.table.table-hover
   thead.thead-default
     tr
