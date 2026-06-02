@@ -2,17 +2,28 @@ class Admin::EmployeeRulesController < ApplicationController
   before_action :authenticate_employee!
   before_action :admin_role_required
   before_action :set_employee
+
   def new
     new_params = latest_employee_rule_params
     if new_params.present?
-      new_params.assign_attributes(effective_from: new_params[:expires_on]+(60*60*24))
-      new_params.extract!(effective_from:)
+      new_params[:effective_from] =  new_params[:expires_on] + 1# +(60*60*24)
+      new_params.extract!(:expires_on)
+    else
+      new_params[:effective_from] = Time.now
     end
     @rule = EmployeeRule.new(new_params)
   end
 
   def create
-    if @employee.employee_rules.create_association(employee_rule_params)
+    @rule = @employee.employee_rules.build(employee_rule_params)
+    @rule.in_office_days = params[:weekdays]
+    unless @rule.valid?
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    Rails.logger.debug @rule
+    if @rule.save
       redirect_to admin_employee_employee_rules_path(@employee.id), notice: "就業規則を作成しました"
     else
       render :new, status: :unprocessable_entity
