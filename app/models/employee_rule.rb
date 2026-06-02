@@ -1,4 +1,6 @@
 class EmployeeRule < ApplicationRecord
+  validates :effective_from, presence: true
+  validates :expires_on, presence: true
   belongs_to :employee
   WEEKDAY_MASK ={
     sunday: 1,
@@ -9,17 +11,26 @@ class EmployeeRule < ApplicationRecord
     friday: 32,
     saturday: 64
   }.freeze
-  def in_office_days
-    days = []
+  def in_office_days_hash
+    hash = {}
     EmployeeRule::WEEKDAY_MASK.each do |day, mask|
-      days.push(day) if self.required_workdays_mask & mask == mask
+      hash[day] = self.required_workdays_mask & mask == mask
     end
-    days
+    hash
   end
 
-  def in_office_days=(value)
-    self.required_workdays_mask = value
-      .map { |key|EmployeeRule::WEEKDAY_MASK[key] }
+  def in_office_days_text
+    array = []
+    EmployeeRule::WEEKDAY_MASK.each do |day, mask|
+      array << EmployeeRule.human_attribute_name(day) if self.required_workdays_mask & mask == mask
+    end
+    array.join(",")
+  end
+
+  def in_office_days=(values)
+    return if values.nil?
+    self.required_workdays_mask = values
+      .map { |key|EmployeeRule::WEEKDAY_MASK[key.to_sym] }
       .inject(:+)
   end
 end
