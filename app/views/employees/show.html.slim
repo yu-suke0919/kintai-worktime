@@ -28,11 +28,15 @@ table.table.table-hover
       th style="width: 10%" = EmployeeRule.human_attribute_name(:core_time_end)
       th style="width: 10%" = EmployeeRule.human_attribute_name(:break_minutes)
   tbody
-    tr
-      td= @employee.employee_rules.last.effective_from
-      td= @employee.employee_rules.last.expires_on
-      td= @employee.employee_rules.last.in_office_days_text
-      td= @employee.employee_rules.last.scheduled_work_minutes
-      td= l @employee.employee_rules.last.core_time_start,format: :short_time
-      td= l @employee.employee_rules.last.core_time_end,format: :short_time
-      td= @employee.employee_rules.last.break_minutes
+    - if @employee.employee_rules.last.present?
+      tr
+        td= @employee.employee_rules.last.effective_from
+        td= @employee.employee_rules.last.expires_on
+        td= @employee.employee_rules.last.in_office_days_text
+        td= @employee.employee_rules.last.scheduled_work_minutes
+        td= l @employee.employee_rules.last.core_time_start,format: :short_time
+        td= l @employee.employee_rules.last.core_time_end,format: :short_time
+        td= @employee.employee_rules.last.break_minutes
+    - else
+      tr
+        td = "未設定"
