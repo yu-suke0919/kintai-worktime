@@ -14,3 +14,25 @@ table.table.d-flex.justify-content-center
     tr
       th= Employee.human_attribute_name(:manager_name)
       td= @employee.manager&.name || "未設定"
+
+.text-center
+  p 現在の出勤ルール
+table.table.table-hover
+  thead.thead-default
+    tr
+      th style="width: 20%" = EmployeeRule.human_attribute_name(:effective_from)
+      th style="width: 20%" = EmployeeRule.human_attribute_name(:expires_on)
+      th style="width: 20%" = EmployeeRule.human_attribute_name(:required_workdays_mask)
+      th style="width: 10%" = EmployeeRule.human_attribute_name(:scheduled_work_minutes)
+      th style="width: 10%" = EmployeeRule.human_attribute_name(:core_time_start)
+      th style="width: 10%" = EmployeeRule.human_attribute_name(:core_time_end)
+      th style="width: 10%" = EmployeeRule.human_attribute_name(:break_minutes)
+  tbody
+    tr
+      td= @employee.employee_rules.last.effective_from
+      td= @employee.employee_rules.last.expires_on
+      td= @employee.employee_rules.last.in_office_days_text
+      td= @employee.employee_rules.last.scheduled_work_minutes
+      td= l @employee.employee_rules.last.core_time_start,format: :short_time
+      td= l @employee.employee_rules.last.core_time_end,format: :short_time
+      td= @employee.employee_rules.last.break_minutes
