@@ -64,6 +64,14 @@ ja:
         expires_on : 規則適用終了日
         required_workdays_mask : 就業曜日 
         scheduled_work_minutes : 最低就業時間 
+        in_office_days : 勤務曜日
+        sunday: 日
+        monday: 月
+        tuesday: 火
+        wednesday: 水
+        thursday: 木
+        friday: 金
+        saturday: 土
       leave_request:
       attendance_edit_request:
   date:
