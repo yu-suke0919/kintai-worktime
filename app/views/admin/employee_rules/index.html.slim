@@ -1,0 +1,28 @@
+.text-center.mb-3
+  h1 #{@employee.name}さんの就業規則一履歴
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 従業員の就業規則履歴を確認できます。
+    p.m-0 「新規作成」ボタンから就業規則の作成が可能です。
+
+= link_to "新規作成",new_admin_employee_employee_rule_path(@employee)
+
+table.table.table-hover
+  thead.thead-default
+    tr
+      th style="width: 20%" = EmployeeRule.human_attribute_name(:effective_from)
+      th style="width: 20%" = EmployeeRule.human_attribute_name(:expires_on)
+      th style="width: 20%" = EmployeeRule.human_attribute_name(:required_workdays_mask)
+      th style="width: 10%" = EmployeeRule.human_attribute_name(:scheduled_work_minutes)
+      th style="width: 10%" = EmployeeRule.human_attribute_name(:core_time_start)
+      th style="width: 10%" = EmployeeRule.human_attribute_name(:core_time_end)
+      th style="width: 10%" = EmployeeRule.human_attribute_name(:break_minutes)
+  tbody
+    - @employee.employee_rules.each do |rule|
+      tr
+        td= rule.effective_from
+        td= rule.expires_on
+        td= rule.in_office_days_text
+        td= rule.scheduled_work_minutes
+        td= rule.core_time_start
+        td= rule.core_time_end
+        td= rule.break_minutes

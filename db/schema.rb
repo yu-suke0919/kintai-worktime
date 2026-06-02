@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_28_012415) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_01_034430) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,6 +49,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_012415) do
     t.index ["employee_id"], name: "index_attendances_on_employee_id"
   end
 
+  create_table "employee_rules", force: :cascade do |t|
+    t.integer "break_minutes", default: 0, null: false
+    t.time "core_time_end"
+    t.time "core_time_start"
+    t.datetime "created_at", null: false
+    t.date "effective_from", null: false
+    t.bigint "employee_id", null: false
+    t.date "expires_on", null: false
+    t.integer "required_workdays_mask", default: 0, null: false
+    t.integer "scheduled_work_minutes", default: 480, null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_employee_rules_on_employee_id"
+  end
+
   create_table "employees", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
@@ -82,6 +96,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_012415) do
   add_foreign_key "attendance_edit_requests", "attendances"
   add_foreign_key "attendance_edit_requests", "employees"
   add_foreign_key "attendances", "employees"
+  add_foreign_key "employee_rules", "employees"
   add_foreign_key "employees", "employees", column: "manager_id"
   add_foreign_key "notifications", "employees", column: "recipient_employee_id"
 end

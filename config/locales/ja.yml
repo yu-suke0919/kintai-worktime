@@ -22,6 +22,7 @@ ja:
       employee_rule: 従業員ルール
       leave_request: 休暇申請
       attendance_edit_request: 打刻時間修正申請
+      employee_rule: 就業規則
     attributes:
       employee:
         all_employees: 全従業員
@@ -56,6 +57,21 @@ ja:
         recipient_employee_id: 対象者ID
         updated_at: 更新日時
       employee_rule:  
+        break_minutes: 休憩時間
+        core_time_end: コアタイム終了時間
+        core_time_start: コアタイム開始時間
+        effective_from : 規則適用開始日
+        expires_on : 規則適用終了日
+        required_workdays_mask : 就業曜日 
+        scheduled_work_minutes : 最低就業時間(単位:分)
+        in_office_days : 勤務曜日
+        sunday: 日
+        monday: 月
+        tuesday: 火
+        wednesday: 水
+        thursday: 木
+        friday: 金
+        saturday: 土
       leave_request:
       attendance_edit_request:
   date:

@@ -1,0 +1,41 @@
+.text-center.mb-3
+  h1 #{@employee.name}さんの就業規則作成ページ
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 就業規則の作成ページです。
+    p.m-0 今まで就業規則が指定されていた場合、前回の就業規則が予め入力されています。
+
+- if @rule.errors.present?
+  ul#error_explanation
+    - @rule.errors.full_messages.each do |message|
+      li= message
+
+.d-flex.justify-content-center
+  = form_with model: [:admin,@employee,@rule],class:'col-6' do |f|
+    .form-group
+      = f.label :effective_from
+      = f.date_field :effective_from, class: 'form-control'
+    .form-group
+      = f.label :expires_on
+      = f.date_field :expires_on, class: 'form-control'
+    .form-group
+      .form_label = EmployeeRule.human_attribute_name(:in_office_days)
+      .d-flex.justify-content-between
+        - @rule.in_office_days_hash.each do |day,value|
+          .div
+            = check_box_tag 'weekdays[]',day,value
+            = label_tag day,EmployeeRule.human_attribute_name(day)
+    .form-group
+      = f.label :scheduled_work_minutes
+      = f.number_field :scheduled_work_minutes, class: 'form-control'
+    .form-group
+      = f.label :core_time_start
+      = f.time_field :core_time_start, class: 'form-control'
+    .form-group
+      = f.label :core_time_end
+      = f.time_field :core_time_end, class: 'form-control'
+    .form-group
+      = f.label :break_minutes
+      = f.number_field :break_minutes, class: 'form-control'
+
+    .text-end
+      = f.submit nil, class: 'btn btn-primary'

@@ -13,16 +13,27 @@ entity Employee {
 Employee ||--o{ Employee : manager
 
 entity EmployeeRule {
-  + rule_id : int
+  + id : int
   --
   employee_id : int
-  holiday_work? : bool
+  required_workdays_mask: integer
   core_time_start : time
   core_time_end : time
-  break_time_minutes : int
+  break_minutes : int
+  effective_from : date
+  expires_on : date
 }
 
-Employee ||--||EmployeeRule
+entity EmployeeWorkDateException{
+  + id: int
+  --
+  employee_id : int
+  work_date : Date
+  exception_type : int
+}
+
+Employee ||--o{EmployeeRule
+Employee ||--o{EmployeeWorkDateException
 
 entity Attendance {
   + attendance_id : int
