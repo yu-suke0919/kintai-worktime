@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       resource :attendance_edit_request
     end
     resources :attendance_edit_requests, only: :index
-    resources :employee_work_date_exception_requests, only: [ :new, :edit ]
+    resources :employee_work_date_exception_requests, only: [ :new, :edit, :create, :update ]
   end
   resources :notifications, only: [ :index, :show ]
   devise_for :employees, path: "auth"
