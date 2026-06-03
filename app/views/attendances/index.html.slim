@@ -4,9 +4,10 @@
     p.m-0 勤怠の打刻時間を確認できます。
     p.m-0 勤怠修正申請ボタンで勤怠や休憩の時刻を修正できます。
 
-.text-center.mb-3
-  = paginate @attendances
-  = page_entries_info @attendances
+= form_with url:employee_attendances_path(@employee),method: :get,local: true do |f|
+  .d-flex.justify-content-center
+    = '表示月選択:'
+    = month_field_tag :select_date,@date.strftime("%Y-%m"),onchange: 'this.form.submit()'
 
 table.table.table-hover
   thead.thead-default
@@ -20,16 +21,29 @@ table.table.table-hover
       th style="width: 20%" = Attendance.human_attribute_name(:create_edit_request)
 
   tbody
-    - @attendances.each do |a|
-      tr.align-middle.text-center
-        td= a.worked_on
-        td= I18n.t("enums.attendance.status.#{a.status}", default: a.status)
-        td= l a.started_at,format: :short_time if !a.started_at.blank?
-        td= l a.finished_at,format: :short_time if !a.finished_at.blank?
-        td= l a.break_started_at,format: :short_time if !a.break_started_at.blank?
-        td= l a.break_finished_at,format: :short_time if !a.break_finished_at.blank?
-        - if a.attendance_edit_request.present?
-          td= link_to '申請時刻を修正',edit_employee_attendance_attendance_edit_request_path(@employee,a.worked_on),class: 'btn btn-secondary mr-3'
-        - else
-          td= link_to '時刻修正申請',new_employee_attendance_attendance_edit_request_path(@employee,a.worked_on),class: 'btn btn-primary mr-3'
+    - @month_range.each do |day|
+      - a = @attendances.find_by(worked_on: day)
+      - if a.present?
+        tr.align-middle.text-center
+          td= a.worked_on
+          td= I18n.t("enums.attendance.status.#{a.status}", default: a.status)
+          td= l a.started_at,format: :short_time if !a.started_at.blank?
+          td= l a.finished_at,format: :short_time if !a.finished_at.blank?
+          td= l a.break_started_at,format: :short_time if !a.break_started_at.blank?
+          td= l a.break_finished_at,format: :short_time if !a.break_finished_at.blank?
+          - if a.attendance_edit_request.present?
+            td= link_to '申請時刻を修正',edit_employee_attendance_attendance_edit_request_path(@employee,a.worked_on),class: 'btn btn-secondary mr-3'
+          - else
+            td= link_to '時刻修正申請',new_employee_attendance_attendance_edit_request_path(@employee,a.worked_on),class: 'btn btn-primary mr-3'
+      - else
+        tr.align-middle.text-center
+          td= day
+          td= "記録なし"
+          td=
+          td=
+          td=
+          td=
+          td=
+
+
         

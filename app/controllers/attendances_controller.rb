@@ -17,7 +17,16 @@ class AttendancesController < ApplicationController
   }.freeze
 
   def index
-    @attendances = @employee.attendances.order(worked_on: :desc).page(params[:page]).per(10)
+    permitted = params.permit(:select_date)
+    match = permitted[:select_date]&.match(/\A(\d{4})-(0[0-9]|1[0-2])\z/)
+    if match
+      @date = Date.new(match[1].to_i, match[2].to_i, 1)
+    else
+      @date = Date.current
+      params[:select_date] = "#{@date.year}-#{@date.month}"
+    end
+    @month_range = @date.beginning_of_month..@date.end_of_month
+    @attendances = @employee.attendances.where(worked_on: @month_range).order(worked_on: :desc)
   end
 
   def show
