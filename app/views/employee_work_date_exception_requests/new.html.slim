@@ -1,2 +1,23 @@
 h1 EmployeeWorkDateExceptionRequests#new
 p Find me in app/views/employee_work_date_exception_requests/new.html.slim
+
+
+= form_with model: [@employee,@exception_request],local: true,class:'container-md' do |f|
+  .row.justify-content-center.align-items-center
+    .col-3
+    .col-4.text-center
+      | 打刻時間
+    .col-1
+    .col-4.text-center
+      | 修正後の時間
+  .row.justify-content-center.align-items-center
+    .col-3.text-center
+      = f.label :requested_started_at, '出勤時間'
+    .col-4
+      = datetime_local_field_tag :current_started_at,class: 'form-control',disabled: true
+    .col-1.text-center
+      = '→'
+    .col-4
+      = f.datetime_local_field :requested_started_at,include_seconds:false,class: 'form-control'
+
+    = f.submit '修正申請', class: 'btn btn-primary w-50 mt-3'
