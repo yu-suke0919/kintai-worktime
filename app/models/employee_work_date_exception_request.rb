@@ -12,4 +12,8 @@ class EmployeeWorkDateExceptionRequest < ApplicationRecord
   def self.request_options
     request_types.map { |k, _| [ I18n.t("enums.employee_work_date_exception_request.request_type.#{k}"), k ] }.to_h
   end
+
+  def request_overview
+    振替/休暇の修正申請です。
+  end
 end
