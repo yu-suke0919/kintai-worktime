@@ -1,2 +1,7 @@
-h1 EmployeeWorkDateExceptionRequests#edit
-p Find me in app/views/employee_work_date_exception_requests/edit.html.slim
+.text-center.mb-3
+  h1 振替/休暇申請画面
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 振替/休暇申請の修正を提出できます。
+    p.m-0 あなたを管理しているユーザーによって申請の承認/却下が行われます。
+
+= render partial: 'form', locals: {employee: @employee,exception_request: @exception_request}

@@ -1,0 +1,33 @@
+= form_with model: [employee,exception_request],local: true,class:'container-md' do |f|
+  .row.justify-content-center.d-flex.align-items-center
+    .col-2.my-2
+      = Employee.human_attribute_name(:name)
+    .col-6
+      = text_field_tag nil,employee.name,class:'form-control',disabled: true
+
+  .row.justify-content-center.d-flex.align-items-center
+    .col-2.my-2
+      = f.label :request_type, EmployeeWorkDateExceptionRequest.human_attribute_name(:request_type)
+    .col-6
+      = f.select :request_type,EmployeeWorkDateExceptionRequest.request_options,class: 'form-control'
+
+  .row.justify-content-center.d-flex.align-items-center
+    .col-2.my-2
+      = f.label :start_date, EmployeeWorkDateExceptionRequest.human_attribute_name(:start_date)
+    .col-6
+      = f.date_field :start_date,value: Date.today,class: 'form-control'
+
+  .row.justify-content-center.d-flex.align-items-center
+    .col-2.my-2
+      = f.label :end_date, EmployeeWorkDateExceptionRequest.human_attribute_name(:end_date)
+    .col-6
+      = f.date_field :end_date,value: Date.today.tomorrow,class: 'form-control'
+
+  .row.justify-content-center.d-flex.align-items-center
+    .col-2.my-2
+      = f.label :reason, EmployeeWorkDateExceptionRequest.human_attribute_name(:reason)
+    .col-6
+      = f.text_area :reason,rows: 5,class: 'form-control'
+
+  .row.justify-content-center.align-items-center
+    = f.submit EmployeeWorkDateExceptionRequest.model_name.human, class: 'btn btn-primary col-4 mt-3'
