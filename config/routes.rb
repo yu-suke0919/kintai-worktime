@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
   namespace :admin do
-    get "employee_work_date_exception_requests/index"
-    get "employee_work_date_exception_requests/show"
-    get "employee_work_date_exception_requests/approve_request"
-    get "employee_work_date_exception_requests/reject_request"
     resources :employees, except: :create do
       collection do
         get :subordinates
+      end
+      resources :employee_work_date_exception_requests, only: :index do
+        post "approve_request", on: :member
+        post "reject_request", on: :member
       end
       resources :attendance_edit_requests do
         post "approve_edit_request", on: :member
