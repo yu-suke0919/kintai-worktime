@@ -200,6 +200,9 @@ ja:
       create: 登録する
       submit: 保存する
       update: 更新する
+    request:
+      approve: 承認
+      reject: 却下
   number:
     currency:
       format:
