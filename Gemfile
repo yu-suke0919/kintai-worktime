@@ -79,3 +79,5 @@ group :test do
 
   gem "shoulda-matchers", "~> 7.0"
 end
+
+gem "fiddle", "~> 1.1"

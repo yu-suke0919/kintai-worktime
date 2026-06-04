@@ -141,6 +141,7 @@ GEM
       railties (>= 6.1.0)
     ffi (1.17.4-x64-mingw-ucrt)
     ffi (1.17.4-x86_64-darwin)
+    fiddle (1.1.8)
     fugit (1.12.2)
       et-orbi (~> 1.4)
       raabro (~> 1.4)
@@ -458,6 +459,7 @@ DEPENDENCIES
   devise
   devise-i18n-views
   factory_bot_rails (~> 6.5)
+  fiddle (~> 1.1)
   html2slim!
   image_processing (~> 1.2)
   importmap-rails
@@ -528,6 +530,7 @@ CHECKSUMS
   factory_bot_rails (6.5.1) sha256=d3cc4851eae4dea8a665ec4a4516895045e710554d2b5ac9e68b94d351bc6d68
   ffi (1.17.4-x64-mingw-ucrt) sha256=f6ff9618cfccc494138bddade27aa06c74c6c7bc367a1ea1103d80c2fcb9ed35
   ffi (1.17.4-x86_64-darwin) sha256=aa70390523cf3235096cf64962b709b4cfbd5c082a2cb2ae714eb0fe2ccda496
+  fiddle (1.1.8) sha256=7fa8ee3627271497f3add5503acdbc3f40b32f610fc1cf49634f083ef3f32eee
   fugit (1.12.2) sha256=643f2bf28db263bd400cbf8e0dd8b76b2c9b94bdb130e12d2394de04d9c20e5e
   globalid (1.3.0) sha256=05c639ad6eb4594522a0b07983022f04aa7254626ab69445a0e493aa3786ff11
   google-protobuf (4.35.0-x64-mingw-ucrt) sha256=18ad683237ab6261b81ea4bb273f03dc5e46f0b1e4e4be0152302733cee0945a
