@@ -28,6 +28,9 @@ html
             li.nav-item= link_to subordinates_admin_employees_path, class: 'nav-link text-center d-flex flex-column' do
               i.bi.bi-people.d-block.fs-2.mx-auto.my-0.lh-1
               | 部下管理
+          li.nav-item= link_to new_employee_employee_work_date_exception_request_path(current_employee), class: 'nav-link text-center d-flex flex-column' do
+            i.bi.bi-briefcase.d-block.fs-2.mx-auto.my-0.lh-1
+            | 振替/有給申請
           li.nav-item= link_to employee_path(current_employee), class: 'nav-link text-center d-flex flex-column' do
             i.bi.bi-person.d-block.fs-2.mx-auto.my-0.lh-1
             | #{current_employee.name}さんの情報

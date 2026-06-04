@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   namespace :admin do
+    get "employee_work_date_exception_requests/index"
+    get "employee_work_date_exception_requests/show"
+    get "employee_work_date_exception_requests/approve_request"
+    get "employee_work_date_exception_requests/reject_request"
     resources :employees, except: :create do
       collection do
         get :subordinates
@@ -16,6 +20,7 @@ Rails.application.routes.draw do
       resource :attendance_edit_request
     end
     resources :attendance_edit_requests, only: :index
+    resources :employee_work_date_exception_requests, only: [ :new, :edit, :create, :update ]
   end
   resources :notifications, only: [ :index, :show ]
   devise_for :employees, path: "auth"
