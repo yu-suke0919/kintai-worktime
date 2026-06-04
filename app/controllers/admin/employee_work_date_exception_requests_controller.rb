@@ -12,13 +12,22 @@ class Admin::EmployeeWorkDateExceptionRequestsController < ApplicationController
   def approve_request
     exception_request = @employee.employee_work_date_exception_requests.find(params[:id])
     if exception_request.update(status: 1, approved_at: Time.current, approved_by_id: current_employee.id)
-      redirect_to admin_employee_employee_work_date_exception_requests_path(@employee)
+      (exception_request.start_date..exception_request.end_date).each do |date|
+        @employee.employee_work_date_exceptions.create!(work_date: date, exception_type: exception_request.request_type.to_s)
+      end
+      redirect_to admin_employee_employee_work_date_exception_requests_path(@employee), notice: "承認に成功しました"
     else
-      render :index, status: :unprocessable_entity
+      redirect_to admin_employee_employee_work_date_exception_requests_path(@employee), alert: "不明なエラー:employee_exception_request"
     end
   end
 
   def reject_request
+    exception_request = @employee.employee_work_date_exception_requests.find(params[:id])
+    if exception_request.update(status: 2, approved_at: Time.current, approved_by_id: current_employee.id)
+      redirect_to admin_employee_employee_work_date_exception_requests_path(@employee), notice: "却下に成功しました"
+    else
+      redirect_to admin_employee_employee_work_date_exception_requests_path(@employee), alert: "不明なエラー:employee_exception_request"
+    end
   end
 
   private
