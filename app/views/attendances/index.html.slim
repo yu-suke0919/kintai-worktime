@@ -8,11 +8,13 @@
   .d-flex.justify-content-center
     = '表示月選択:'
     = month_field_tag :select_date,@date.strftime("%Y-%m"),onchange: 'this.form.submit()'
-
+- days = "日月火水木金土".split('')
 table.table.table-hover
   thead.thead-default
     tr.text-center
-      th style="width: 30%" = Attendance.human_attribute_name(:worked_on)
+      th style="width: 10%" = Attendance.human_attribute_name(:worked_on)
+      th style="width: 5%" = "曜日"
+      th style="width: 5%" = "種別"
       th style="width: 10%" = Attendance.human_attribute_name(:status)
       th style="width: 10%" = Attendance.human_attribute_name(:started_at)
       th style="width: 10%" = Attendance.human_attribute_name(:finished_at)
@@ -26,6 +28,18 @@ table.table.table-hover
       - if a.present?
         tr.align-middle.text-center
           td= a.worked_on
+          - if [0,6].include?(day.wday)
+            td.text-danger= days[day.wday]
+          - else
+            td= days[day.wday]
+          - exception = @employee.employee_work_date_exceptions.find_by(work_date: day)
+          - if exception.present?
+            td= I18n.t("enums.employee_work_date_exception.exception_type.#{exception.exception_type}")
+          - else
+            - if (2 ** (day.wday)) & @employee.employee_rules.last.required_workdays_mask == (2 ** (day.wday))
+              td= "出社日"
+            - else 
+              td= "休業日"
           td= I18n.t("enums.attendance.status.#{a.status}", default: a.status)
           td= l a.started_at,format: :short_time if !a.started_at.blank?
           td= l a.finished_at,format: :short_time if !a.finished_at.blank?
@@ -38,6 +52,18 @@ table.table.table-hover
       - else
         tr.align-middle.text-center
           td= day
+          - if [0,6].include?(day.wday)
+            td.text-danger= days[day.wday]
+          - else
+            td= days[day.wday]
+          - exception = @employee.employee_work_date_exceptions.find_by(work_date: day)
+          - if exception.present?
+            td= I18n.t("enums.employee_work_date_exception.exception_type.#{exception.exception_type}")
+          - else
+            - if (2 ** (day.wday)) & @employee.employee_rules.last.required_workdays_mask == (2 ** (day.wday))
+              td= "出社日"
+            - else 
+              td= "休業日"
           td= "記録なし"
           td=
           td=
