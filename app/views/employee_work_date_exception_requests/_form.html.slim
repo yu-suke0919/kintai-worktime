@@ -1,3 +1,8 @@
+- if exception_request.errors.present?
+  ul#error_explanation
+    - exception_request.errors.full_messages.each do |message|
+      li= message
+
 = form_with model: [employee,exception_request],local: true,class:'container-md' do |f|
   .row.justify-content-center.d-flex.align-items-center
     .col-2.my-2
