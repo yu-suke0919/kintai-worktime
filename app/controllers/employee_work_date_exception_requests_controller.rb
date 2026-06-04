@@ -25,7 +25,7 @@ class EmployeeWorkDateExceptionRequestsController < ApplicationController
   def update
     @exception_request = EmployeeWorkDateExceptionRequest.find(params[:id])
     if @exception_request.update(request_params)
-      @exception_request.notifications.create(
+      @exception_request.notifications.create!(
         notification_type: 0,
         recipient_employee: @employee,
         message_text: "振替/休暇申請の修正が完了しました。"
