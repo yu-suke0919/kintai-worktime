@@ -20,7 +20,7 @@ ja:
       employee: 従業員
       attendance: 勤怠データ
       employee_rule: 従業員ルール
-      leave_request: 休暇申請
+      employee_work_date_exception_request: 振替/休暇申請
       attendance_edit_request: 打刻時間修正申請
       employee_rule: 就業規則
     attributes:
@@ -72,7 +72,19 @@ ja:
         thursday: 木
         friday: 金
         saturday: 土
-      leave_request:
+      employee_work_date_exception:
+        exception_type: 例外種別
+        work_date: 日付
+      employee_work_date_exception_request:
+        approved_at: 承認/否認日
+        approved_by: 承認/否認担当者
+        start_date: 適用開始日
+        end_date: 適用終了日
+        request_type: 申請種別
+        status: 申請状態
+        updated_at: 更新日
+        reason: 申請理由
+
       attendance_edit_request:
   date:
     abbr_day_names:
@@ -263,9 +275,22 @@ ja:
         paid_leave: 有給休暇
         holiday: 休日
         corrected: 打刻修正済
+    
     notification:
       status:
         pending: 申請中
         approved: 承認
         rejected: 否認
+    
+    employee_work_date_exception:
+      exception_type:
+        paid_leave: 有給休暇
+        hospitalization: 入院
+        special_leave: 冠婚葬祭
+    
+    employee_work_date_exception_request:
+      request_type:
+        paid_leave: 有給休暇
+        hospitalization: 入院
+        special_leave: 冠婚葬祭
 
