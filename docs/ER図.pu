@@ -24,16 +24,8 @@ entity EmployeeRule {
   expires_on : date
 }
 
-entity EmployeeWorkDateException{
-  + id: int
-  --
-  employee_id : int
-  work_date : Date
-  exception_type : int
-}
 
 Employee ||--o{EmployeeRule
-Employee ||--o{EmployeeWorkDateException
 
 entity Attendance {
   + attendance_id : int
