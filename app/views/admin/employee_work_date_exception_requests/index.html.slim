@@ -1,2 +1,38 @@
 h1 Admin::EmployeeWorkDateExceptionRequests#index
 p Find me in app/views/admin/employee_work_date_exception_requests/index.html.slim
+
+table.table.table-hover
+  thead.thead-default
+    tr
+      th style="width: 10%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:request_type)
+      th style="width: 15%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:start_date)
+      th style="width: 15%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:end_date)
+      th style="width: 20%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:reason)
+      th style="width: 10%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:status)
+      th style="width: 10%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:approved_at)
+      th style="width: 10%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:approved_by)
+      th style="width:  5%" = I18n.t("helpers.request.approve")
+      th style="width:  5%" = I18n.t("helpers.request.reject")
+
+  tbody
+    - @exception_requests.each do |er|
+      tr
+        td= I18n.t("enums.employee_work_date_exception_request.request_type.#{er.request_type}")
+        td= l er.start_date,formats: :default
+        td= l er.end_date,formats: :default
+        td= er.reason
+        td= er.status
+        - if er.approved_at.present?
+          td= l er.approved_at,formats: :default
+        - else
+          td= '-'
+        - if er.approved_by_id.present?
+          td= er.approved_by_id
+        - else
+          td= '-'
+        - if er.status == 0
+          td= button_to I18n.t("helpers.request.approve"),approve_request_admin_employee_employee_work_date_exception_request_path(er.employee,er)
+          td= button_to I18n.t("helpers.request.reject"),reject_request_admin_employee_employee_work_date_exception_request_path(er.employee,er)
+        - else
+          td=
+          td=
