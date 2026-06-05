@@ -1,33 +1,33 @@
-h2
-  | Sign up
+.text-center.mb-3
+  h1 ログインページ
+  div class="border border-primary border-2 rounded d-inline-block"
+    p.m-0 deviseを用いたユーザー登録ページです。
 = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
   = render "devise/shared/error_messages", resource: resource
-  .field
-    p
+  .row.justify-content-center.d-flex.align.items.center
+    .col-2.my-2
       = f.label :name
-    p
+    .col-3
       = f.text_field :name, autofocus: true
-  .field
-    p
+  .row.justify-content-center.d-flex.align.items.center
+    .col-2.my-2
       = f.label :email
-    p
+    .col-3
       = f.email_field :email, autocomplete: "email"
-  .field
-    p
+  .row.justify-content-center.d-flex.align.items.center
+    .col-2.my-2
       = f.label :password
-    - if @minimum_password_length
-      p
-        em
-          | (
-          = @minimum_password_length
-          |  characters minimum)
-    p
+      - if @minimum_password_length
+        = "(#{@minimum_password_length}文字以内)"
+    .col-3
       = f.password_field :password, autocomplete: "new-password"
-  .field
-    p
+  .row.justify-content-center.d-flex.align.items.center
+    .col-2.my-2
       = f.label :password_confirmation
-    p
+    .col-3
       = f.password_field :password_confirmation, autocomplete: "new-password"
-  .actions
-    = f.submit "Sign up"
-= render "devise/shared/links"
+  .row.justify-content-center.d-flex.align.items.center
+    .actions.text-center
+      = f.submit "Sign up"
+      .mt-3
+        = render "devise/shared/links"
