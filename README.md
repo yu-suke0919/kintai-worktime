@@ -67,10 +67,10 @@ Rails を用いた勤怠管理アプリ
 (2026-6-5現在)
 - Ruby 4.0.1
 - Ruby on Rails 8.1.3
-  - bootstrap 5.3.8
   - RSpec 3.13.2
   - devise 5.0.4
   - kaminari 1.2.2
+- Bootstrap 5.3.8
 - PostgreSQL 18.3
 
 <br><br>
