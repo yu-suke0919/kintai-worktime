@@ -296,4 +296,8 @@ ja:
         paid_leave: 有給休暇
         hospitalization: 入院
         special_leave: 冠婚葬祭
-
+  devise:
+    registrations:
+      sign_up: 登録に成功しました。
+    sessions:
+      signed_in: ログインに成功しました。
