@@ -1,24 +1,79 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Kintai-Worktime
+Rails を用いた勤怠管理アプリ
+学習用です。
 
-Things you may want to cover:
+<br>
 
-* Ruby version
+勤怠管理が可能な簡易的な業務アプリです。<br>
+<br><br>
 
-* System dependencies
+## URL
+準備中
 
-* Configuration
 
-* Database creation
+<br><br>
 
-* Database initialization
+## 作成背景
+・Ruby学習のため<br>
 
-* How to run the test suite
+・今後Railsを用いた業務アプリケーションを作成する際に、この勤怠管理アプリを制作した経験が活かせると感じたから。
 
-* Services (job queues, cache servers, search engines, etc.)
+<br><br>
 
-* Deployment instructions
+## 機能一覧
+- ユーザー登録、ログイン機能(device)
 
-* ...
+- 一般ユーザーの機能
+  - 自身の情報確認
+    - 登録名やメールアドレスの確認
+    - 与えられた就業ルールの確認
+      - 出勤する曜日の確認
+      - コアタイム・休憩時間上限を確認
+
+  - 勤怠登録
+    - 出勤、退勤、休憩時間の打刻機能
+    - 押し間違えた打刻の消去機能(5分以内)
+    - 押し間違えた打刻の修正申請機能
+
+  - 振替出勤/休暇申請
+    - 振替出勤、有給休暇、病欠を理由とした例外日の申請機能
+
+  - 通知機能
+    - 各申請の承認/却下確認のための通知機能
+
+- マネージャー権限を持つユーザーの管理機能
+  - ユーザーの情報確認
+    - ユーザーの登録名やメールアドレスの確認
+  
+  - 部下管理(ユーザーを部下として登録可能)
+    - 部下の打刻修正申請の承認/却下機能
+    - 部下の振替/休暇申請の承認/却下機能
+    - 部下の就業規則の更新機能
+
+![docs内の画面遷移図](docs/plantuml/アプリ_画面遷移図.png)
+
+<br><br>
+
+## テスト
+- RSpec
+  - 単体テスト(spec/model)　※一部
+  - 結合テスト(spec/system)　※一部
+
+<br><br>
+
+## 使用技術
+(2026-6-5現在)
+- Ruby 4.0.1
+- Ruby on Rails 8.1.3
+  - RSpec 3.13.2
+  - devise 5.0.4
+  - kaminari 1.2.2
+- Bootstrap 5.3.8
+- PostgreSQL 18.3
+
+<br><br>
+
+## データベース設計
+![docs内のER図](docs/plantuml/アプリ_ER図.png)

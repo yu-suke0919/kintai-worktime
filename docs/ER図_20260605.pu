@@ -19,20 +19,56 @@ entity EmployeeRule {
   required_workdays_mask: integer
   core_time_start : time
   core_time_end : time
+  scheduled_work_minutes : integer
   break_minutes : int
   effective_from : date
   expires_on : date
 }
 
+entity EmployeeWorkDateExceptionRequest{
+  + id: int
+  --
+  employee_id : integer
+  approved_by_id : integer
+  approved_at : datetime
+  status : integer(enum)
+  reason : text
+  request_type : integer(enum)
+  start_date : date
+  end_date : date
+}
 
-Employee ||--o{EmployeeRule
+entity EmployeeWorkDateException{
+  + id: int
+  --
+  employee_id : int
+  work_date : Date
+  exception_type : integer(enum)
+}
+
+entity Notification{
+  + id: int
+  --
+  recipient_employee_id : integer
+  notification_type : string
+  message_text : text
+}
+
+Employee ||-lefto{EmployeeRule
+Employee ||--o{EmployeeWorkDateExceptionRequest
+Employee ||--o{EmployeeWorkDateException
+Employee ||--o{Notification
 
 entity Attendance {
   + attendance_id : int
   --
   employee_id : int
-  day : date
+  worked_on : date
   status : integer(enum)
+  original_started_at : datetime
+  original_finished_at : datetime
+  original_break_started_at : datetime
+  original_break_finished_at : datetime
   started_at : datetime
   finished_at : datetime
   break_started_at : datetime
@@ -46,7 +82,6 @@ entity AttendanceEditRequest {
   employee_id : integer
   approved_by_id : integer
   approved_at : datetime
-  'edit_type : integer(enum)
   status : integer(enum)
   reason : text
   requested_started_at : datetime
