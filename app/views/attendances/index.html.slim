@@ -36,7 +36,7 @@ table.table.table-hover
           - if exception.present?
             td= I18n.t("enums.employee_work_date_exception.exception_type.#{exception.exception_type}")
           - else
-            - if (2 ** (day.wday)) & @employee.employee_rules.last.required_workdays_mask == (2 ** (day.wday))
+            - if @employee.employee_rules.present? && ( (2 ** (day.wday)) & @employee.employee_rules.last.required_workdays_mask == (2 ** (day.wday)))
               td= "出社日"
             - else 
               td= "休業日"
@@ -60,7 +60,7 @@ table.table.table-hover
           - if exception.present?
             td= I18n.t("enums.employee_work_date_exception.exception_type.#{exception.exception_type}")
           - else
-            - if (2 ** (day.wday)) & @employee.employee_rules.last.required_workdays_mask == (2 ** (day.wday))
+            - if @employee.employee_rules.present? && ( (2 ** (day.wday)) & @employee.employee_rules.last.required_workdays_mask == (2 ** (day.wday)))
               td= "出社日"
             - else 
               td= "休業日"
