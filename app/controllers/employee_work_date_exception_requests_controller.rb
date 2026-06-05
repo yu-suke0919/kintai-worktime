@@ -38,7 +38,7 @@ class EmployeeWorkDateExceptionRequestsController < ApplicationController
   private
 
   def ensure_owner!
-    redirect_to employee_attendance_path(current_employee, worked_on: Date.today), alert: "自分以外の振替/休暇申請はできません。" if params[:employee_id].to_i != current_employee.id
+    redirect_to employee_attendances_path(current_employee), alert: "自分以外の振替/休暇申請はできません。" if params[:employee_id].to_i != current_employee.id
   end
 
   def set_employee
