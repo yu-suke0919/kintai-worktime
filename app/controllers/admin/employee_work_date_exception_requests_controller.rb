@@ -33,7 +33,7 @@ class Admin::EmployeeWorkDateExceptionRequestsController < ApplicationController
   private
 
   def admin_role_required
-    redirect_to employee_attendance_path(current_employee, worked_on: Date.today), alert: "権限がありません" if current_employee.role == "member"
+    redirect_to employee_attendances_path(current_employee), alert: "権限がありません" if current_employee.role == "member"
   end
 
   def set_employee

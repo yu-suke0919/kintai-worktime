@@ -17,8 +17,8 @@ employees.push(admin)
   manager = Employee.create!(name: "マネージャー_#{char}", email: "manager#{char}@email", password: "password", role: "manager", manager_id: 1)
   employees.push(manager)
   # 従業員生成
-  (1..3).each do |num|
-    member = Employee.create!(name: "従業員_#{char}-#{num}", email: "member#{char}-#{num}@email", password: "password", role: "member", manager_id: manager.id)
+  (1..5).each do |num|
+    member = Employee.create!(name: "従業員_#{char}_#{num}", email: "member#{char}-#{num}@email", password: "password", role: "member", manager_id: manager.id)
     employees.push(member)
   end
 end
@@ -28,8 +28,21 @@ employees.each do |employee|
     date = d.to_s.rjust(2, '0')
     attendance = employee.attendances.create!(worked_on: "2026-05-#{date}")
     attendance.stamp_start(time: Time.zone.local(2026, 5, d, 8, rand(0..59)))
-    attendance.stamp_break_start(time: Time.zone.local(2026, 5, d, 12, 0))
-    attendance.stamp_break_finish(time: Time.zone.local(2026, 5, d, 13, 0))
+    attendance.stamp_break_start(time: Time.zone.local(2026, 5, d, 12, rand(0..5)))
+    attendance.stamp_break_finish(time: Time.zone.local(2026, 5, d, 13, rand(55..59)))
+    attendance.stamp_finish(time: Time.zone.local(2026, 5, d, 17, rand(0..59)))
+  end
+
+  (1..30).each do |d|
+    date = d.to_s.rjust(2, '0')
+    attendance = employee.attendances.create!(worked_on: "2026-06-#{date}")
+    attendance.stamp_start(time: Time.zone.local(2026, 5, d, 8, rand(0..59)))
+    attendance.stamp_break_start(time: Time.zone.local(2026, 5, d, 12, rand(0..5)))
+    attendance.stamp_break_finish(time: Time.zone.local(2026, 5, d, 12, rand(55..59)))
     attendance.stamp_finish(time: Time.zone.local(2026, 5, d, 17, rand(0..59)))
   end
 end
+
+# target_e = Employee.find_by(name: "従業員_A_1")
+# target_a = target_e.attendances.find_by(worked_on: '2026-06-02')
+# target_a.attendance_edit_request.create(epmloyee_id: target_e.id, approved_at: Time.current, approved_by_id: 1,)
