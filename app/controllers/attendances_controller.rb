@@ -28,8 +28,6 @@ class AttendancesController < ApplicationController
 
     presenter = MonthlySchedulePresenter.new(@employee, @date)
     @presenter_rows = presenter.rows
-    # @month_range = @date.beginning_of_month..@date.end_of_month
-    # @attendances = @employee.attendances.where(worked_on: @month_range).order(worked_on: :desc)
   end
 
   def show
