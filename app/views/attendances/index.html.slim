@@ -23,6 +23,24 @@ table.table.table-hover
       th style="width: 20%" = Attendance.human_attribute_name(:create_edit_request)
 
   tbody
+    - @presenter_rows.each do |row|
+      tr.align-middle.text-center
+        td= row.date
+        - if ['土','日'].include?(row.wday)
+          td.text-danger= row.wday
+        - else
+          td= row.wday
+        td= row.is_work_scheduled
+        td= I18n.t("enums.attendance.status.#{row.attendance_status}")
+        td= row.started_at.present? ? (l row.started_at,format: :short_time) : ''
+        td= row.finished_at.present? ? (l row.finished_at,format: :short_time) : ''
+        td= row.break_started_at.present? ? (l row.break_started_at,format: :short_time) : ''
+        td= row.break_finished_at.present? ? (l row.break_finished_at,format: :short_time) : ''
+        - if row.edit_request_present?
+          td= link_to '申請時刻を修正',edit_employee_attendance_attendance_edit_request_path(@employee,row.date),class: 'btn btn-secondary mr-3'
+        - else
+          td= link_to '時刻修正申請',new_employee_attendance_attendance_edit_request_path(@employee,row.date),class: 'btn btn-primary mr-3'
+  / viewなのに分岐まみれの旧コード、戒めのために保存
     - @month_range.each do |day|
       - a = @attendances.find_by(worked_on: day)
       - if a.present?
