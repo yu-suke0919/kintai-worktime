@@ -4,6 +4,7 @@ class Employee < ApplicationRecord
   belongs_to :manager, class_name: "Employee", optional: true
   has_many :subordinates, class_name: "Employee", foreign_key: "manager_id", dependent: :nullify
   has_many :attendances, dependent: :destroy
+  has_many :attendance_edit_request
   has_many :notifications, foreign_key: :recipient_employee_id, dependent: :destroy, inverse_of: :recipient_employee
   has_many :employee_rules, dependent: :destroy
   has_many :employee_work_date_exception_requests, dependent: :destroy
