@@ -10,7 +10,7 @@ RSpec.describe Employee, type: :model do
     is_expected.to belong_to(:manager).class_name("Employee").optional
   end
 
-  it "部下(subordinates)をmanager_id(自身のid)で複数持ち、削除時は各部下のmanager_idをNULLにすること" do
+  it "メンバー(subordinates)をmanager_id(自身のid)で複数持ち、削除時は各メンバーのmanager_idをNULLにすること" do
     is_expected.to have_many(:subordinates).class_name("Employee").with_foreign_key("manager_id").dependent(:nullify)
   end
 
