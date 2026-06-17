@@ -76,6 +76,8 @@ ja:
         exception_type: 例外種別
         work_date: 日付
       employee_work_date_exception_request:
+        count: 休日出勤/休暇申請件数
+        list: 休日出勤/休暇申請一覧
         approved_at: 承認/否認日
         approved_by: 承認/否認担当者
         start_date: 適用開始日
@@ -86,6 +88,8 @@ ja:
         reason: 申請理由
 
       attendance_edit_request:
+        count: 打刻修正申請件数
+        list: 打刻修正申請一覧
   date:
     abbr_day_names:
     - 日
