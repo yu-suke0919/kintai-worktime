@@ -10,8 +10,10 @@ table.table.table-hover
     tr
       th style="width: 20%" = Employee.human_attribute_name(:name)
       th style="width: 10%" = Employee.human_attribute_name(:role)
-      th style="width: 5%" = '修正申請件数'
+      th style="width: 15%" = AttendanceEditRequest.human_attribute_name(:count)
       th style="width: 10%" = AttendanceEditRequest.model_name.human
+      th style="width: 15%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:count)
+      th style="width: 10%" = EmployeeWorkDateExceptionRequest.model_name.human
       th style="width: 10%" = EmployeeRule.model_name.human
   tbody
     - @subordinates.each do |employee|
@@ -20,9 +22,15 @@ table.table.table-hover
         td= employee.role
         td= employee.has_request_attendances.count
         - if employee.has_request_attendances.count == 0
-          td= "勤怠修正一覧"
+          td= AttendanceEditRequest.human_attribute_name(:list)
         - else
-          td= link_to "勤怠修正一覧", admin_employee_attendance_edit_requests_path(employee.id)
+          td= link_to AttendanceEditRequest.human_attribute_name(:list), admin_employee_attendance_edit_requests_path(employee.id)
+        td= employee.employee_work_date_exception_requests.count
+        - if employee.employee_work_date_exception_requests.count == 0
+          td= EmployeeWorkDateExceptionRequest.human_attribute_name(:list)
+        - else
+          td= link_to EmployeeWorkDateExceptionRequest.human_attribute_name(:list), admin_employee_employee_work_date_exception_requests_path(employee.id)
+
         td= link_to EmployeeRule.model_name.human, admin_employee_employee_rules_path(employee.id)
 
 .text-center.m-5
