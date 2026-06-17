@@ -23,6 +23,6 @@ table.table.table-hover
         td= rule.expires_on
         td= rule.in_office_days_text
         td= rule.scheduled_work_minutes
-        td= rule.core_time_start
-        td= rule.core_time_end
+        td= l rule.core_time_start,format: :short_time
+        td= l rule.core_time_end,format: :short_time
         td= rule.break_minutes
