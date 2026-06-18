@@ -76,5 +76,5 @@ Rails を用いた勤怠管理アプリ
 
 ## 設計
 
-![docs内のER図](docs/er_diagram_20260618.png)
+![docs内のER図](docs/ER_diagram_20260618.png)
 ![docs内のUseCase図](docs/usecase_diagram_20260618.png)
