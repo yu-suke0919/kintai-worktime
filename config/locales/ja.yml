@@ -90,6 +90,10 @@ ja:
       attendance_edit_request:
         count: 打刻修正申請件数
         list: 打刻修正申請一覧
+        requested_started_at: 申請出勤時間
+        requested_finished_at: 申請退勤開始
+        requested_break_started_at: 申請休憩開始時間
+        requested_break_finished_at: 申請休憩終了開始
   date:
     abbr_day_names:
     - 日
