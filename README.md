@@ -64,7 +64,9 @@ Rails を用いた勤怠管理アプリ
 ## 使用技術
 
 (2026-6-18現在)
+
 - Ruby 4.0.1
+
 - Ruby on Rails 8.1.3
   - RSpec 3.13.6
   - devise 5.0.4
