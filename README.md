@@ -1,28 +1,22 @@
-# README
-
 # Kintai-Worktime
+
 Rails を用いた勤怠管理アプリ
 学習用です。
 
-<br>
-
-勤怠管理が可能な簡易的な業務アプリです。<br>
-<br><br>
+勤怠管理が可能な簡易的な業務アプリです。
 
 ## URL
+
 準備中
 
-
-<br><br>
-
 ## 作成背景
-・Ruby学習のため<br>
+
+・Ruby学習のため
 
 ・今後Railsを用いた業務アプリケーションを作成する際に、この勤怠管理アプリを制作した経験が活かせると感じたから。
 
-<br><br>
-
 ## 機能一覧
+
 - ユーザー登録、ログイン機能(device)
 
 - 一般ユーザーの機能
@@ -54,20 +48,21 @@ Rails を用いた勤怠管理アプリ
     - メンバーの就業規則の更新機能
 
 ## 一般ユーザー/管理者の画面遷移図
+
 ![ユーザー/管理者の画面遷移図](docs/not_manager_diagram.png)
 
 ## 管理者の画面遷移図
+
 ![管理者の画面遷移図](docs/manager_diagram.png)
 
-<br><br>
-
 ## テスト
+
 - RSpec
   - 単体テスト(spec/model)
   - 結合テスト(spec/requests)
 
-
 ## 使用技術
+
 (2026-6-18現在)
 - Ruby 4.0.1
 - Ruby on Rails 8.1.3
@@ -78,5 +73,6 @@ Rails を用いた勤怠管理アプリ
 - PostgreSQL 18.3
 
 ## 設計
+
 ![docs内のER図](docs/er_diagram_20260618.png)
 ![docs内のUseCase図](docs/usecase_diagram_20260618.png)
