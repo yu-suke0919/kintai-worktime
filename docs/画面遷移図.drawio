@@ -3611,7 +3611,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="画面遷移図_新規箇所線引" id="U9xOVciedFHyrPxlAYm7">
-    <mxGraphModel dx="1145" dy="688" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
+    <mxGraphModel dx="695" dy="418" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="none" math="0" shadow="0">
       <root>
         <mxCell id="008rqdmGPranFjg9Ayzt-0" />
         <mxCell id="008rqdmGPranFjg9Ayzt-1" parent="008rqdmGPranFjg9Ayzt-0" />
@@ -3808,6 +3808,9 @@
         </mxCell>
         <mxCell id="nXf9gF-75UyOIxUFGeqn-2" parent="008rqdmGPranFjg9Ayzt-1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;labelPosition=center;verticalLabelPosition=bottom;align=center;fontSize=24;fillColor=#e1d5e7;strokeColor=#9673a6;" value="新規画面" vertex="1">
           <mxGeometry height="33" width="140" x="60" y="477" as="geometry" />
+        </mxCell>
+        <mxCell id="6cixWGJGWihFtn-Syv4s-0" parent="008rqdmGPranFjg9Ayzt-1" style="rounded=1;whiteSpace=wrap;html=1;" value="メモ&lt;div&gt;個人の休暇申請を拡充&lt;/div&gt;&lt;div&gt;全体の休業日を設定できるようにする。&lt;/div&gt;&lt;div&gt;これ作った理由は？&lt;/div&gt;" vertex="1">
+          <mxGeometry height="90" width="150" x="50" y="720" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
