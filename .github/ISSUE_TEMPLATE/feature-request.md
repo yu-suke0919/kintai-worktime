@@ -1,20 +1,25 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
+about: 新しい機能や既存機能の改善を管理するIssue
+title: '[Feature] '
+labels: 'enhancement'
 assignees: yu-suke0919
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## 解決したい課題
+<!-- 現在どのような課題や不便があるのかを簡潔に記載してください -->
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## 対応内容
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+<!-- 課題を解決するために追加・変更する内容を記載してください -->
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## 完了条件
+<!-- どの状態になれば、このIssueを完了とするか記載してください -->
+- [ ]
+
+## 検討した代替案
+<!-- ほかに検討した解決方法があれば記載してください。なければ「なし」と記載してください -->
+
+## 補足
+<!-- 関連するIssue、参考資料、スクリーンショットなどがあれば記載してください -->

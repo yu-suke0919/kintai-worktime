@@ -1,20 +1,33 @@
 ---
 name: Development task
 about: リファクタリング、テスト、文書整備など
-title: ''
+title: '[] '
 labels: ''
 assignees: yu-suke0919
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## 目的
+<!-- なぜこの作業が必要なのかを記載してください -->
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## 対応内容
+<!-- 追加・変更する内容を記載してください -->
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## 完了条件
+<!-- どの状態になれば、このIssueを完了とするか記載してください -->
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+- [ ]
+
+## 確認方法
+<!-- 変更後にどのような確認を行うか記載してください -->
+
+## 補足
+<!-- 関連するIssue、参考資料などがあれば記載してください -->
+
+<!--
+種類・ラベルの使い分け
+- refactor：動作を変えずにコードを改善する
+- docs：READMEや設計資料を変更する
+- test：テストを追加・修正する
+- chore：依存関係、設定、CIなどを整備する
+-->
