@@ -81,3 +81,5 @@ group :test do
 end
 
 gem "fiddle", "~> 1.1"
+
+gem "ruby-vips", "~> 2.0"
