@@ -50,11 +50,11 @@ Rails を用いた勤怠管理アプリ
 
 ## 一般ユーザー/管理者の画面遷移図
 
-![ユーザー/管理者の画面遷移図](docs/not_manager_diagram.png)
+![ユーザー/管理者の画面遷移図](docs/img/not_manager_diagram.png)
 
 ## 管理者の画面遷移図
 
-![管理者の画面遷移図](docs/manager_diagram.png)
+![管理者の画面遷移図](docs/img/manager_diagram.png)
 
 ## テスト
 
@@ -77,5 +77,5 @@ Rails を用いた勤怠管理アプリ
 
 ## 設計
 
-![docs内のER図](docs/ER_diagram_20260618.png)
-![docs内のUseCase図](docs/usecase_diagram_20260618.png)
+![docs内のER図](docs/img/ER_diagram_20260618.png)
+![docs内のUseCase図](docs/img/usecase_diagram_20260618.png)
