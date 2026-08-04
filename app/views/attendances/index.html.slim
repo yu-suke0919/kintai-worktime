@@ -40,6 +40,7 @@ table.table.table-hover
           td= link_to '申請時刻を修正',edit_employee_attendance_attendance_edit_request_path(@employee,row.date),class: 'btn btn-secondary mr-3'
         - else
           td= link_to '時刻修正申請',new_employee_attendance_attendance_edit_request_path(@employee,row.date),class: 'btn btn-primary mr-3'
+= render partial: 'chart', locals: {rows: @presenter_rows}
   / viewなのに分岐まみれの旧コード、戒めのために保存
     - @month_range.each do |day|
       - a = @attendances.find_by(worked_on: day)
