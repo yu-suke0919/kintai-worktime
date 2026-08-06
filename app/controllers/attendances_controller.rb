@@ -27,6 +27,9 @@ class AttendancesController < ApplicationController
     end
 
     presenter = MonthlySchedulePresenter.new(@employee, @date)
+    chart_presenter = MonthlyChartPresenter.new
+    chart_data = chart_presenter.create(@employee, @date)
+    @chart_data = chart_data
     @presenter_rows = presenter.rows
   end
 
