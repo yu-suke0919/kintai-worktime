@@ -28,7 +28,7 @@ class MonthlyChartPresenter
       end
     end
 
-    if result.last[:finished_minutes] > 1440
+    if result.last[:finished_minutes]&. > 1440
       result.push(
         {
           attendance_id: nil,
