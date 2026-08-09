@@ -2,16 +2,6 @@ div(
   data-controller="attendance-chart"
   data-attendance-chart-labels-value= chart_data.to_json
 )
-
-  table.table.table-hover.table-bordered
-    thead.thead-light
-      tr.text-center
-        th style="width: 20%" 20%
-        th style="width: 60%" 60%
-        th style="width: 20%" 20%
-    tbody
-      tr.text-center
-        td 20%
-        td
-          canvas data-attendance-chart-target="canvas"
-        td 20%
+  .contailer
+    .row.justify-content-center
+      canvas data-attendance-chart-target="canvas"
