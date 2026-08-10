@@ -1,2 +1,7 @@
-h1 Admin::Employees#new
-p Find me in app/views/admin/employees/new.html.slim
+= render "shared/page_description",
+  title: "従業員作成ページ",
+  descriptions: [ \
+    "従業員の作成ができます。",
+    "作成と同時に就業規則や上司を設定できるため、素早く勤怠管理の運用ができます。",
+    "従業員のメールアドレス宛に仮パスワードが発行されます。",
+  ]
