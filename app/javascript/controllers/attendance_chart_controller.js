@@ -71,6 +71,7 @@ export default class extends Controller {
       data: data,
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         interaction: {
             mode: 'nearest',
             intersect: true
