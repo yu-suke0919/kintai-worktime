@@ -1,8 +1,9 @@
-.text-center.mb-3
-  h1 従業員一覧ページ
-  div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 全従業員の一覧を確認でき、各従業員を自身の管理下に置くか設定できます。
-    p.m-0 管理下に置くことにより、メンバー一覧に表示され確認しやすくなります。
+= render "shared/page_description",
+  title: "従業員一覧ページ",
+  descriptions: [ \
+    "全従業員の一覧を確認でき、各従業員を自身の管理下に置くか設定できます。",
+    "管理下に置くことにより、メンバー一覧に表示され確認しやすくなります。",
+  ]
 
 table.table.table-hover
   thead.thead-default
