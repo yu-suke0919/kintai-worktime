@@ -1,7 +1,8 @@
-.text-center.mb-3
-  h1 #{@employee.name}さんの休日出勤/有給申請一覧ページ
-  div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 従業員の休日出勤/有給申請を承認/却下できます。
+= render "shared/page_description",
+  title: "#{@employee.name}さんの休日出勤/有給申請一覧ページ",
+  descriptions: [ \
+    "従業員の休日出勤/有給申請を承認/却下できます。",
+  ]
 
 table.table.table-hover
   thead.thead-default
