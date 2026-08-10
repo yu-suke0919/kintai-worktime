@@ -19,6 +19,8 @@ class Admin::EmployeesController < ApplicationController
 
   def show
   end
+  def new
+  end
 
   def update
     if @employee.update(manager_id: params[:manager_id])
