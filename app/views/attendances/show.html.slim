@@ -1,7 +1,8 @@
-.text-center.mb-3
-  h1 勤怠打刻ページ
-  div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 勤怠の打刻ができます。
+= render "shared/page_description",
+  title: "勤怠打刻ページ",
+  descriptions: [ \
+    "勤怠の打刻ができます。",
+  ]
 
 - if @attendance.errors.present?
   ul#error_explanation

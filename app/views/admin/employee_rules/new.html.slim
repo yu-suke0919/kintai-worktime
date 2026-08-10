@@ -1,8 +1,9 @@
-.text-center.mb-3
-  h1 #{@employee.name}さんの就業規則作成ページ
-  div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 就業規則の作成ページです。
-    p.m-0 今まで就業規則が指定されていた場合、前回の就業規則が予め入力されています。
+= render "shared/page_description",
+  title: "#{@employee.name}さんの就業規則作成ページ",
+  descriptions: [ \
+    "就業規則の作成ページです。",
+    "今まで就業規則が指定されていた場合、前回の就業規則が予め入力されています。",
+  ]
 
 - if @rule.errors.present?
   ul#error_explanation

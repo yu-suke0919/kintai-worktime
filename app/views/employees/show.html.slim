@@ -1,7 +1,8 @@
-.text-center.mb-3
-  h1 従業員ページ
-  div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 従業員の情報を確認できます。
+= render "shared/page_description",
+  title: "従業員ページ",
+  descriptions: [ \
+    "従業員の情報を確認できます。",
+  ]
 
 table.table.d-flex.justify-content-center
   tbody.text-center
