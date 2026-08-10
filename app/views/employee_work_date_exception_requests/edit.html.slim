@@ -1,7 +1,8 @@
-.text-center.mb-3
-  h1 振替/休暇申請画面
-  div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 振替/休暇申請の修正を提出できます。
-    p.m-0 あなたを管理しているユーザーによって申請の承認/却下が行われます。
+= render "shared/page_description",
+  title: "振替/休暇申請画面",
+  descriptions: [ \
+    "振替/休暇申請の修正を提出できます。",
+    "あなたを管理しているユーザー（上司）によって申請の承認/却下が行われます。",
+  ]
 
 = render partial: 'form', locals: {employee: @employee,exception_request: @exception_request}
