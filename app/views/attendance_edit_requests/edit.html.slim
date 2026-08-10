@@ -1,6 +1,7 @@
-.text-center.mb-3
-  h1 勤怠修正申請修正画面
-  div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 打刻時間を修正した申請を修正できます。
+= render "shared/page_description",
+  title: "勤怠修正申請修正画面",
+  descriptions: [ \
+    "打刻時間を修正した申請を修正できます。",
+  ]
 
 = render partial: 'form', locals: {employee: @employee,attendance: @attendance,edit_request: @edit_request}
