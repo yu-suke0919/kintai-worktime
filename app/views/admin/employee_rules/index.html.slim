@@ -1,8 +1,9 @@
-.text-center.mb-3
-  h1 #{@employee.name}さんの就業規則一履歴
-  div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 従業員の就業規則履歴を確認できます。
-    p.m-0 「新規作成」ボタンから就業規則の作成が可能です。
+= render "shared/page_description",
+  title: "#{@employee.name}さんの就業規則一履歴",
+  descriptions: [ \
+    "従業員の就業規則履歴を確認できます。",
+    "「新規作成」ボタンから就業規則の作成が可能です。",
+  ]
 
 = link_to "新規作成",new_admin_employee_employee_rule_path(@employee)
 
