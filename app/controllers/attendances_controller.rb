@@ -17,16 +17,19 @@ class AttendancesController < ApplicationController
   }.freeze
 
   def index
-    permitted = params.permit(:select_date)
-    match = permitted[:select_date]&.match(/\A(\d{4})-(0[0-9]|1[0-2])\z/)
+    permitted = params.permit(:select_month)
+    match = permitted[:select_month]&.match(/\A(\d{4})-(0[0-9]|1[0-2])\z/)
     if match
       @date = Date.new(match[1].to_i, match[2].to_i, 1)
     else
       @date = Date.current
-      params[:select_date] = "#{@date.year}-#{@date.month}"
+      params[:select_month] = "#{@date.year}-#{@date.month}"
     end
 
     presenter = MonthlySchedulePresenter.new(@employee, @date)
+    chart_presenter = MonthlyChartPresenter.new
+    chart_data = chart_presenter.create(@employee, @date)
+    @chart_data = chart_data
     @presenter_rows = presenter.rows
   end
 

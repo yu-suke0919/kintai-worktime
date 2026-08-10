@@ -1,0 +1,7 @@
+.container(
+  data-controller="attendance-chart"
+  data-attendance-chart-labels-value= chart_data.to_json
+)
+  .row.justify-content-center
+    .chart-container
+      canvas data-attendance-chart-target="canvas"

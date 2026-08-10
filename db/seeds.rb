@@ -25,6 +25,9 @@ end
 
 employees.each do |employee|
   (1..31).each do |d|
+    datetime = DateTime.new(2026, 5, d, 0, 0, 0)
+    next if datetime.sunday?
+    next if datetime.saturday?
     date = d.to_s.rjust(2, '0')
     attendance = employee.attendances.create!(worked_on: "2026-05-#{date}")
     attendance.stamp_start(time: Time.zone.local(2026, 5, d, 8, rand(0..59)))
@@ -34,12 +37,27 @@ employees.each do |employee|
   end
 
   (1..30).each do |d|
+    datetime = DateTime.new(2026, 6, d, 0, 0, 0)
+    next if datetime.sunday?
+    next if datetime.saturday?
     date = d.to_s.rjust(2, '0')
     attendance = employee.attendances.create!(worked_on: "2026-06-#{date}")
-    attendance.stamp_start(time: Time.zone.local(2026, 5, d, 8, rand(0..59)))
-    attendance.stamp_break_start(time: Time.zone.local(2026, 5, d, 12, rand(0..5)))
-    attendance.stamp_break_finish(time: Time.zone.local(2026, 5, d, 12, rand(55..59)))
-    attendance.stamp_finish(time: Time.zone.local(2026, 5, d, 17, rand(0..59)))
+    attendance.stamp_start(time: Time.zone.local(2026, 6, d, 8, rand(0..59)))
+    attendance.stamp_break_start(time: Time.zone.local(2026, 6, d, 12, rand(0..5)))
+    attendance.stamp_break_finish(time: Time.zone.local(2026, 6, d, 12, rand(55..59)))
+    attendance.stamp_finish(time: Time.zone.local(2026, 6, d, 17, rand(0..59)))
+  end
+
+  (1..31).each do |d|
+    datetime = DateTime.new(2026, 7, d, 0, 0, 0)
+    next if datetime.sunday?
+    next if datetime.saturday?
+    date = d.to_s.rjust(2, '0')
+    attendance = employee.attendances.create!(worked_on: "2026-07-#{date}")
+    attendance.stamp_start(time: Time.zone.local(2026, 7, d,  22, rand(0..59)))
+    attendance.stamp_break_start(time: Time.zone.local(2026, 7, d, 3, rand(0..5))+1.day)
+    attendance.stamp_break_finish(time: Time.zone.local(2026, 7, d, 4, rand(55..59))+1.day)
+    attendance.stamp_finish(time: Time.zone.local(2026, 7, d, 7, rand(0..59))+1.day)
   end
 end
 
