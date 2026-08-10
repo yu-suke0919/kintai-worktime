@@ -9,7 +9,7 @@
 = form_with url:employee_attendances_path(@employee),method: :get,local: true do |f|
   .d-flex.justify-content-center
     = '表示月選択:'
-    = month_field_tag :select_date,@date.strftime("%Y-%m"),onchange: 'this.form.submit()'
+    = month_field_tag :select_month,@date.strftime("%Y-%m"),onchange: 'this.form.submit()'
 
 = render partial: 'chart', locals: {chart_data: @chart_data}
 - days = "日月火水木金土".split('')
