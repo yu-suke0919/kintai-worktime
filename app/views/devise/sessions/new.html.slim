@@ -1,8 +1,8 @@
-.text-center.mb-3
-  h1 ログインページ
-  div class="border border-primary border-2 rounded d-inline-block"
-    p.m-0 deviseを用いたログインページです。
-
+= render "shared/page_description",
+  title: "ログインページ",
+  descriptions: [ \
+    "deviseを用いたログインページです。",
+  ]
 
 = form_for(resource, as: resource_name, url: session_path(resource_name),class:'container-md') do |f|
   .row.justify-content-center.d-flex.align.items.center
