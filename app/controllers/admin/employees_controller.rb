@@ -20,6 +20,7 @@ class Admin::EmployeesController < ApplicationController
   def show
   end
   def new
+    @employee = Employee.new
   end
 
   def update
