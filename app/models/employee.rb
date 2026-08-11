@@ -17,4 +17,8 @@ class Employee < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :validatable
+
+  generates_token_for :invitational, expires_in: 15.minutes do
+    authenticatable_salt&.last(10)
+  end
 end
