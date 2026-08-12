@@ -34,6 +34,7 @@ class Admin::EmployeesController < ApplicationController
 
   def registration_link
     @employee = Employee.find(params[:id])
+    @registration_link_field = "#{request.url.sub(/\/admin.*/, "")}/registration/#{@employee.generate_token_for(:invitational)}"
   end
 
   def update
