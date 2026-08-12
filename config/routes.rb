@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  get "employee_invitations/edit"
-  get "employee_invitations/update"
+  resources :employee_invitations, only: [ :edit, :update ], aram: :token
   namespace :admin do
     resources :employees do
       collection do
