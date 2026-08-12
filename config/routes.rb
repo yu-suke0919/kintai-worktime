@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "employee_invitations/edit"
+  get "employee_invitations/update"
   namespace :admin do
     resources :employees do
       collection do
