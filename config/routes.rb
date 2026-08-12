@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   namespace :admin do
-    resources :employees, except: :create do
+    resources :employees do
       collection do
         get :subordinates
+      end
+      member do
+        get :registration_link
       end
       resources :employee_work_date_exception_requests, only: :index do
         post "approve_request", on: :member

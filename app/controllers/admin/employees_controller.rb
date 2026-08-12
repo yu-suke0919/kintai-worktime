@@ -22,6 +22,19 @@ class Admin::EmployeesController < ApplicationController
   def new
     @employee = Employee.new
   end
+  def create
+    @employee = Employee.new(employee_params)
+    @employee.password = Devise.friendly_token(10)
+    if @employee.save
+      redirect_to registration_link_admin_employee_path(id: @employee.id)
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def registration_link
+    @employee = Employee.find(params[:id])
+  end
 
   def update
     if @employee.update(manager_id: params[:manager_id])
@@ -42,5 +55,9 @@ class Admin::EmployeesController < ApplicationController
 
   def set_employee
     @employee = Employee.find(params[:id])
+  end
+
+  def employee_params
+    params.require(:employee).permit(:name, :email)
   end
 end
