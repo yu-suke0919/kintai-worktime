@@ -3,20 +3,28 @@
   descriptions: [ \
     "従業員の作成ができます。",
     "作成と同時に就業規則や上司を設定できるため、素早く勤怠管理の運用ができます。",
-    "従業員のメールアドレス宛に仮パスワードが発行されます。",
+    "従業員がパスワード入力等の本登録を行うURLが発行されます。",
   ]
 
-- if @employee.errors.present?
-  ul#error_explanation
-    - @employee.errors.full_messages.each do |message|
-      li= message
+.container-md
+  .row.justify-content-center
+    .col-10.col-md-6
+      - if @employee.errors.present?
+        ul#error_explanation
+          - @employee.errors.full_messages.each do |message|
+            li= message
 
-= form_with model: [@employee],local: true,class:'container-md' do |f|
-  .row.justify-content-center.d-flex.align-items-center
-    .col-2.my-2
-      = Employee.human_attribute_name(:name)
-    .col-6
-      = text_field_tag nil,@employee.name,class:'form-control'
-
-  .row.justify-content-center.align-items-center
-    = f.submit "作成", class: 'btn btn-primary col-4 mt-3'
+  = form_with model: [:admin,@employee],local: true do |f|
+    .row.justify-content-center.align-items-center.mb-3
+      .col-2
+        = f.label :name,Employee.human_attribute_name(:name)
+      .col-8
+        = f.text_field :name,class:'form-control'
+    .row.justify-content-center.align-items-center.mb-3
+      .col-2
+        = f.label :email,Employee.human_attribute_name(:email)
+      .col-8
+        = f.text_field :email,class:'form-control'
+    .row.justify-content-center.mb-3
+      .col-10.text-end
+        = f.submit "作成", class: 'btn btn-primary btn-lg'
