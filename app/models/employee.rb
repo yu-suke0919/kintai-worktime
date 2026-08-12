@@ -2,6 +2,9 @@ class Employee < ApplicationRecord
   enum :role, { member: 0, manager: 1, admin: 2 }
 
   belongs_to :manager, class_name: "Employee", optional: true
+  validates :name, presence: true
+  validates :email, presence: true, uniqueness: true
+
   has_many :subordinates, class_name: "Employee", foreign_key: "manager_id", dependent: :nullify
   has_many :attendances, dependent: :destroy
   has_many :attendance_edit_request
