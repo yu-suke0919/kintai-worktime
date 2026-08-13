@@ -1,2 +1,40 @@
-h1 EmployeeInvitations#edit
-p Find me in app/views/employee_invitations/edit.html.slim
+= render "shared/page_description",
+  title: "従業員_本登録画面",
+  descriptions: [ \
+    "#{@employee.name}さんのユーザー本登録画面です。",
+    "パスワードを設定してください。",
+    "もし、あなたの名前でない場合は、管理者に報告及びURLの発行を依頼してください。",
+  ]
+
+.container-md
+  .row.justify-content-center
+    .col-10.col-md-6
+      - if @employee.errors.present?
+        ul#error_explanation
+          - @employee.errors.full_messages.each do |message|
+            li= message
+
+  = form_with model: @employee,url: employee_invitation_path(token: params[:token]),local: true do |f|
+    .row.justify-content-center.align-items-center.mb-3
+      .col-2
+        = f.label :name,Employee.human_attribute_name(:name)
+      .col-8
+        = f.text_field :name,class:'form-control',disabled: true
+    .row.justify-content-center.align-items-center.mb-3
+      .col-2
+        = f.label :email,Employee.human_attribute_name(:email)
+      .col-8
+        = f.text_field :email,class:'form-control',disabled: true
+    .row.justify-content-center.align-items-center.mb-3
+      .col-2
+        = f.label :password,Employee.human_attribute_name(:password)
+      .col-8
+        = f.text_field :password,class:'form-control'
+    .row.justify-content-center.align-items-center.mb-3
+      .col-2
+        = f.label :password_confirm,Employee.human_attribute_name(:password_confirmation)
+      .col-8
+        = f.text_field :password_confirm,class:'form-control'
+    .row.justify-content-center.mb-3
+      .col-10.text-end
+        = f.submit "作成", class: 'btn btn-primary btn-lg'
