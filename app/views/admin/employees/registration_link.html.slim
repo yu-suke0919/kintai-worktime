@@ -1,0 +1,10 @@
+= render "shared/page_description",
+  title: "従業員作成成功ページ",
+  descriptions: [ \
+    "従業員の作成に成功しました。",
+    "下記の本登録用URLを従業員に送付してください。",
+  ]
+.container-md
+  .row.justify-content-center
+    .col-10
+      = text_field_tag :registration_field,@registration_link_field,class: "form-control",readonly: true

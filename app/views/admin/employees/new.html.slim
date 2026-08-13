@@ -1,0 +1,30 @@
+= render "shared/page_description",
+  title: "従業員作成ページ",
+  descriptions: [ \
+    "従業員の作成ができます。",
+    "作成と同時に就業規則や上司を設定できるため、素早く勤怠管理の運用ができます。",
+    "従業員がパスワード入力等の本登録を行うURLが発行されます。",
+  ]
+
+.container-md
+  .row.justify-content-center
+    .col-10.col-md-6
+      - if @employee.errors.present?
+        ul#error_explanation
+          - @employee.errors.full_messages.each do |message|
+            li= message
+
+  = form_with model: [:admin,@employee],local: true do |f|
+    .row.justify-content-center.align-items-center.mb-3
+      .col-2
+        = f.label :name,Employee.human_attribute_name(:name)
+      .col-8
+        = f.text_field :name,class:'form-control'
+    .row.justify-content-center.align-items-center.mb-3
+      .col-2
+        = f.label :email,Employee.human_attribute_name(:email)
+      .col-8
+        = f.text_field :email,class:'form-control'
+    .row.justify-content-center.mb-3
+      .col-10.text-end
+        = f.submit "作成", class: 'btn btn-primary btn-lg'
