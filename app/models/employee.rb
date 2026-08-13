@@ -17,8 +17,8 @@ class Employee < ApplicationRecord
     self.attendances.select { |a|a.attendance_edit_request.present? }
   end
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable,:registerable,
+  devise :database_authenticatable,
         :recoverable, :rememberable, :validatable
 
   generates_token_for :invitational, expires_in: 15.minutes do
