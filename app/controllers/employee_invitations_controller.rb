@@ -15,6 +15,8 @@ class EmployeeInvitationsController < ApplicationController
   def expired
   end
 
+  private
+
   def set_employee
     @employee = Employee.find_by_token_for(:invitational, params[:token])
     if @employee.nil?
