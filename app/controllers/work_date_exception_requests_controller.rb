@@ -10,7 +10,7 @@ class WorkDateExceptionRequestsController < ApplicationController
     @exception_request = WorkDateExceptionRequest.find(params[:id])
   end
   def create
-    @exception_request = @employee.employee_work_date_exception_requests.build(request_params)
+    @exception_request = @employee.work_date_exception_requests.build(request_params)
     if @exception_request.save
       @exception_request.notifications.create!(
         notification_type: 0,
@@ -46,6 +46,6 @@ class WorkDateExceptionRequestsController < ApplicationController
   end
 
   def request_params
-    params.require(:employee_work_date_exception_request).permit(:request_type, :start_date, :end_date, :reason)
+    params.require(:work_date_exception_request).permit(:request_type, :start_date, :end_date, :reason)
   end
 end

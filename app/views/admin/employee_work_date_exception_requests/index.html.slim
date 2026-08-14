@@ -20,7 +20,7 @@ table.table.table-hover
   tbody
     - @exception_requests.each do |er|
       tr
-        td= I18n.t("enums.employee_work_date_exception_request.request_type.#{er.request_type}")
+        td= I18n.t("enums.work_date_exception_request.request_type.#{er.request_type}")
         td= l er.start_date,formats: :default
         td= l er.end_date,formats: :default
         td= er.reason
@@ -34,8 +34,8 @@ table.table.table-hover
         - else
           td= '-'
         - if er.status == 0
-          td= button_to I18n.t("helpers.request.approve"),approve_request_admin_employee_employee_work_date_exception_request_path(er.employee,er)
-          td= button_to I18n.t("helpers.request.reject"),reject_request_admin_employee_employee_work_date_exception_request_path(er.employee,er)
+          td= button_to I18n.t("helpers.request.approve"),approve_request_admin_employee_work_date_exception_request_path(er.employee,er)
+          td= button_to I18n.t("helpers.request.reject"),reject_request_admin_employee_work_date_exception_request_path(er.employee,er)
         - else
           td=
           td=
