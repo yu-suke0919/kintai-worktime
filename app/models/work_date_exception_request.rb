@@ -1,4 +1,4 @@
-class EmployeeWorkDateExceptionRequest < ApplicationRecord
+class WorkDateExceptionRequest < ApplicationRecord
   belongs_to :employee
 
   has_many :notifications, as: :notifiable, dependent: :nullify
@@ -10,7 +10,7 @@ class EmployeeWorkDateExceptionRequest < ApplicationRecord
   }
 
   def self.request_options
-    request_types.map { |k, _| [ I18n.t("enums.employee_work_date_exception_request.request_type.#{k}"), k ] }.to_h
+    request_types.map { |k, _| [ I18n.t("enums.work_date_exception_request.request_type.#{k}"), k ] }.to_h
   end
 
   def request_overview

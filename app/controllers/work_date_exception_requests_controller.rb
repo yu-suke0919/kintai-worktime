@@ -1,16 +1,16 @@
-class EmployeeWorkDateExceptionRequestsController < ApplicationController
+class WorkDateExceptionRequestsController < ApplicationController
   before_action :authenticate_employee!
   before_action :ensure_owner!
   before_action :set_employee, only: [ :new, :edit, :create, :update ]
   def new
-    @exception_request = EmployeeWorkDateExceptionRequest.new()
+    @exception_request = WorkDateExceptionRequest.new()
   end
 
   def edit
-    @exception_request = EmployeeWorkDateExceptionRequest.find(params[:id])
+    @exception_request = WorkDateExceptionRequest.find(params[:id])
   end
   def create
-    @exception_request = @employee.employee_work_date_exception_requests.build(request_params)
+    @exception_request = @employee.work_date_exception_requests.build(request_params)
     if @exception_request.save
       @exception_request.notifications.create!(
         notification_type: 0,
@@ -23,7 +23,7 @@ class EmployeeWorkDateExceptionRequestsController < ApplicationController
     end
   end
   def update
-    @exception_request = EmployeeWorkDateExceptionRequest.find(params[:id])
+    @exception_request = WorkDateExceptionRequest.find(params[:id])
     if @exception_request.update(request_params)
       @exception_request.notifications.create!(
         notification_type: 0,
@@ -46,6 +46,6 @@ class EmployeeWorkDateExceptionRequestsController < ApplicationController
   end
 
   def request_params
-    params.require(:employee_work_date_exception_request).permit(:request_type, :start_date, :end_date, :reason)
+    params.require(:work_date_exception_request).permit(:request_type, :start_date, :end_date, :reason)
   end
 end

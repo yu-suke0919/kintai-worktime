@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       member do
         get :registration_link
       end
-      resources :employee_work_date_exception_requests, only: :index do
+      resources :work_date_exception_requests, only: :index do
         post "approve_request", on: :member
         post "reject_request", on: :member
       end
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
       resource :attendance_edit_request
     end
     resources :attendance_edit_requests, only: :index
-    resources :employee_work_date_exception_requests, only: [ :new, :edit, :create, :update ]
+    resources :work_date_exception_requests, only: [ :new, :edit, :create, :update ]
   end
   resources :notifications, only: [ :index, :show ]
   devise_for :employees, path: "auth"

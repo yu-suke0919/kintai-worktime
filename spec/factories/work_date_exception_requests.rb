@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :employee_work_date_exception_request do
+  factory :work_date_exception_request do
     employee { nil }
     approved_at { nil }
     approved_by_id { nil }
