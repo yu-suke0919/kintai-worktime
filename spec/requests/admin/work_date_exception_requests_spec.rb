@@ -30,8 +30,8 @@ RSpec.describe "Admin::WorkDateExceptionRequests", type: :request do
   end
 
   context "非ログイン時" do
-    describe "admin_employee_work_date_exception_requests_path" do
-      let(:request_action) { get admin_employee_work_date_exception_requests_path(user_not_manager) }
+    describe "admin_work_date_exception_requests_path" do
+      let(:request_action) { get admin_work_date_exception_requests_path(user_not_manager) }
       it_behaves_like "redirect_to_login_page"
     end
   end
@@ -39,8 +39,8 @@ RSpec.describe "Admin::WorkDateExceptionRequests", type: :request do
     before do
       sign_in user_not_manager
     end
-    describe "GET admin_employee_work_date_exception_requests_path" do
-      let(:request_action) { get admin_employee_work_date_exception_requests_path(user_not_manager) }
+    describe "GET admin_work_date_exception_requests_path" do
+      let(:request_action) { get admin_work_date_exception_requests_path(user_not_manager) }
       let(:logged_in_employee) { user_not_manager }
       it_behaves_like "redirect_to_current_employee_attendance_index_page"
     end
@@ -50,8 +50,8 @@ RSpec.describe "Admin::WorkDateExceptionRequests", type: :request do
     before do
       sign_in user_manager
     end
-    describe "GET admin_employee_work_date_exception_requests_path" do
-      let(:request_action) { get admin_employee_work_date_exception_requests_path(user_not_manager) }
+    describe "GET admin_work_date_exception_requests_path" do
+      let(:request_action) { get admin_work_date_exception_requests_path(user_not_manager) }
       let(:logged_in_employee) { user_manager }
       it_behaves_like "have_http_status_success"
     end

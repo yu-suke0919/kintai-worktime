@@ -34,8 +34,8 @@ table.table.table-hover
         - else
           td= '-'
         - if er.status == 0
-          td= button_to I18n.t("helpers.request.approve"),approve_request_admin_employee_work_date_exception_request_path(er.employee,er)
-          td= button_to I18n.t("helpers.request.reject"),reject_request_admin_employee_work_date_exception_request_path(er.employee,er)
+          td= button_to I18n.t("helpers.request.approve"),approve_request_admin_work_date_exception_request_path(er.employee,er)
+          td= button_to I18n.t("helpers.request.reject"),reject_request_admin_work_date_exception_request_path(er.employee,er)
         - else
           td=
           td=
