@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_03_054135) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_14_015109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -63,20 +63,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_03_054135) do
     t.index ["employee_id"], name: "index_employee_rules_on_employee_id"
   end
 
-  create_table "employee_work_date_exception_requests", force: :cascade do |t|
-    t.datetime "approved_at"
-    t.integer "approved_by_id"
-    t.datetime "created_at", null: false
-    t.bigint "employee_id", null: false
-    t.date "end_date", null: false
-    t.text "reason"
-    t.integer "request_type", null: false
-    t.date "start_date", null: false
-    t.integer "status", default: 0, null: false
-    t.datetime "updated_at", null: false
-    t.index ["employee_id"], name: "index_employee_work_date_exception_requests_on_employee_id"
-  end
-
   create_table "employee_work_date_exceptions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "employee_id", null: false
@@ -116,12 +102,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_03_054135) do
     t.index ["recipient_employee_id"], name: "index_notifications_on_recipient_employee_id"
   end
 
+  create_table "work_date_exception_requests", force: :cascade do |t|
+    t.datetime "approved_at"
+    t.integer "approved_by_id"
+    t.datetime "created_at", null: false
+    t.bigint "employee_id", null: false
+    t.date "end_date", null: false
+    t.text "reason"
+    t.integer "request_type", null: false
+    t.date "start_date", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_work_date_exception_requests_on_employee_id"
+  end
+
   add_foreign_key "attendance_edit_requests", "attendances"
   add_foreign_key "attendance_edit_requests", "employees"
   add_foreign_key "attendances", "employees"
   add_foreign_key "employee_rules", "employees"
-  add_foreign_key "employee_work_date_exception_requests", "employees"
   add_foreign_key "employee_work_date_exceptions", "employees"
   add_foreign_key "employees", "employees", column: "manager_id"
   add_foreign_key "notifications", "employees", column: "recipient_employee_id"
+  add_foreign_key "work_date_exception_requests", "employees"
 end
