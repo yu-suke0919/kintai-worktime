@@ -1,2 +1,2 @@
-module Admin::EmployeeWorkDateExceptionRequestsHelper
+module Admin::WorkDateExceptionRequestsHelper
 end

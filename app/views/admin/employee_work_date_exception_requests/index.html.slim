@@ -7,13 +7,13 @@
 table.table.table-hover
   thead.thead-default
     tr
-      th style="width: 10%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:request_type)
-      th style="width: 15%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:start_date)
-      th style="width: 15%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:end_date)
-      th style="width: 20%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:reason)
-      th style="width: 10%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:status)
-      th style="width: 10%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:approved_at)
-      th style="width: 10%" = EmployeeWorkDateExceptionRequest.human_attribute_name(:approved_by)
+      th style="width: 10%" = WorkDateExceptionRequest.human_attribute_name(:request_type)
+      th style="width: 15%" = WorkDateExceptionRequest.human_attribute_name(:start_date)
+      th style="width: 15%" = WorkDateExceptionRequest.human_attribute_name(:end_date)
+      th style="width: 20%" = WorkDateExceptionRequest.human_attribute_name(:reason)
+      th style="width: 10%" = WorkDateExceptionRequest.human_attribute_name(:status)
+      th style="width: 10%" = WorkDateExceptionRequest.human_attribute_name(:approved_at)
+      th style="width: 10%" = WorkDateExceptionRequest.human_attribute_name(:approved_by)
       th style="width:  5%" = I18n.t("helpers.request.approve")
       th style="width:  5%" = I18n.t("helpers.request.reject")
 

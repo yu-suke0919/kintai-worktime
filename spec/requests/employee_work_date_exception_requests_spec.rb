@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "EmployeeWorkDateExceptionRequests", type: :request do
+RSpec.describe "WorkDateExceptionRequests", type: :request do
   let(:user_1) { FactoryBot.create(:employee) }
   let(:user_2) { FactoryBot.create(:employee, email: "manager@email", role: :manager) }
   let(:user_manager) { FactoryBot.create(:employee, email: "manager@email", role: :manager) }
