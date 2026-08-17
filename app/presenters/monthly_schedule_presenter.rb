@@ -8,7 +8,7 @@ class MonthlySchedulePresenter
 
   def rows
     target_attendances = @employee.attendances.includes(:attendance_edit_request).where(worked_on: @target_dates).index_by(&:worked_on)
-    target_work_date_exception = @employee.employee_work_date_exceptions.where(work_date: @target_dates).index_by(&:work_date)
+    target_work_date_exception = @employee.work_date_exceptions.where(work_date: @target_dates).index_by(&:work_date)
     mask = @employee.employee_rules&.last&.required_workdays_mask || 0
     target_attendance_edit_requests = target_attendances.transform_values(&:attendance_edit_request)
     is_work_scheduled = @target_dates.map { |date| [ date, ((2 ** (date.wday)) & mask == (2 ** (date.wday))) ? "出勤" : "休み" ] }.to_h
