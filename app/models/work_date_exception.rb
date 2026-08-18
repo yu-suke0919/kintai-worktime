@@ -1,4 +1,4 @@
-class EmployeeWorkDateException < ApplicationRecord
+class WorkDateException < ApplicationRecord
   belongs_to :employee
 
     enum :exception_type, {
