@@ -11,9 +11,15 @@ class Admin::AttendanceEditRequestsController < ApplicationController
     raise if attendance.nil?
     request = attendance.attendance_edit_request
 
-    if attendance.update(started_at: request.requested_started_at, finished_at: request.requested_finished_at, break_started_at: request.requested_break_started_at, break_finished_at: request.requested_break_finished_at, status: "corrected")
+    if attendance.update(
+        started_at: request.requested_started_at,
+        finished_at: request.requested_finished_at,
+        break_started_at: request.requested_break_started_at,
+        break_finished_at: request.requested_break_finished_at,
+        status: "corrected"
+      )
       request.notifications.create(
-        notification_type: 1,
+        notification_type: "approved",
         recipient_employee: current_employee,
         message_text: "打刻時間修正を承認しました。\nby#{current_employee.name}")
       redirect_to subordinates_admin_employees_path, notice: "勤怠時間の修正を行いました"
@@ -35,7 +41,8 @@ class Admin::AttendanceEditRequestsController < ApplicationController
     private
 
   def admin_role_required
-    redirect_to employee_attendances_path(current_employee), alert: "権限がありません" if current_employee.role == "member"
+    redirect_to employee_attendances_path(current_employee),
+      alert: "権限がありません" if current_employee.role == "member"
   end
 
   def set_employee
