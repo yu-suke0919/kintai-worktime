@@ -21,11 +21,23 @@ class Admin::AttendanceEditRequestsController < ApplicationController
       request.notifications.create(
         notification_type: "approved",
         recipient_employee: current_employee,
-        message_text: "打刻時間修正を承認しました。\nby#{current_employee.name}")
+        message_text: "打刻時間修正が承認されました。\nby#{current_employee.name}")
       redirect_to subordinates_admin_employees_path, notice: "勤怠時間の修正を行いました"
     else
       render :index, status: :unprocessable_entity
     end
+  end
+
+  def reject_edit_request
+    attendance = Attendance.find(params[:id])
+    raise if attendance.nil?
+    request = attendance.attendance_edit_request
+
+    request.notifications.create(
+      notification_type: "rejected",
+      recipient_employee: current_employee,
+      message_text: "打刻時間修正が却下されました。\nby#{current_employee.name}")
+    redirect_to subordinates_admin_employees_path, notice: "勤怠時間の修正を行いました"
   end
 
   def show
