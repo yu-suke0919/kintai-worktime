@@ -30,7 +30,7 @@ table.table.table-hover
         - if employee.work_date_exception_requests.count == 0
           td= WorkDateExceptionRequest.human_attribute_name(:list)
         - else
-          td= link_to WorkDateExceptionRequest.human_attribute_name(:list), admin_work_date_exception_requests_path(employee.id)
+          td= link_to WorkDateExceptionRequest.human_attribute_name(:list), admin_employee_work_date_exception_requests_path(employee.id)
 
         td= link_to EmployeeRule.model_name.human, admin_employee_employee_rules_path(employee.id)
 
