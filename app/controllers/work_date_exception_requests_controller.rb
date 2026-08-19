@@ -13,7 +13,7 @@ class WorkDateExceptionRequestsController < ApplicationController
     @exception_request = @employee.work_date_exception_requests.build(request_params)
     if @exception_request.save
       @exception_request.notifications.create!(
-        notification_type: 0,
+        notification_type: :pending,
         recipient_employee: @employee,
         message_text: "振替/休暇申請が完了しました。"
       )
@@ -26,7 +26,7 @@ class WorkDateExceptionRequestsController < ApplicationController
     @exception_request = WorkDateExceptionRequest.find(params[:id])
     if @exception_request.update(request_params)
       @exception_request.notifications.create!(
-        notification_type: 0,
+        notification_type: :pending,
         recipient_employee: @employee,
         message_text: "振替/休暇申請の修正が完了しました。"
       )
