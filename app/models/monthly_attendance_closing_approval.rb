@@ -1,0 +1,2 @@
+class MonthlyAttendanceClosingApproval < ApplicationRecord
+end
