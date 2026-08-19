@@ -23,7 +23,7 @@ table.table.table-hover
         td= n.notifiable.class.model_name.human
         td= n.notifiable_id
         td= l n.created_at,format: :short_time
-        td= I18n.t("enums.notification.status.#{n.notification_type}")
+        td= I18n.t("enums.notification.notification_type.#{n.notification_type}")
         td= simple_format(n.message_text)
         td= l n.updated_at,format: :short_time
         

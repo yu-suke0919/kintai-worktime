@@ -2108,7 +2108,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="ER_概要図_新規箇所色付" id="M16_to2S8PT_gDR1CXi7">
-    <mxGraphModel dx="748" dy="450" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="642" dy="462" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="_IoiLWI2Y35CE9jHuDvv-0" />
         <mxCell id="_IoiLWI2Y35CE9jHuDvv-1" parent="_IoiLWI2Y35CE9jHuDvv-0" />
@@ -3187,6 +3187,9 @@
         </mxCell>
         <mxCell id="OyV-mNzobI8zoOlvTjGO-3" parent="_IoiLWI2Y35CE9jHuDvv-1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" value="新規テーブルの&lt;div&gt;追加&lt;/div&gt;" vertex="1">
           <mxGeometry height="111" width="151" x="1814.5" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="HnU5M6lUd740tg6UbsYz-0" parent="_IoiLWI2Y35CE9jHuDvv-1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" value="8/18　ポリモーフィック関連付けしたので不要に" vertex="1">
+          <mxGeometry height="111" width="144" x="540" y="490" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

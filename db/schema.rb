@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_17_011204) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_19_024013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -85,7 +85,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_011204) do
     t.text "message_text"
     t.bigint "notifiable_id", null: false
     t.string "notifiable_type", null: false
-    t.integer "notification_type"
+    t.integer "notification_type", null: false
     t.datetime "read_at"
     t.bigint "recipient_employee_id", null: false
     t.datetime "updated_at", null: false
