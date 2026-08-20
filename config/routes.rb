@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get "monthly_attendance_closings/index"
-  get "monthly_attendance_closings/show"
   resources :employee_invitations, only: [ :edit, :update ], param: :token
   namespace :admin do
     resources :employees do
@@ -27,6 +25,7 @@ Rails.application.routes.draw do
     end
     resources :attendance_edit_requests, only: :index
     resources :work_date_exception_requests, only: [ :new, :edit, :create, :update ]
+    resources :monthly_attendance_closings, only: [ :index, :new, :create ]
   end
   resources :notifications, only: [ :index, :show ]
   devise_for :employees, path: "auth"
