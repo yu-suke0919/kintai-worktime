@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "monthly_attendance_closings/index"
+  get "monthly_attendance_closings/show"
   resources :employee_invitations, only: [ :edit, :update ], param: :token
   namespace :admin do
     resources :employees do
