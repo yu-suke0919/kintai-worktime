@@ -1,2 +1,19 @@
-h1 MonthlyAttendanceClosings#index
-p Find me in app/views/monthly_attendance_closings/index.html.slim
+= render "shared/page_description",
+  title: "月末締め一覧",
+  descriptions: [ \
+    "月末締め一覧",
+    "",
+  ]
+
+- days = "日月火水木金土".split('')
+
+table.table.table-hover
+  thead.thead-default
+    tr.text-center
+      th style="width: 20%" = "日付"
+      th stype="width: 20%" = "申請状態"
+      th style="width: 20%" = "申請ボタン"
+  tbody
+    - @monthly_attendance_closings.each do |monthly_closing|
+      tr.align-middle.text-center
+        td= monthly_closing.date
