@@ -1,19 +1,31 @@
 = render "shared/page_description",
   title: "月末締め一覧",
   descriptions: [ \
-    "月末締め一覧",
-    "",
+    "月末締め一覧を確認できます。",
+    "月末締めの申請がどこまで完了しているか進捗確認が可能です。",
   ]
 
-- days = "日月火水木金土".split('')
+= form_with url: employee_monthly_attendance_closings_path(@employee), method: :get do
+  .d-flex.justify-content-center
+    = label_tag :selected_year, "表示年選択:"
+    = select_year @selected_year, { prefix: "selected_year", discard_type: true }, {onchange: "this.form.requestSubmit()" }
+
 
 table.table.table-hover
   thead.thead-default
     tr.text-center
       th style="width: 20%" = "日付"
       th stype="width: 20%" = "申請状態"
-      th style="width: 20%" = "申請ボタン"
+      th style="width: 30%" = "申請ボタン"
   tbody
-    - @monthly_attendance_closings.each do |monthly_closing|
+    - (1..12).each do |month|
+      - monthly_closing = @monthly_attendance_closings[month]
       tr.align-middle.text-center
-        td= monthly_closing.date
+        td= "#{@selected_year}/#{month}"
+        - if monthly_closing
+          td= monthly_closing.state
+          td=
+        else
+          td= "データなし"
+          td= link_to '月末締め申請作成',new_employee_monthly_attendance_closing_path(@employee),params: {selected_month: "#{@selected_year}-#{month}"},class: 'btn btn-primary mr-3'
+        end

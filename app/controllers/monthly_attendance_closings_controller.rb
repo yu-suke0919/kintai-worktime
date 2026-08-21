@@ -3,15 +3,15 @@ class MonthlyAttendanceClosingsController < ApplicationController
   before_action :set_employee
   before_action :owner_or_admin_required
   def index
-    permitted = params.permit(:select_year)
-    match = permitted[:select_year]&.match(/\A(\d{4})-(0[0-9]|1[0-2])\z/)
+    permitted = params.permit(:selected_year)
+    match = permitted[:selected_year]&.match(/\A(\d{4})\z/)
     if match
-      @year = Date.new(match[1].to_i, 1, 1)
+      @selected_year = match[0].to_i
     else
-      @year = Date.current
-      params[:select_month] = "#{@year.year}"
+      @selected_year = Date.today.year
     end
-    @monthly_attendance_closings = @employee.monthly_attendance_closings
+    range = Date.new(@selected_year, 1, 1).all_year
+    @monthly_attendance_closings = @employee.monthly_attendance_closings.where(target_month: range).index_by { |closing|closing.target_month.month }
   end
 
   def show
