@@ -14,6 +14,14 @@ class MonthlyAttendanceClosingsController < ApplicationController
     @monthly_attendance_closings = @employee.monthly_attendance_closings.where(target_month: range).index_by { |closing|closing.target_month.month }
   end
 
+  def new
+    permitted = params.permit(:selected_month)
+    year, month = permitted[:selected_month]&.split("-").map(&:to_i)
+    @selected_month = Date.new(year, month, 1)
+    @summaries = DailyWorkSummariesPresenter.new(@employee, @selected_month).daily_work_summaries
+    Rails.logger.debug(@summaries.class)
+  end
+
   def show
   end
 

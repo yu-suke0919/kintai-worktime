@@ -310,3 +310,16 @@ ja:
       sign_up: 登録に成功しました。
     sessions:
       signed_in: ログインに成功しました。
+
+  activemodel:
+    attributes:
+      daily_work_summary:
+        date: "日付" 
+        wday: "曜日"
+        is_work_scheduled: "出勤予定"
+        attendance_status: "打刻状態"
+        started_at: "始業時間"
+        finished_at: "終業時間"
+        break_started_at: "休憩開始時刻"
+        break_finished_at: "休憩終了時刻"
+        create_edit_request: "勤怠修正リクエスト"
