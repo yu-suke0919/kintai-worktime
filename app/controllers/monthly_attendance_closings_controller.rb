@@ -17,8 +17,9 @@ class MonthlyAttendanceClosingsController < ApplicationController
   def new
     permitted = params.permit(:selected_month)
     year, month = permitted[:selected_month]&.split("-").map(&:to_i)
-    @selected_month = Date.new(year, month, 1)
-    @summaries = DailyWorkSummariesPresenter.new(@employee, @selected_month).daily_work_summaries
+    selected_month = Date.new(year, month, 1)
+    @monthly_attendance_closing = @employee.monthly_attendance_closings.new(target_month: selected_month)
+    @summaries = DailyWorkSummariesPresenter.new(@employee, selected_month).daily_work_summaries
     Rails.logger.debug(@summaries.class)
   end
 
