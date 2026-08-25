@@ -15,12 +15,25 @@ class MonthlyAttendanceClosingsController < ApplicationController
   end
 
   def new
-    permitted = params.permit(:selected_month)
-    year, month = permitted[:selected_month]&.split("-").map(&:to_i)
+    permitted = params.permit(:target_month)
+    year, month = permitted[:target_month]&.split("-").map(&:to_i)
     selected_month = Date.new(year, month, 1)
     @monthly_attendance_closing = @employee.monthly_attendance_closings.new(target_month: selected_month)
     @summaries = DailyWorkSummariesPresenter.new(@employee, selected_month).daily_work_summaries
-    Rails.logger.debug(@summaries.class)
+  end
+
+  def create
+    unless @employee.manager.persisted?
+      redirect_to employee_attendances_path(@employee), alert: "マネージャーが割り当てられていないか、無効なマネージャーです。現在の上司に確認してください。"
+    end
+    params = closing_params
+    target_month = Date.strptime(params[:target_month], "%Y-%m").beginning_of_month
+    @employee.transaction do
+      closing = @employee.monthly_attendance_closings.create!(target_month: target_month)
+      closing.monthly_attendance_closing_approvals.create!(approver_id: @employee.manager.id, status:)
+    end
+
+    redirect_to redirect_to employee_attendances_path(@employee), alert: "成功しました。"
   end
 
   def show
@@ -30,6 +43,9 @@ class MonthlyAttendanceClosingsController < ApplicationController
 
   def set_employee
     @employee = Employee.find(params[:employee_id])
+  end
+  def closing_params
+    params.require(:monthly_attendance_closing).permit(:target_month)
   end
 
   def owner_or_admin_required

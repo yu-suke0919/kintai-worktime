@@ -27,5 +27,5 @@ table.table.table-hover
           td=
         else
           td= "データなし"
-          td= link_to '月末締め申請作成',new_employee_monthly_attendance_closing_path(@employee,selected_month: "#{@selected_year}-#{month}"),class: 'btn btn-primary mr-3'
+          td= link_to '月末締め申請作成',new_employee_monthly_attendance_closing_path(@employee,target_month: "#{@selected_year}-#{month}"),class: 'btn btn-primary mr-3'
         end
