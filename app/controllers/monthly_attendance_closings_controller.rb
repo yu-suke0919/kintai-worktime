@@ -30,10 +30,10 @@ class MonthlyAttendanceClosingsController < ApplicationController
     target_month = Date.strptime(params[:target_month], "%Y-%m").beginning_of_month
     @employee.transaction do
       closing = @employee.monthly_attendance_closings.create!(target_month: target_month)
-      closing.monthly_attendance_closing_approvals.create!(approver_id: @employee.manager.id, status:)
+      closing.monthly_attendance_closing_approvals.create!(approver_id: @employee.manager.id, status: :pending, approval_order: 1)
     end
 
-    redirect_to redirect_to employee_attendances_path(@employee), alert: "成功しました。"
+    redirect_to redirect_to employee_attendances_path(@employee), notice: "成功しました。"
   end
 
   def show
