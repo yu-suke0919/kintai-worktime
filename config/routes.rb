@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :employee_invitations, only: [ :edit, :update ], param: :token
   namespace :admin do
+    get "monthly_attendance_closing_approvals/index"
     resources :employees do
       collection do
         get :subordinates
@@ -14,6 +15,10 @@ Rails.application.routes.draw do
       end
       resources :attendance_edit_requests do
         post "approve_edit_request", on: :member
+      end
+      resources :monthly_attendance_closing_approvals, only: :index do
+        post "approve_closing", on: :member
+        post "reject_closing", on: :member
       end
       resources :employee_rules, only: [ :index, :new, :create ]
     end
