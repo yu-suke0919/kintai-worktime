@@ -12,6 +12,10 @@
     = '表示月選択:'
     = month_field_tag :select_month,@date.strftime("%Y-%m"),onchange: 'this.form.submit()'
 
+- if @monthly_attendance_closing&.present?
+  .text-center
+    = "月末締めを提出したため、勤怠修正は不可能です。"
+
 = render partial: 'chart', locals: {chart_data: @chart_data}
 - days = "日月火水木金土".split('')
 table.table.table-hover
@@ -41,10 +45,13 @@ table.table.table-hover
         td= row.finished_at.present? ? (l row.finished_at,format: :short_time) : ''
         td= row.break_started_at.present? ? (l row.break_started_at,format: :short_time) : ''
         td= row.break_finished_at.present? ? (l row.break_finished_at,format: :short_time) : ''
-        - if row.edit_request_present?
-          td= link_to '申請時刻を修正',edit_employee_attendance_attendance_edit_request_path(@employee,row.date),class: 'btn btn-secondary mr-3'
+        - unless @monthly_attendance_closing&.present?
+          - if row.edit_request_present?
+            td= link_to '申請時刻を修正',edit_employee_attendance_attendance_edit_request_path(@employee,row.date),class: 'btn btn-secondary mr-3'
+          - else
+            td= link_to '時刻修正申請',new_employee_attendance_attendance_edit_request_path(@employee,row.date),class: 'btn btn-primary mr-3'
         - else
-          td= link_to '時刻修正申請',new_employee_attendance_attendance_edit_request_path(@employee,row.date),class: 'btn btn-primary mr-3'
+          td= ""
 
 
 

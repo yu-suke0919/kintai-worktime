@@ -31,6 +31,9 @@ class AttendancesController < ApplicationController
     chart_data = chart_presenter.create(@employee, @date)
     @chart_data = chart_data
     @presenter_rows = presenter.rows
+
+    @monthly_attendance_closing = MonthlyAttendanceClosing.find_by(employee_id: @employee.id, target_month: @date)
+    Rails.logger.debug(MonthlyAttendanceClosing.find_by(employee_id: 2, target_month: Date.new(2026, 5, 1)))
   end
 
   def show
