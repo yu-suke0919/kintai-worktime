@@ -1,0 +1,15 @@
+= form_with model: [employee,monthly_attendance_closing],local: true,class:'container-md' do |f|
+  .row.justify-content-center.d-flex.align-items-center
+    .col-2.my-2
+      = f.label :employee_id,Employee.human_attribute_name(:name)
+    .col-6
+      = text_field_tag :employee_name,employee.name,class:'form-control',disabled: true
+
+  .row.justify-content-center.d-flex.align-items-center
+    .col-2.my-2
+      = f.label :target_month, MonthlyAttendanceClosing.human_attribute_name(:target_month)
+    .col-6
+      = f.month_field :target_month,value: @monthly_attendance_closing.target_month,class: 'form-control',readonly: true
+
+  .row.justify-content-center.align-items-center
+    = f.submit class: 'btn btn-primary col-4 mt-3'

@@ -1,0 +1,25 @@
+= render "shared/page_description",
+  title: "月末締め承認ページ",
+  descriptions: [ \
+    "従業員の月末締めを承認/却下できます。",
+    "担当の承認申請のみが表示されます。",
+  ]
+= "件数: #{@pending_closing_approvals.count}"
+table.table.table-hover
+  thead.thead-default
+    tr
+      th style="width: 10%" = MonthlyAttendanceClosing.human_attribute_name(:target_month)
+      th style="width: 15%" = MonthlyAttendanceClosing.human_attribute_name(:employee_name)
+      th style="width: 15%" = MonthlyAttendanceClosing.human_attribute_name(:status)
+      th style="width:  5%" = I18n.t("helpers.request.approve")
+      th style="width:  5%" = I18n.t("helpers.request.reject")
+
+  tbody
+    - @pending_closing_approvals.each do |approval|
+      - employee = approval.monthly_attendance_closing.employee
+      tr
+        td= l approval.monthly_attendance_closing.target_month,format: :year_month
+        td= employee.name
+        td= approval.status
+        td= button_to I18n.t("helpers.request.approve"),approve_closing_admin_employee_monthly_attendance_closing_approval_path(employee.id,approval)
+        td= button_to I18n.t("helpers.request.reject"),reject_closing_admin_employee_monthly_attendance_closing_approval_path(employee.id,approval)

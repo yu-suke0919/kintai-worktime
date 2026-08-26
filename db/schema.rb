@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_19_024013) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_19_060047) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -80,6 +80,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_024013) do
     t.index ["reset_password_token"], name: "index_employees_on_reset_password_token", unique: true
   end
 
+  create_table "monthly_attendance_closing_approvals", force: :cascade do |t|
+    t.integer "approval_order", null: false
+    t.bigint "approver_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "monthly_attendance_closing_id", null: false
+    t.text "reason"
+    t.integer "status", null: false
+    t.datetime "updated_at", null: false
+    t.index ["approver_id", "status"], name: "idx_on_approver_id_status_34bde59c21"
+    t.index ["approver_id"], name: "index_monthly_attendance_closing_approvals_on_approver_id"
+    t.index ["monthly_attendance_closing_id", "approval_order"], name: "idx_on_monthly_attendance_closing_id_approval_order_837a8aaa9b", unique: true
+    t.index ["monthly_attendance_closing_id"], name: "idx_on_monthly_attendance_closing_id_1e60e5654f"
+  end
+
+  create_table "monthly_attendance_closings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "employee_id", null: false
+    t.date "target_month", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_monthly_attendance_closings_on_employee_id"
+    t.index ["target_month", "employee_id"], name: "idx_on_target_month_employee_id_2a95ff0ef6", unique: true
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.text "message_text"
@@ -121,6 +144,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_024013) do
   add_foreign_key "attendances", "employees"
   add_foreign_key "employee_rules", "employees"
   add_foreign_key "employees", "employees", column: "manager_id"
+  add_foreign_key "monthly_attendance_closing_approvals", "employees", column: "approver_id"
+  add_foreign_key "monthly_attendance_closing_approvals", "monthly_attendance_closings"
+  add_foreign_key "monthly_attendance_closings", "employees"
   add_foreign_key "notifications", "employees", column: "recipient_employee_id"
   add_foreign_key "work_date_exception_requests", "employees"
   add_foreign_key "work_date_exceptions", "employees"

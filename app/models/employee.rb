@@ -12,6 +12,7 @@ class Employee < ApplicationRecord
   has_many :employee_rules, dependent: :destroy
   has_many :work_date_exception_requests, dependent: :destroy
   has_many :work_date_exceptions, dependent: :destroy
+  has_many :monthly_attendance_closings, dependent: :destroy
 
   def has_request_attendances
     self.attendances.select { |a|a.attendance_edit_request.present? }

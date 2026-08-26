@@ -1,0 +1,11 @@
+= render "shared/page_description",
+  title: "月末締め申請作成ページ",
+  descriptions: [ \
+    "#{l @monthly_attendance_closing.target_month,format: :year_month}の月末締めを提出するページです。",
+    "その月の勤怠実績を確認し、月末締めを提出することができます。",
+  ]
+= render "shared/daily_work_summary_table",
+  selected_month: Date.today,
+  daily_work_summary: @summaries
+
+= render partial: 'form', locals: {employee: @employee,monthly_attendance_closing: @monthly_attendance_closing}
