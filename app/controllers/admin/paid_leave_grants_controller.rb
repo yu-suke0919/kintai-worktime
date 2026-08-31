@@ -8,13 +8,13 @@ class Admin::PaidLeaveGrantsController < ApplicationController
   end
 
   def new
-    params = {}
-    @paid_leave_grant = PaidLeaveGrant.new(params)
+    @paid_leave_grant = PaidLeaveGrant.new()
   end
   def create
     @paid_leave_grant = @employee.paid_leave_grants.build(paid_leave_grant_params)
+    @paid_leave_grant.granted_by = current_employee
     if @paid_leave_grant.save
-      redirect_to admin_employee_paid_leave_balances_path(@employee.id), notice: "就業規則を作成しました"
+      redirect_to admin_employee_paid_leave_grants_path(@employee.id), notice: "就業規則を作成しました"
     else
       render :new, status: :unprocessable_entity
     end
