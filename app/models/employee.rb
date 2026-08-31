@@ -13,6 +13,8 @@ class Employee < ApplicationRecord
   has_many :work_date_exception_requests, dependent: :destroy
   has_many :work_date_exceptions, dependent: :destroy
   has_many :monthly_attendance_closings, dependent: :destroy
+  has_many :paid_leave_grants, dependent: :destroy
+  has_many :granted_paid_leave_grants, class_name: "PaidLeaveGrant", foreign_key: "granted_by_id"
 
   def has_request_attendances
     self.attendances.select { |a|a.attendance_edit_request.present? }
