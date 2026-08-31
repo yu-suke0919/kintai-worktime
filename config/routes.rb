@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :work_date_exception_requests, only: [ :new, :edit, :create, :update ]
     resources :monthly_attendance_closings, only: [ :index, :new, :create ]
   end
+  resources :paid_leave_grants, only: :index
   resources :notifications, only: [ :index, :show ]
   devise_for :employees, path: "auth"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
