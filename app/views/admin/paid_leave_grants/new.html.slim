@@ -1,0 +1,24 @@
+= render "shared/page_description",
+  title: "従業員_有給休暇付与画面",
+  descriptions: [ \
+    "#{@employee.name}さんの付与された有給休暇一覧画面です。",
+  ]
+
+- if @paid_leave_grant.errors.present?
+  ul#error_explanation
+    - @paid_leave_grant.errors.full_messages.each do |message|
+      li= message
+
+.d-flex.justify-content-center
+  = form_with model: [:admin,@employee,@paid_leave_grant],class:'col-6' do |f|
+    .form-group
+      = f.label :granted_on
+      = f.date_field :granted_on, class: 'form-control'
+    .form-group
+      = f.label :granted_minutes
+      = f.number_field :granted_minutes, class: 'form-control'
+    .form-group
+      = f.label :expires_on
+      = f.date_field :expires_on, class: 'form-control'
+    .text-end
+      = f.submit nil, class: 'btn btn-primary'
