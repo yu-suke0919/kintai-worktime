@@ -12,13 +12,28 @@
 .d-flex.justify-content-center
   = form_with model: [:admin,@employee,@paid_leave_grant],class:'col-6' do |f|
     .form-group
+      = label_tag :granted_by_name, "付与者"
+      = text_field_tag :granted_by_name,@paid_leave_grant.granted_by.name,disabled: true,class: "form-control"
+    .form-group
       = f.label :granted_on
       = f.date_field :granted_on, class: 'form-control'
-    .form-group
-      = f.label :granted_minutes
-      = f.number_field :granted_minutes, class: 'form-control'
+    .row
+      .form-group.col-6
+        = f.label :granted_days
+        = f.number_field :granted_days,min:0,step:1, class: 'form-control'
+      .form-text.col-6
+        = f.label :granted_hours
+        = f.number_field :granted_hours,min:0,step:1, class: 'form-control'
     .form-group
       = f.label :expires_on
       = f.date_field :expires_on, class: 'form-control'
     .text-end
       = f.submit nil, class: 'btn btn-primary'
+
+  / .row data-controller="paid-leave-grant"
+      .form-group.col-8
+        = f.label :granted_minutes
+        = f.number_field :granted_minutes,min:0,step:60, class: 'form-control',data: { paid_leave_grant_target: "minutes",action: "input->paid-leave-grant#convertMinutes"}
+      .form-text.col-4
+        = label_tag :granted_days
+        = text_field_tag :granted_days,'a',disabled:true, class: 'form-control',data: {paid_leave_grant_target: "days"}

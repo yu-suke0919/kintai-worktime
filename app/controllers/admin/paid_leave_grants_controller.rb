@@ -8,13 +8,14 @@ class Admin::PaidLeaveGrantsController < ApplicationController
   end
 
   def new
-    @paid_leave_grant = PaidLeaveGrant.new()
+    @paid_leave_grant = PaidLeaveGrant.new(granted_by: current_employee)
   end
   def create
     @paid_leave_grant = @employee.paid_leave_grants.build(paid_leave_grant_params)
     @paid_leave_grant.granted_by = current_employee
+    @paid_leave_grant.granted_minutes = (@paid_leave_grant.granted_days * 480) + (@paid_leave_grant.granted_hours * 60)
     if @paid_leave_grant.save
-      redirect_to admin_employee_paid_leave_grants_path(@employee.id), notice: "就業規則を作成しました"
+      redirect_to admin_employee_paid_leave_grants_path(@employee.id), notice: "有給データを作成しました"
     else
       render :new, status: :unprocessable_entity
     end
@@ -24,7 +25,7 @@ class Admin::PaidLeaveGrantsController < ApplicationController
 
   private
   def paid_leave_grant_params
-    params.required(:paid_leave_grant).permit(:granted_on, :granted_minutes, :expires_on)
+    params.required(:paid_leave_grant).permit(:granted_on, :granted_minutes, :expires_on, :granted_days, :granted_hours)
   end
 
   def admin_role_required
