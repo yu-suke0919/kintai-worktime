@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_012823) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_021909) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -144,11 +144,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_012823) do
     t.datetime "created_at", null: false
     t.integer "delta_minutes", null: false
     t.date "effective_on", null: false
-    t.bigint "paid_leave_grant_id", null: false
+    t.bigint "paid_leave_balance_id", null: false
     t.text "reason", null: false
     t.integer "transaction_type", null: false
     t.datetime "updated_at", null: false
-    t.index ["paid_leave_grant_id"], name: "index_paid_leave_transactions_on_paid_leave_grant_id"
+    t.index ["paid_leave_balance_id"], name: "index_paid_leave_transactions_on_paid_leave_balance_id"
   end
 
   create_table "work_date_exception_requests", force: :cascade do |t|
@@ -187,7 +187,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_012823) do
   add_foreign_key "paid_leave_balances", "paid_leave_grants"
   add_foreign_key "paid_leave_grants", "employees"
   add_foreign_key "paid_leave_grants", "employees", column: "granted_by_id"
-  add_foreign_key "paid_leave_transactions", "paid_leave_grants"
+  add_foreign_key "paid_leave_transactions", "paid_leave_balances"
   add_foreign_key "work_date_exception_requests", "employees"
   add_foreign_key "work_date_exceptions", "employees"
 end
