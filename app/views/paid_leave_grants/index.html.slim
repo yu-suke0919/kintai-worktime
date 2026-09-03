@@ -1,5 +1,5 @@
 = render "shared/page_description",
-  title: "従業員_本登録画面",
+  title: "従業員_有給休暇一覧画面",
   descriptions: [ \
     "#{@employee.name}さんの付与された有給休暇一覧画面です。",
   ]
@@ -8,8 +8,9 @@ table.table.table-hover
   thead.thead-default
     tr.text-center
       th style="width: 10%" = "付与日"
-      th style="width: 10%" = "付与日数"
+      th style="width: 10%" = "付与分数"
       th style="width: 10%" = "期限日"
+      th style="width: 10%" = "詳細"
 
   tbody
     - @paid_leave_grants.each do |grant|
@@ -17,4 +18,5 @@ table.table.table-hover
         td= grant.granted_on
         td= grant.granted_minutes
         td= grant.expires_on
+        td= link_to "詳細",paid_leave_grant_paid_leave_balances_path(grant)
         
