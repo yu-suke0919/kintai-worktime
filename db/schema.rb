@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_28_051901) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_012823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -116,6 +116,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_051901) do
     t.index ["recipient_employee_id"], name: "index_notifications_on_recipient_employee_id"
   end
 
+  create_table "paid_leave_balances", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "effective_from", null: false
+    t.integer "minutes_per_day", null: false
+    t.bigint "paid_leave_grant_id", null: false
+    t.bigint "previous_balance_id"
+    t.integer "status", null: false
+    t.datetime "updated_at", null: false
+    t.index ["paid_leave_grant_id"], name: "index_paid_leave_balances_on_paid_leave_grant_id"
+    t.index ["previous_balance_id"], name: "index_paid_leave_balances_on_previous_balance_id"
+  end
+
   create_table "paid_leave_grants", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "employee_id", null: false
@@ -171,6 +183,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_051901) do
   add_foreign_key "monthly_attendance_closing_approvals", "monthly_attendance_closings"
   add_foreign_key "monthly_attendance_closings", "employees"
   add_foreign_key "notifications", "employees", column: "recipient_employee_id"
+  add_foreign_key "paid_leave_balances", "paid_leave_balances", column: "previous_balance_id"
+  add_foreign_key "paid_leave_balances", "paid_leave_grants"
   add_foreign_key "paid_leave_grants", "employees"
   add_foreign_key "paid_leave_grants", "employees", column: "granted_by_id"
   add_foreign_key "paid_leave_transactions", "paid_leave_grants"
