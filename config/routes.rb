@@ -21,7 +21,9 @@ Rails.application.routes.draw do
         post "reject_closing", on: :member
       end
       resources :employee_rules, only: [ :index, :new, :create ]
-      resources :paid_leave_grants, only: [ :index, :new, :create ]
+      resources :paid_leave_grants, only: [ :index, :new, :create ] do
+        resources :paid_leave_balances, only: :index
+      end
     end
   end
   root to: "attendances#show_today"

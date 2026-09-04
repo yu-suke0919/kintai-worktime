@@ -20,5 +20,5 @@ table.table.table-hover
         td= grant.granted_on
         td= grant.granted_minutes
         td= grant.expires_on
-        td= link_to "詳細",paid_leave_balances_paid_leave_grant_path(grant)
+        td= link_to "詳細",admin_employee_paid_leave_grant_paid_leave_balances_path(employee_id: @employee.id,paid_leave_grant_id:grant.id)
         
