@@ -13,7 +13,7 @@ class Admin::PaidLeaveGrantsController < ApplicationController
   def create
     @paid_leave_grant = @employee.paid_leave_grants.build(paid_leave_grant_params)
     @paid_leave_grant.granted_by = current_employee
-    @paid_leave_grant.granted_minutes = (@paid_leave_grant.granted_days * 480) + (@paid_leave_grant.granted_hours * 60)
+    @paid_leave_grant.granted_minutes = (@paid_leave_grant.granted_days.to_i * 480) + (@paid_leave_grant.granted_hours.to_i * 60)
     if @paid_leave_grant.save
       redirect_to admin_employee_paid_leave_grants_path(@employee.id), notice: "有給データを作成しました"
     else
