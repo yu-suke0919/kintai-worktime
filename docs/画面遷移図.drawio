@@ -1242,7 +1242,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="uBB_080C94JFkZQkhLXM" name="有給休暇設計">
-    <mxGraphModel dx="492" dy="324" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="904" dy="559" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1482,6 +1482,9 @@
         </mxCell>
         <mxCell id="4T3-UGw4UOWGAT3y4Si1-67" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" value="ruleが増える/変更/削除&lt;div&gt;されるたびにbalanceが変わる&lt;/div&gt;&lt;div&gt;→&lt;/div&gt;" vertex="1">
           <mxGeometry height="105" width="160" x="470" y="730" as="geometry" />
+        </mxCell>
+        <mxCell id="PHYhn9S-spYtZpp2MCsh-1" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" value="ルールは重複不可能,&lt;div&gt;ルールは伸長、短縮のみで&lt;/div&gt;&lt;div&gt;新規作成は開いた部分にのみ適用させる&lt;/div&gt;" vertex="1">
+          <mxGeometry height="105" width="160" x="540" y="790" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
