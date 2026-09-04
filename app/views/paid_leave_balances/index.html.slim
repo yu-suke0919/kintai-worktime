@@ -7,16 +7,12 @@
   table.table.table-hover
     thead.thead-default
       tr.text-center
-        th style="width: 10%" = "付与日"
-        th style="width: 10%" = "付与分数"
-        th style="width: 10%" = "期限日"
-        th style="width: 10%" = "詳細"
+        th style="width: 10%" = "開始日"
+        th style="width: 10%" = "時間休にした時の単位時間"
 
-    tbody
-      - @paid_leave_grants.each do |grant|
+    /tbody
+      - @paid_leave_balance_id.each do |balance|
         tr.align-middle.text-center
-          td= grant.granted_on
-          td= grant.granted_minutes
-          td= grant.expires_on
-          td= link_to "詳細",paid_leave_grant_paid_leave_balances_path(grant)
+          td= balance.effective_from
+          td= balance.employee_rule.scheduled_work_minutes
           
