@@ -1,4 +1,4 @@
-<mxfile host="Electron" pages="10">
+<mxfile host="Electron" pages="11">
   <diagram id="JBZPfa6QX43DO95mivk_" name="ER_概要図">
     <mxGraphModel dx="781" dy="485" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
@@ -4379,6 +4379,80 @@
         </mxCell>
         <mxCell id="ZJDLQ_Ysh7Lx_NiG-TQD-12" edge="1" parent="1" source="VzcUzznrd8W76FqihRPS-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.003;entryY=0.42;entryDx=0;entryDy=0;entryPerimeter=0;" target="ZJDLQ_Ysh7Lx_NiG-TQD-11">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="0jQcbWAD3Aj_-AOTzH05" name="ページ-11">
+    <mxGraphModel dx="994" dy="615" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="残:有給1日と5時間" vertex="1">
+          <mxGeometry height="60" width="140" x="80" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-2" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8時間労働" vertex="1">
+          <mxGeometry height="30" width="140" x="80" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="残:有給1日と3.75時間&lt;div&gt;↓切り上げ&lt;/div&gt;&lt;div&gt;残:有給1日と4時間&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="140" x="260" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6時間労働" vertex="1">
+          <mxGeometry height="30" width="140" x="260" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-5" edge="1" parent="1" source="Qkvua6ZvtcyKETJci7Hr-1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="Qkvua6ZvtcyKETJci7Hr-3" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="320" y="660" as="sourcePoint" />
+            <mxPoint x="370" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="残:有給1日と5.33時間&lt;div&gt;↓切り上げ&lt;/div&gt;&lt;div&gt;残:有給1日と6時間&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="140" x="440" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8時間労働" vertex="1">
+          <mxGeometry height="30" width="140" x="440" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-8" edge="1" parent="1" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="Qkvua6ZvtcyKETJci7Hr-6" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="400" y="600" as="sourcePoint" />
+            <mxPoint x="550" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" value="" vertex="1">
+          <mxGeometry height="160" width="560" x="50" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="有給1日(=8時間)" vertex="1">
+          <mxGeometry height="60" width="140" x="160" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="8時間労働" vertex="1">
+          <mxGeometry height="30" width="140" x="160" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="有給1日(=6時間)" vertex="1">
+          <mxGeometry height="60" width="140" x="360" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-13" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="6時間労働" vertex="1">
+          <mxGeometry height="30" width="140" x="360" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="24時間の有給取得&lt;div&gt;↓&lt;/div&gt;&lt;div&gt;3日分消費&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="140" x="160" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="24時間の有給取得&lt;div&gt;↓&lt;/div&gt;&lt;div&gt;4日分消費&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="140" x="360" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-16" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="有給取得テーブル&lt;div&gt;&lt;br&gt;&lt;div&gt;取得日数&lt;/div&gt;&lt;div&gt;有効期限など&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="720" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-17" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;rounded=0;" value="1日差つく" vertex="1">
+          <mxGeometry height="30" width="60" x="300" y="385" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-18" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Text" vertex="1">
+          <mxGeometry height="30" width="120" x="720" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-19" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="有給利用テーブル&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;使用日、日数&lt;/div&gt;&lt;div&gt;理由など&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="230" width="120" x="720" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="Qkvua6ZvtcyKETJci7Hr-20" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;取得日数12日&lt;/div&gt;&lt;div&gt;2027年3月末まで&lt;/div&gt;&lt;div&gt;(利用テーブルの合計:2日と5時間)&lt;/div&gt;&lt;div&gt;--------------------&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;2026/7/10:2日&lt;/div&gt;&lt;div&gt;旅行行くため&lt;/div&gt;&lt;div&gt;&amp;nbsp;2026/7/20:5時間&lt;/div&gt;&lt;div&gt;病院行くため&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="310" width="120" x="880" y="270" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
