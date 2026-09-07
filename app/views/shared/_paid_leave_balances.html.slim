@@ -1,0 +1,28 @@
+- paid_leave_grant.balances.each do |balance|
+  table.table
+    thead.thead-default
+      tr.text-center
+        th style="width: 50%" = "開始日"
+        th style="width: 50%" = "時間休にした時の単位時間"
+    tbody
+      tr.align-middle.text-center
+        td= balance.effective_from
+        td= balance.employee_rule.scheduled_work_minutes
+      tr.align-middle.text-center
+        td colspan= "2"
+          table.table.table-hover
+            thead.thead-default
+              tr.text-center
+                th style="width: 10%" ="使用日"
+                th style="width: 10%" ="使用日数"
+                th style="width: 10%" ="使用時間"
+                th style="width: 20%" ="状態"
+                th style="width: 50%" ="理由"
+            - balance.transactions.each do |transaction|
+              tbody
+                tr.align-middle.text-center
+                  td= transaction.effective_on
+                  td= transaction.delta_days
+                  td= transaction.delta_minutes / 60
+                  td= transaction.transaction_type
+                  td= transaction.reason
