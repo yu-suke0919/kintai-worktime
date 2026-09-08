@@ -8,6 +8,10 @@ class WorkDateExceptionRequest < ApplicationRecord
     hospitalization: 11,
     special_leave: 12
   }
+  enum :status, {
+    pending: 0, approved: 1, rejected: 2
+  }
+
 
   def self.request_options
     request_types.map { |k, _| [ I18n.t("enums.work_date_exception_request.request_type.#{k}"), k ] }.to_h
