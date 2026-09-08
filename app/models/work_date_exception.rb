@@ -1,6 +1,7 @@
 class WorkDateException < ApplicationRecord
   belongs_to :employee
   has_many :paid_leave_transactions
+  belongs_to :work_date_exception_requests
 
     enum :exception_type, {
     paid_leave: 10,

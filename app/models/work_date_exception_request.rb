@@ -1,6 +1,6 @@
 class WorkDateExceptionRequest < ApplicationRecord
   belongs_to :employee
-
+  has_many :work_date_exception, dependent: :destroy
   has_many :notifications, as: :notifiable, dependent: :nullify
 
   enum :request_type, {

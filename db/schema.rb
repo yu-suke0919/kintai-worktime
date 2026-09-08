@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_012219) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_014713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -172,7 +172,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_012219) do
     t.integer "exception_type", null: false
     t.datetime "updated_at", null: false
     t.date "work_date", null: false
+    t.bigint "work_date_exception_request_id", null: false
     t.index ["employee_id"], name: "index_work_date_exceptions_on_employee_id"
+    t.index ["work_date_exception_request_id"], name: "index_work_date_exceptions_on_work_date_exception_request_id"
   end
 
   add_foreign_key "attendance_edit_requests", "attendances"
@@ -192,4 +194,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_012219) do
   add_foreign_key "paid_leave_transactions", "work_date_exceptions"
   add_foreign_key "work_date_exception_requests", "employees"
   add_foreign_key "work_date_exceptions", "employees"
+  add_foreign_key "work_date_exceptions", "work_date_exception_requests"
 end
