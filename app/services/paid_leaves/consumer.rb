@@ -12,9 +12,9 @@ module PaidLeaves
     def consume(exception:)
       use_days = 1
       @grants.each do |grant|
-        obtainable = calculate_remain_paid_leave(grant)
+        obtainable = grant.remaining_leaves[:days]
         if obtainable > use_days
-          balance = grant.balances.find_by(effective_from)
+          balance = grant.balances.where(effective_from: ..exception.work_date).order(:effective_from).first
           balance
             .transactions
             .create!(delta_days: use_days,
@@ -23,7 +23,7 @@ module PaidLeaves
                     paid_leave_balance: balance,
                     reason: "有給休暇のため",
                     transaction_type: 1,
-                    exception: exception
+                    work_date_exception: exception
                     )
           break
         end
@@ -33,14 +33,6 @@ module PaidLeaves
     private
 
     def calculate_transaction
-    end
-
-    def calculate_remain_paid_leave(grant)
-      grant.balances.sum do |balance|
-        balance.transactions.sum do |transaction|
-          transaction.delta_days
-        end
-      end
     end
   end
 end

@@ -11,4 +11,7 @@ class PaidLeaveGrant < ApplicationRecord
   def synchronize_paid_leave_balances
     PaidLeaveBalances::Synchronizer.for_new_paid_leave_grant!(self)
   end
+  def remaining_leaves
+    PaidLeaves::BalanceCalculator.new(grant: self).remaining_leaves
+  end
 end
