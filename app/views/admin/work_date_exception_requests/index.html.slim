@@ -33,7 +33,7 @@ table.table.table-hover
           td= er.approved_by_id
         - else
           td= '-'
-        - if er.status == 0
+        - if er.status == "pending"
           td= button_to I18n.t("helpers.request.approve"),approve_request_admin_employee_work_date_exception_request_path(er.employee,er)
           td= button_to I18n.t("helpers.request.reject"),reject_request_admin_employee_work_date_exception_request_path(er.employee,er)
         - else
