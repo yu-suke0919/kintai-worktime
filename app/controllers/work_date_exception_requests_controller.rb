@@ -11,21 +11,24 @@ class WorkDateExceptionRequestsController < ApplicationController
   end
   def create
     @exception_request = @employee.work_date_exception_requests.build(request_params)
-    if @exception_request.save
-      @exception_request.notifications.create!(
-        notification_type: :pending,
-        recipient_employee: @employee,
-        message_text: "振替/休暇申請が完了しました。"
-      )
-      redirect_to notifications_path, notice: "振替/休暇申請を完了しました。"
-    else
-      render :new, status: :unprocessable_entity
-    end
+    WorkDateExceptionRequests::CreateExceptions.new(
+      exception_request: @exception_request
+    ).call
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.warn(
+      "#{e.record.class.name}: #{e.record.errors.full_messages.join('、')}"
+    )
+
+    render :new, status: :unprocessable_entity
+  else
+    redirect_to notifications_path, notice: "振替/休暇申請を完了しました。"
   end
+
   def update
     @exception_request = WorkDateExceptionRequest.find(params[:id])
     if @exception_request.update(request_params)
       @exception_request.notifications.create!(
+
         notification_type: :pending,
         recipient_employee: @employee,
         message_text: "振替/休暇申請の修正が完了しました。"

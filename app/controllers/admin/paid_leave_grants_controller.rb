@@ -15,6 +15,14 @@ class Admin::PaidLeaveGrantsController < ApplicationController
     @paid_leave_grant.granted_by = current_employee
     @paid_leave_grant.granted_minutes = (@paid_leave_grant.granted_days.to_i * 480) + (@paid_leave_grant.granted_hours.to_i * 60)
     if @paid_leave_grant.save
+      #  @paid_leave_grant.balances.min_by(&:effective_from).transactions
+      #    .create!(delta_days: @paid_leave_grant.granted_days.to_i,
+      #                delta_minutes: 0,
+      #                effective_on: @paid_leave_grant.granted_on,
+      #                reason: "有給休暇のため",
+      #                work_date_exception: WorkDateException.first,
+      #                transaction_type: 1,
+      #               )
       redirect_to admin_employee_paid_leave_grants_path(@employee.id), notice: "有給データを作成しました"
     else
       render :new, status: :unprocessable_entity

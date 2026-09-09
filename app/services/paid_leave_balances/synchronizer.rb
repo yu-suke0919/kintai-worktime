@@ -18,6 +18,8 @@ module PaidLeaveBalances
         end
     end
 
+    private
+
     def self.synchronize!(grant, rule)
       effective_from = [ grant.granted_on, rule.effective_from ].max
       PaidLeaveBalance.find_or_create_by!(paid_leave_grant: grant, employee_rule: rule, effective_from: effective_from)

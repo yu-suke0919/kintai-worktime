@@ -1,7 +1,7 @@
 class WorkDateException < ApplicationRecord
   belongs_to :employee
   has_many :paid_leave_transactions
-  belongs_to :work_date_exception_requests
+  belongs_to :work_date_exception_request
 
   enum :exception_type, {
     paid_leave: 10,
@@ -11,6 +11,6 @@ class WorkDateException < ApplicationRecord
   enum :usage_status, {
     pending: 0,
     used: 1,
-    not_used: 2
+    unused: 2
   }
 end
