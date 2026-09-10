@@ -5,6 +5,7 @@ class WorkDateException < ApplicationRecord
 
   enum :exception_type, {
     paid_leave: 10,
+    hourly_paid_leave: 13,
     hospitalization: 11,
     special_leave: 12
   }

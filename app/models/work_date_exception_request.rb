@@ -6,7 +6,8 @@ class WorkDateExceptionRequest < ApplicationRecord
   enum :request_type, {
     paid_leave: 10,
     hospitalization: 11,
-    special_leave: 12
+    special_leave: 12,
+    hourly_paid_leave: 13
   }
   enum :status, {
     pending: 0, approved: 1, rejected: 2
