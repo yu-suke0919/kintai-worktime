@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_09_055410) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_10_025842) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -172,7 +172,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_09_055410) do
   create_table "work_date_exceptions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "employee_id", null: false
+    t.datetime "ends_at"
     t.integer "exception_type", null: false
+    t.datetime "starts_at"
     t.datetime "updated_at", null: false
     t.integer "usage_status", null: false
     t.date "work_date", null: false
