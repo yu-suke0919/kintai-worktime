@@ -4,6 +4,7 @@ table.table.table-hover
       th style="width: 10%" = "付与日"
       th style="width: 10%" = "付与日数"
       th style="width: 10%" = "残日数"
+      th style="width: 10%" = "残時間"
       th style="width: 10%" = "期限日"
       th style="width: 10%" = "詳細"
 
@@ -13,5 +14,6 @@ table.table.table-hover
         td= grant.granted_on
         td= grant.granted_minutes / 360
         td= grant.remaining_leaves[:days]
+        td= grant.remaining_leaves[:hours]
         td= grant.expires_on
         td= link_to "詳細",balances_path_for(grant)
