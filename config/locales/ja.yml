@@ -80,8 +80,10 @@ ja:
         list: 休日出勤/休暇申請一覧
         approved_at: 承認/否認日
         approved_by: 承認/否認担当者
-        start_date: 適用開始日
-        end_date: 適用終了日
+        start_date: 休暇適用開始日
+        end_date: 休暇適用終了日
+        starts_at: 申請する開始時間
+        ends_at: 申請する終了時間
         request_type: 申請種別
         status: 申請状態
         updated_at: 更新日
@@ -299,7 +301,7 @@ ja:
         approved: 承認
         rejected: 否認
     
-    employee_work_date_exception:
+    work_date_exception:
       exception_type:
         paid_leave: 有給休暇
         hospitalization: 入院
@@ -308,6 +310,7 @@ ja:
     work_date_exception_request:
       request_type:
         paid_leave: 有給休暇
+        hourly_paid_leave: 時間有給休暇
         hospitalization: 入院
         special_leave: 冠婚葬祭
   devise:
