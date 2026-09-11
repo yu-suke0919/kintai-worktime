@@ -14,4 +14,8 @@ class PaidLeaveGrant < ApplicationRecord
   def remaining_leaves
     PaidLeaves::BalanceCalculator.new(grant: self).remaining_leaves
   end
+
+  def balance_history
+    PaidLeaves::BalanceCalculator.new(grant: self).balance_history
+  end
 end

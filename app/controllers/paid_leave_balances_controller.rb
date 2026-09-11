@@ -3,6 +3,7 @@ class PaidLeaveBalancesController < ApplicationController
     before_action :set_employee
   def index
     @paid_leave_grant = @employee.paid_leave_grants.includes(:balances).find(params[:paid_leave_grant_id])
+    @balance_history = @paid_leave_grant.balance_history
   end
 
   def set_employee

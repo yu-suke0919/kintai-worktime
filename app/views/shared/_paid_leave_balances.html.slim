@@ -1,4 +1,51 @@
-- paid_leave_grant.balances.each do |balance|
+table.table.table-striped
+  thead
+    tr.text-center
+      th style="width: 20%" = "有給付与日"
+      th style="width: 20%" = "付与日数"
+      th style="width: 20%" = "残日数"
+      th style="width: 20%" = "残時間"
+      th style="width: 20%" = "期限日"
+  tbody
+    tr.align-middle.text-center
+      td= paid_leave_grant.granted_on
+      td= paid_leave_grant.granted_minutes / 480
+      td= paid_leave_grant.remaining_leaves[:days]
+      td= paid_leave_grant.remaining_leaves[:hours]
+      td= paid_leave_grant.expires_on
+
+table.table
+  thead
+    tr
+      th style="width: 20%" 
+      th style="width: 20%" 
+      th style="width: 20%" 
+      th style="width: 20%" 
+      th style="width: 20%" 
+  tbody
+    - balance_history.each do |history|
+      - case history.history_type
+        - when :new_employee_rule
+          tr.align-middle.text-right.table-secondary
+            td.py-0.fw-bold colspan= "1" = "日時:#{history.date}~"
+            td.py-0.fw-bold colspan= "4" = "時間単位年休の時間数:#{history.work_hours}時間"
+          tr.align-middle.text-center.table-light
+            td.py-0 = "申請日時"
+            td.py-0 = "使用日数"
+            td.py-0 = "使用時間"
+            td.py-0 = "種別"
+            td.py-0 = "残り日数"
+        - else
+          tr.align-middle.text-center
+            td = history.date
+            td = history.delta_days
+            td = history.delta_hours
+            td = history.reason
+            td = "#{history.remaining_days}日と#{history.remaining_hours}時間"
+
+
+
+/- paid_leave_grant.balances.each do |balance|
   table.table
     thead.thead-default
       tr.text-center
@@ -7,7 +54,7 @@
     tbody
       tr.align-middle.text-center
         td= balance.effective_from
-        td= balance.employee_rule.scheduled_work_minutes
+        td= balance.employee_rule.scheduled_work_minutes/60
       tr.align-middle.text-center
         td colspan= "2"
           table.table.table-hover
