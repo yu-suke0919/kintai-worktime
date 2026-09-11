@@ -10,6 +10,8 @@ table.table.table-hover
       th style="width: 10%" = WorkDateExceptionRequest.human_attribute_name(:request_type)
       th style="width: 15%" = WorkDateExceptionRequest.human_attribute_name(:start_date)
       th style="width: 15%" = WorkDateExceptionRequest.human_attribute_name(:end_date)
+      th style="width: 15%" = WorkDateExceptionRequest.human_attribute_name(:starts_at)
+      th style="width: 15%" = WorkDateExceptionRequest.human_attribute_name(:ends_at)
       th style="width: 20%" = WorkDateExceptionRequest.human_attribute_name(:reason)
       th style="width: 10%" = WorkDateExceptionRequest.human_attribute_name(:status)
       th style="width: 10%" = WorkDateExceptionRequest.human_attribute_name(:approved_at)
@@ -21,8 +23,12 @@ table.table.table-hover
     - @exception_requests.each do |er|
       tr
         td= I18n.t("enums.work_date_exception_request.request_type.#{er.request_type}")
-        td= l er.start_date,formats: :default
-        td= l er.end_date,formats: :default
+        - if er.start_date.nil?
+          td= l er.starts_at,formats: :default
+          td= l er.ends_at,formats: :default
+        - else
+          td= l er.start_date,formats: :default
+          td= l er.end_date,formats: :default
         td= er.reason
         td= er.status
         - if er.approved_at.present?
