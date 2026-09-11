@@ -12,7 +12,7 @@ table.table.table-hover
     - paid_leave_grants&.each do |grant|
       tr.align-middle.text-center
         td= grant.granted_on
-        td= grant.granted_minutes / 360
+        td= grant.granted_minutes / 480
         td= grant.remaining_leaves[:days]
         td= grant.remaining_leaves[:hours]
         td= grant.expires_on
