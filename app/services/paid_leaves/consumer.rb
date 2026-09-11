@@ -35,7 +35,7 @@ module PaidLeaves
     def create_transactions!(use_days, use_hours, exception)
       @grants.each do |grant|
         remaining = grant.remaining_leaves
-        balance = grant.balances.where(effective_from: ..exception.work_date).order(:effective_from).first
+        balance = grant.balances.where(effective_from: ..exception.work_date).order(:effective_from).last
         if remaining[:days] >= 1
           create_transaction!(balance, use_days, use_hours, exception)
           break
