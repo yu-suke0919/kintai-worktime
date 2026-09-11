@@ -2,6 +2,7 @@ class WorkDateExceptionRequestsController < ApplicationController
   before_action :authenticate_employee!
   before_action :ensure_owner!
   before_action :set_employee, only: [ :new, :edit, :create, :update ]
+  before_action :set_total_paid_leave_balance
   def new
     @exception_request = WorkDateExceptionRequest.new()
   end
@@ -49,6 +50,10 @@ class WorkDateExceptionRequestsController < ApplicationController
 
   def set_employee
     @employee = current_employee
+  end
+
+  def set_total_paid_leave_balance
+    @total_paid_leave_balance = @employee.current_total_paid_leave_balance
   end
 
   def request_params
