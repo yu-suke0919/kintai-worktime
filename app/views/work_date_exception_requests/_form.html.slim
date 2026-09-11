@@ -2,7 +2,8 @@
   ul#error_explanation
     - exception_request.errors.full_messages.each do |message|
       li= message
-
+.text-center
+  = "現在の利用可能有給日数:#{total_paid_leave_balance[:days]}日と#{total_paid_leave_balance[:hours]}時間"
 
 .row
   .col-12.col-md-10.col-lg-8.mx-auto
