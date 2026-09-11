@@ -10,7 +10,10 @@ class WorkDateExceptionRequestsController < ApplicationController
     @exception_request = WorkDateExceptionRequest.find(params[:id])
   end
   def create
-    @exception_request = @employee.work_date_exception_requests.build(request_params)
+    params = request_params
+    params[:start_date] = params[:starts_at]
+    params[:end_date] = params[:ends_at]
+    @exception_request = @employee.work_date_exception_requests.build(params)
     WorkDateExceptionRequests::CreateExceptions.new(
       exception_request: @exception_request
     ).call
