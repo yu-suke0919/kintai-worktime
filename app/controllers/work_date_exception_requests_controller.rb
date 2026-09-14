@@ -12,8 +12,10 @@ class WorkDateExceptionRequestsController < ApplicationController
   end
   def create
     params = request_params
-    params[:start_date] = params[:starts_at]
-    params[:end_date] = params[:ends_at]
+    if params[:request_type] == "hourly_paid_leave"
+      params[:start_date] = params[:starts_at]
+      params[:end_date] = params[:ends_at]
+    end
     @exception_request = @employee.work_date_exception_requests.build(params)
     WorkDateExceptionRequests::CreateExceptions.new(
       exception_request: @exception_request
@@ -22,7 +24,6 @@ class WorkDateExceptionRequestsController < ApplicationController
     Rails.logger.warn(
       "#{e.record.class.name}: #{e.record.errors.full_messages.join('、')}"
     )
-
     render :new, status: :unprocessable_entity
   else
     redirect_to notifications_path, notice: "振替/休暇申請を完了しました。"
