@@ -2,48 +2,61 @@
   ul#error_explanation
     - exception_request.errors.full_messages.each do |message|
       li= message
-.text-center
-  = "現在の利用可能有給日数:#{total_paid_leave_balance[:days]}日と#{total_paid_leave_balance[:hours]}時間"
-
 .row
   .col-12.col-md-10.col-lg-8.mx-auto
     = form_with model: [employee,exception_request],local: true,class:'container-md',data: {controller: "leave-form"} do |f|
+      / 申請者の名前
       .row.align-items-center
         .col-3.my-2
           = Employee.human_attribute_name(:name)
         .col-9
           = text_field_tag nil,employee.name,class:'form-control',disabled: true
 
+      /申請種別
       .row.align-items-center
         .col-3.my-2
           = f.label :request_type, WorkDateExceptionRequest.human_attribute_name(:request_type)
         .col-9
           = f.select :request_type,WorkDateExceptionRequest.request_options,{},class: 'form-control',data: {leave_form_target: "requestType",action: "change->leave-form#toggleDateAndDateTime"}
-
-      .row.align-items-center
+      
+      /有給残高表示
+      .row.align-items-center data-leave-form-target="balanceDisplay"
         .col-3.my-2
-          = f.label :start_date, WorkDateExceptionRequest.human_attribute_name(:start_date)
+          = "現在の利用可能有給日数"
         .col-9
-          = f.date_field :start_date,value: Date.today,class: 'form-control',data: {leave_form_target: "dateField"}
+          = "#{total_paid_leave_balance[:days]}日と#{total_paid_leave_balance[:hours]}時間"
 
-      .row.align-items-center
-        .col-3.my-2
-          = f.label :end_date, WorkDateExceptionRequest.human_attribute_name(:end_date)
-        .col-9
-          = f.date_field :end_date,value: Date.today.tomorrow,class: 'form-control',data: {leave_form_target: "dateField"}
+      div data-leave-form-target="leaveDateFields"
+        /休暇開始日時選択フォーム
+        .row.align-items-center
+          .col-3.my-2
+            = f.label :start_date, WorkDateExceptionRequest.human_attribute_name(:start_date)
+          .col-9
+            = f.date_field :start_date,value: Date.today,class: 'form-control',data: {leave_form_target: "leaveDateField"}
 
-      .row.align-items-center
-        .col-3.my-2
-          = f.label :starts_at, WorkDateExceptionRequest.human_attribute_name(:starts_at)
-        .col-9
-          = f.datetime_field :starts_at,value: Date.today,class: 'form-control',data: {leave_form_target: "startsDatetimeField",action: "change->leave-form#updateEndTime"}
+        /休暇終了日時選択フォーム
+        .row.align-items-center
+          .col-3.my-2
+            = f.label :end_date, WorkDateExceptionRequest.human_attribute_name(:end_date)
+          .col-9
+            = f.date_field :end_date,value: Date.today.tomorrow,class: 'form-control',data: {leave_form_target: "leaveDateField"}
 
-      .row.align-items-center
-        .col-3.my-2
-          = f.label :ends_at, WorkDateExceptionRequest.human_attribute_name(:ends_at)
-        .col-9
-          = f.datetime_field :ends_at,value: Date.today,class: 'form-control',data: {leave_form_target: "endsDatetimeField"}
+      div data-leave-form-target="leaveHourFields"
+        / 時間単位有給休暇開始時間単位選択フォーム
+        .row.align-items-center
+          .col-3.my-2
+            = f.label :starts_at, WorkDateExceptionRequest.human_attribute_name(:starts_at)
+          .col-9
+            = f.datetime_field :starts_at,value: Date.today,class: 'form-control',data: {leave_form_target: "startsDatetimeField",action: "change->leave-form#updateEndTime"}
 
+        / 時間単位有給休暇_終了時間単位選択フォーム
+        .row.align-items-center
+          .col-3.my-2
+            = f.label :ends_at, WorkDateExceptionRequest.human_attribute_name(:ends_at)
+          .col-9
+            = f.datetime_field :ends_at,value: Date.today,class: 'form-control',data: {leave_form_target: "endsDatetimeField"}
+
+      /理由選択フォーム
       .row.align-items-center
         .col-3.my-2
           = f.label :reason, WorkDateExceptionRequest.human_attribute_name(:reason)
