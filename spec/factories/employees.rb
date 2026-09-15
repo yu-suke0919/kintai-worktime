@@ -5,4 +5,8 @@ FactoryBot.define do
     password              { "111111" }
     password_confirmation { "111111" }
   end
+
+  trait :manager do
+    role { :manager }
+  end
 end
