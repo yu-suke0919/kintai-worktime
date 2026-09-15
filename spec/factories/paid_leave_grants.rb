@@ -1,9 +1,14 @@
 FactoryBot.define do
   factory :paid_leave_grant do
-    employee_id { nil }
-    granted_by_id { nil }
+    association :employee
+    association :granted_by, factory: :employee
     granted_minutes { 4800 }
-    granted_on { "2026-04-01" }
-    expires_on { "2028-03-31" }
+    granted_on { Date.new(2026, 4, 1) }
+    expires_on { Date.new(2028, 3, 31) }
+  end
+
+  trait :expired_on_2026_03_31 do
+    granted_on { Date.new(2024, 4, 1) }
+    expires_on { Date.new(2026, 3, 31) }
   end
 end
