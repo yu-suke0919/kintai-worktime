@@ -1,6 +1,6 @@
 <mxfile host="Electron" pages="15">
   <diagram id="JBZPfa6QX43DO95mivk_" name="ER_概要図">
-    <mxGraphModel dx="781" dy="485" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="2209" dy="1367" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1918,7 +1918,7 @@
             <mxRectangle height="88" width="120" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="P73WUg_2D-p9LE2Mhhax-12" parent="P73WUg_2D-p9LE2Mhhax-10" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;" value="" vertex="1">
+        <mxCell id="P73WUg_2D-p9LE2Mhhax-12" parent="P73WUg_2D-p9LE2Mhhax-10" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;fontSize=11;" value="この計画書書き&lt;div&gt;FactoryBotのデータ作成&lt;/div&gt;" vertex="1">
           <mxGeometry height="88" width="120" x="120" as="geometry">
             <mxRectangle height="88" width="120" as="alternateBounds" />
           </mxGeometry>
