@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :paid_leave_transaction do
-    paid_leave_grant { nil }
-    delta_days { 0 }
+    paid_leave_balance { nil }
+    delta_days { nil }
     delta_minutes { 0 }
     transaction_type { :pending }
     reason { "CreatedByFactoryBot" }
