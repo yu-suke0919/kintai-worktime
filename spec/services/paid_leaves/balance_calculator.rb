@@ -81,7 +81,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 13, 0, 0))
         exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "hourly_paid_leave")
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 240, work_date_exception: exception_1)
-        exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave",  starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 12, 0, 0))
+        exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave",  starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 5, 2, 12, 0, 0))
         exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "hourly_paid_leave")
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_2, delta_minutes: 180,  work_date_exception: exception_2)
 
@@ -101,9 +101,9 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
         expect(result[:days]).to eq(8)
         expect(result[:hours]).to eq(5)
       end
-      it "6時間勤務時に1時間,7時間勤務時に5時間の有給使用により、有給残高は8日1時間に変化" do
+      it "6時間勤務時に1時間,7時間勤務時に5時間の有給使用により、有給残高は9日1時間に変化" do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 5, 2, 10, 0, 0))
-        exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave")
+        exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "hourly_paid_leave")
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_2, delta_minutes: 60, work_date_exception: exception_1)
         exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 6, 2, 9, 0, 0), ends_at: DateTime.new(2026, 6, 2, 14, 0, 0))
         exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "hourly_paid_leave")
@@ -138,6 +138,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
 
         expect(result.length).to eq(2)
         expect(result[0].class).to eq(PaidLeaves::BalanceCalculator::BalanceHistoryItem)
+        expect(result.map(&:history_type)).to eq([ :new_employee_rule, :use ])
       end
       it "1日と5時間の有給使用により、Balance発行イベントと有給使用イベント2つの3履歴が発行される" do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave")
@@ -149,6 +150,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
         result = PaidLeaves::BalanceCalculator.new(grant: grant).balance_history
         expect(result.length).to eq(3)
         expect(result[0].class).to eq(PaidLeaves::BalanceCalculator::BalanceHistoryItem)
+        expect(result.map(&:history_type)).to eq([ :new_employee_rule, :use, :use ])
       end
     end
 
@@ -161,7 +163,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
       let!(:user_rule_seven_hour_time) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 420, effective_from: Date.new(2026, 6, 1), expires_on: Date.new(2026, 6, 30)) }
       let(:balance_3) { grant.balances[2] }
 
-      it "8時間勤務時に1日,6時間勤務時に1日の有給使用により、初期発行イベントと勤務時間変更イベント2つと有給使用イベント2つの6履歴が発行される" do
+      it "8時間勤務時に1日,6時間勤務時に1日の有給使用により、初期発行イベントと勤務時間変更イベント2つと有給使用イベント2つの5履歴が発行される" do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
         exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave")
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_days: 1, work_date_exception: exception_1)
@@ -170,22 +172,24 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_2, delta_days: 1, work_date_exception: exception_2)
 
         result = PaidLeaves::BalanceCalculator.new(grant: grant).balance_history
-        expect(result.length).to eq(7)
+        expect(result.length).to eq(5)
         expect(result[0].class).to eq(PaidLeaves::BalanceCalculator::BalanceHistoryItem)
+        expect(result.map(&:history_type)).to eq([ :new_employee_rule, :use, :new_employee_rule, :use, :new_employee_rule ])
       end
-      it "8時間勤務時に4時間,6時間勤務時に3時間の有給使用により、初期発行イベントと勤務時間変更イベント2つと有給使用イベント2つの6履歴が発行される" do
+      it "8時間勤務時に4時間,6時間勤務時に3時間の有給使用により、初期発行イベントと勤務時間変更イベント2つと有給残時間変換イベント1つと有給使用イベント2つの6履歴が発行される" do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 13, 0, 0))
         exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "hourly_paid_leave")
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 240, work_date_exception: exception_1)
-        exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave",  starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 12, 0, 0))
+        exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave",  starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 5, 2, 12, 0, 0))
         exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "hourly_paid_leave")
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_2, delta_minutes: 180,  work_date_exception: exception_2)
 
         result = PaidLeaves::BalanceCalculator.new(grant: grant).balance_history
-        expect(result.length).to eq(7)
+        expect(result.length).to eq(6)
         expect(result[0].class).to eq(PaidLeaves::BalanceCalculator::BalanceHistoryItem)
+        expect(result.map(&:history_type)).to eq([ :new_employee_rule, :use, :new_employee_rule, :round_up, :use, :new_employee_rule ])
       end
-      it "8時間勤務時に2時間,6時間勤務時に1日の有給使用により、初期発行イベントと勤務時間変更イベント2つと有給使用イベント2つの6履歴が発行される" do
+      it "8時間勤務時に2時間,6時間勤務時に1日の有給使用により、初期発行イベントと勤務時間変更イベント2つと有給残時間変換イベント2つと有給使用イベント2つの7履歴が発行される" do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 11, 0, 0))
         exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "hourly_paid_leave")
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 120, work_date_exception: exception_1)
@@ -196,17 +200,19 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
         result = PaidLeaves::BalanceCalculator.new(grant: grant).balance_history
         expect(result.length).to eq(7)
         expect(result[0].class).to eq(PaidLeaves::BalanceCalculator::BalanceHistoryItem)
+        expect(result.map(&:history_type)).to eq([ :new_employee_rule, :use, :new_employee_rule, :round_up, :use, :new_employee_rule, :round_up ])
       end
-      it "6時間勤務時に1時間,7時間勤務時に5時間の有給使用により、初期発行イベントと勤務時間変更イベント2つと有給使用イベント2つの6履歴が発行される" do
+      it "6時間勤務時に1時間,7時間勤務時に5時間の有給使用により、初期発行イベントと勤務時間変更イベント2つと有給残時間変換イベント1つと有給使用イベント2つの6履歴が発行される" do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 5, 2, 10, 0, 0))
-        exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave")
+        exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "hourly_paid_leave")
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_2, delta_minutes: 60, work_date_exception: exception_1)
         exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 6, 2, 9, 0, 0), ends_at: DateTime.new(2026, 6, 2, 14, 0, 0))
         exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "hourly_paid_leave")
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_3, delta_minutes: 300, work_date_exception: exception_2)
         result = PaidLeaves::BalanceCalculator.new(grant: grant).balance_history
-        expect(result.length).to eq(7)
+        expect(result.length).to eq(6)
         expect(result[0].class).to eq(PaidLeaves::BalanceCalculator::BalanceHistoryItem)
+        expect(result.map(&:history_type)).to eq([ :new_employee_rule, :new_employee_rule, :use, :new_employee_rule, :round_up, :use ])
       end
     end
   end
