@@ -56,7 +56,7 @@ module PaidLeaves
             reason: "ルール変更or既存ルール継続"
           )
         )
-        if before_work_hours > 0
+        if before_work_hours > 0 && remaining_leaves[:hours] > 0
           remaining_leaves[:hours] = (1.0*remaining_leaves[:hours] / before_work_hours * current_work_hours).ceil
           if remaining_leaves[:hours] >= current_work_hours
             remaining_leaves[:days] += 1
@@ -88,7 +88,7 @@ module PaidLeaves
           history.push(
             BalanceHistoryItem.new(
               date: transaction.effective_on,
-              history_type: :uses,
+              history_type: :use,
               delta_days: transaction.delta_days,
               delta_hours: transaction.delta_minutes/ 60,
               work_hours: current_work_hours,
