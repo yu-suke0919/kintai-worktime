@@ -18,7 +18,7 @@ module WorkDateExceptionRequests
               ends_at: @exception_request.ends_at,
               exception_type: @exception_request.request_type
             )
-          PaidLeaves::Consumer.new(employee: @employee).consume(exception: exception)
+          PaidLeaves::Consumer.new(employee: @employee).consume(new_exception: exception)
           @exception_request.notifications.create!(
             notification_type: :pending,
             recipient_employee: @employee,
@@ -38,7 +38,7 @@ module WorkDateExceptionRequests
               work_date: date,
               exception_type: @exception_request.request_type
             )
-            consumer.consume(exception: exception) if @exception_request.request_type == "paid_leave"
+            consumer.consume(new_exception: exception) if @exception_request.request_type == "paid_leave"
           end
           @exception_request.notifications.create!(
             notification_type: :pending,
