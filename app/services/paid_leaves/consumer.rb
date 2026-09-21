@@ -30,26 +30,25 @@ module PaidLeaves
     #   end
     # end
     def consume(new_exception:)
-      return :no_grant if @grants.empty?
-      affected_exceptions = [ new_exception ]
+      raise "有給休暇がありません" if @grants.empty?
+      affected_exceptions = []
       # ここ
       @employee.work_date_exceptions.where(work_date: new_exception.work_date..).order(work_date: :asc).each do |affected_exception|
         affected_exceptions.push(affected_exception)
-        affected_exception.paid_leave_transactions.delete_all
+        affected_exception.paid_leave_transactions.destroy_all
       end
-
       affected_exceptions.each do |exception|
         case exception.exception_type
         when "paid_leave"
-            return :insufficient_balance if @remain_balance_days < 1
+            raise "有給残高が足りません" if @remain_balance_days < 1
             create_transactions!(1, 0, exception)
 
         when "hourly_paid_leave"
             hour_leaves_length = (exception.ends_at - exception.starts_at) / 3600
-            return :insufficient_balance if @remain_balance_days < 1 && @remain_balance_hours < hour_leaves_length
+            raise "有給残高が足りません" if @remain_balance_days < 1 && @remain_balance_hours < hour_leaves_length
             create_transactions!(0, hour_leaves_length, exception)
         else
-            :error
+            raise "不正な呼び出し"
         end
       end
     end
@@ -61,6 +60,7 @@ module PaidLeaves
       @grants.each do |grant|
         remaining = grant.remaining_leaves
         balance = grant.balances.where(effective_from: ..exception.work_date).order(:effective_from).last
+        raise "対象となる有給残高がありません" if balance.nil?
         if remaining[:days] >= 1
           create_transaction!(balance, use_days, use_hours, exception)
           break
