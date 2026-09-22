@@ -12,7 +12,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
     # 付与された有給休暇の残りを1日、1時間単位で返す関数
     # 5日と4時間であれば、{days => 5,hours => 4}が返却値となる。
     context "有給休暇申請が1つもされていない。" do
-      let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_minutes: 4800) }
+      let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10) }
 
       it "有給残高は10日のまま" do
         result = PaidLeaves::BalanceCalculator.new(grant: grant).remaining_leaves
@@ -22,7 +22,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
     end
 
     context "有給休暇申請が行われており、同じ就業時間ルール内で申請されている。" do
-      let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_minutes: 4800) }
+      let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10) }
       let(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
       let(:balance_1) { FactoryBot.create(:paid_leave_balance, paid_leave_grant: grant, employee_rule: user_rule_fulltime, effective_from: Date.new(2026, 4, 1)) }
 
@@ -57,7 +57,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
     end
 
     context "有給休暇申請が行われており、異なる就業時間ルール内で申請されている。" do
-      let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_minutes: 4800) }
+      let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10) }
       let(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480, effective_from: Date.new(2026, 4, 1), expires_on: Date.new(2026, 4, 30)) }
       let(:balance_1) { FactoryBot.create(:paid_leave_balance, paid_leave_grant: grant, employee_rule: user_rule_fulltime, effective_from: Date.new(2026, 4, 1)) }
       let(:user_rule_six_hour_time) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 360, effective_from: Date.new(2026, 5, 1), expires_on: Date.new(2026, 5, 31)) }
@@ -116,7 +116,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
   end
   describe "balance_history" do
     context "有給休暇申請が1つもされていない。" do
-      let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_minutes: 4800) }
+      let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10) }
 
       it "有給使用履歴なし" do
         result = PaidLeaves::BalanceCalculator.new(grant: grant).balance_history
@@ -126,7 +126,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
     end
 
     context "有給休暇申請が行われており、同じ就業時間ルール内で申請されている。" do
-      let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_minutes: 4800) }
+      let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10) }
       let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
       let(:balance_1) { grant.balances.first }
 
@@ -155,7 +155,7 @@ RSpec.describe PaidLeaves::BalanceCalculator, type: :service do
     end
 
     context "有給休暇申請が行われており、異なる就業時間ルール内で申請されている。" do
-      let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_minutes: 4800) }
+      let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10) }
       let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480, effective_from: Date.new(2026, 4, 1), expires_on: Date.new(2026, 4, 30)) }
       let(:balance_1) { grant.balances[0] }
       let!(:user_rule_six_hour_time) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 360, effective_from: Date.new(2026, 5, 1), expires_on: Date.new(2026, 5, 31)) }
