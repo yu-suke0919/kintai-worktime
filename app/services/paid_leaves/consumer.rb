@@ -15,12 +15,17 @@ module PaidLeaves
     end
 
     def consume(new_exception:)
-      raise "有給休暇がありません" if @grants.empty?
+      raise "有給休暇が付与されていません" if @grants.empty?
       affected_exceptions = []
       @employee.work_date_exceptions.where(work_date: new_exception.work_date..).order(work_date: :asc).each do |affected_exception|
         affected_exceptions.push(affected_exception)
         affected_exception.paid_leave_transactions.destroy_all
       end
+      p "---"
+      @grants.each do |g|
+          p g.remaining_leaves
+      end
+      p "---"
       affected_exceptions.each do |exception|
         case exception.exception_type
         when "paid_leave"
