@@ -1,5 +1,6 @@
 module WorkDateExceptionRequests
   class CreateExceptions
+    class CreationError < StandardError; end
     def initialize(exception_request:)
       @exception_request = exception_request
     end
@@ -47,6 +48,8 @@ module WorkDateExceptionRequests
           )
         end
       end
+    rescue RuntimeError => e
+      raise CreationError, e.message
     end
   end
 end

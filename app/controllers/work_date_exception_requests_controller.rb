@@ -20,10 +20,8 @@ class WorkDateExceptionRequestsController < ApplicationController
     WorkDateExceptionRequests::CreateExceptions.new(
       exception_request: @exception_request
     ).call
-  rescue ActiveRecord::RecordInvalid => e
-    Rails.logger.warn(
-      "#{e.record.class.name}: #{e.record.errors.full_messages.join('、')}"
-    )
+  rescue WorkDateExceptionRequests::CreateExceptions::CreationError => e
+    flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
   else
     redirect_to notifications_path, notice: "振替/休暇申請を完了しました。"
