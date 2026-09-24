@@ -7,9 +7,6 @@ class PaidLeaveGrant < ApplicationRecord
   belongs_to :granted_by, class_name: "Employee", foreign_key: :granted_by_id
   has_many :balances, -> { order(effective_from: :asc, id: :asc) }, class_name: "PaidLeaveBalance"
 
-  def set_granted_minutes
-    self.granted_minutes = (granted_days.to_i * 480) + (granted_hours.to_i * 60)
-  end
 
   def synchronize_paid_leave_balances
     PaidLeaveBalances::Synchronizer.for_new_paid_leave_grant!(self)
@@ -20,5 +17,10 @@ class PaidLeaveGrant < ApplicationRecord
 
   def balance_history
     PaidLeaves::BalanceCalculator.new(grant: self).balance_history
+  end
+
+  private
+  def set_granted_minutes
+    self.granted_minutes = (granted_days.to_i * 480) + (granted_hours.to_i * 60)
   end
 end
