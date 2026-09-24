@@ -21,11 +21,6 @@ module PaidLeaves
         affected_exceptions.push(affected_exception)
         affected_exception.paid_leave_transactions.destroy_all
       end
-      p "---"
-      @grants.each do |g|
-          p g.remaining_leaves
-      end
-      p "---"
       affected_exceptions.each do |exception|
         case exception.exception_type
         when "paid_leave"
@@ -33,6 +28,7 @@ module PaidLeaves
             create_transactions!(1, 0, exception)
 
         when "hourly_paid_leave"
+
             hour_leaves_length = (exception.ends_at - exception.starts_at) / 3600
             raise "有給残高が足りません" if @remain_balance_days < 1 && @remain_balance_hours < hour_leaves_length
             create_transactions!(0, hour_leaves_length, exception)
@@ -58,8 +54,8 @@ module PaidLeaves
             create_transaction!(balance, use_days, use_hours, exception)
             break
           else
-            create_transaction!(balance, use_days, use_hours - remaining, exception)
-            use_hours -= remaining
+            create_transaction!(balance, use_days, use_hours - remaining[:hours], exception)
+            use_hours -= remaining[:hours]
           end
         end
       end
