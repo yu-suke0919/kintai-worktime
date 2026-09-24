@@ -44,21 +44,34 @@ module PaidLeaves
     def create_transactions!(use_days, use_hours, exception)
       @grants.each do |grant|
         remaining = grant.remaining_leaves
+        raise "不正な残高です" if remaining[:days] < 0 || remaining[:hours] < 0
+        next if remaining[:days] == 0 && remaining[:hours] == 0
         balance = grant.balances.where(effective_from: ..exception.work_date).order(:effective_from).last
-        raise "対象となる有給残高がありません" if balance.nil?
-        if remaining[:days] >= 1
-          create_transaction!(balance, use_days, use_hours, exception)
-          break
-        elsif remaining[:hours] >= 1
-          if remaining[:hours] > use_hours
-            create_transaction!(balance, use_days, use_hours, exception)
-            break
+        raise "取得する日に就業ルールが存在せず有給が取得できません。" if balance.nil?
+
+        if remaining[:days] > use_days
+          tr = create_transaction!(balance, use_days, use_hours, exception)
+        elsif remaining[:days] == use_days
+          if remaining[:hours] >= use_hours
+            tr = create_transaction!(balance, use_days, use_hours, exception)
           else
-            create_transaction!(balance, use_days, use_hours - remaining[:hours], exception)
-            use_hours -= remaining[:hours]
+            tr = create_transaction!(balance, remaining[:days], remaining[:hours], exception)
           end
+        else
+          tr = create_transaction!(balance, remaining[:days], remaining[:hours], exception)
         end
+
+        use_days -= tr.delta_days
+        use_hours -= tr.delta_minutes / 60
+
+        if use_hours < 0
+          use_days -= 1
+          use_hours += (balance.employee_rule.scheduled_work_minutes/60).ceil
+        end
+        break if use_days == 0 && use_hours == 0
       end
+
+      raise "残高が足りません" if use_days > 0 || use_hours > 0
     end
     def create_transaction!(balance, use_days, use_hours, exception)
       balance
