@@ -83,102 +83,82 @@ RSpec.describe PaidLeaves::Consumer, type: :service do
         }.to raise_error(RuntimeError, "有給残高が足りません")
       end
     end
-    describe "create_transactions!" do
+    context "有給残高が残り4時間、残り2日の2つがある" do
+      let!(:grant1) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
+      let!(:grant2) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 2, granted_on: Date.new(2026, 4, 1), expires_on: Date.new(2028, 3, 31)) }
+      let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
+      let(:balance_1) { grant1.balances.first }
+
+      before do
+        exception_request_4hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 13, 0, 0))
+        exception_1_4hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_4hour_paid_leave)
+        FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 240, work_date_exception: exception_1_4hour_paid_leave)
+      end
+      it "before do の内容が適用(grant1の残高を消費)しているか" do
+        expect(grant1.remaining_leaves[:days]).to eq(0)
+        expect(grant1.remaining_leaves[:hours]).to eq(4)
+        expect(grant2.remaining_leaves[:days]).to eq(2)
+        expect(grant2.remaining_leaves[:hours]).to eq(0)
+      end
+      it "有給残り4時間+2日の時に1日の有給取得を試みて、エラーが出ず成功し、grant2に1日と4時間が残っている" do
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 3))
+        expect {
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
+          PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1)
+        }.not_to raise_error
+
+        expect(grant1.remaining_leaves[:days]).to eq(0)
+        expect(grant1.remaining_leaves[:hours]).to eq(0)
+        expect(grant2.remaining_leaves[:days]).to eq(1)
+        expect(grant2.remaining_leaves[:hours]).to eq(4)
+      end
+      it "有給残り4時間+2日の時に2日連続した有給取得を試みて、エラーが出ず成功し、grant2に4時間が残っている" do
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 4))
+        expect {
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
+          PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1)
+          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
+          PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_2)
+        }.not_to raise_error
+
+        expect(grant1.remaining_leaves[:days]).to eq(0)
+        expect(grant1.remaining_leaves[:hours]).to eq(0)
+        expect(grant2.remaining_leaves[:days]).to eq(0)
+        expect(grant2.remaining_leaves[:hours]).to eq(4)
+      end
+      it "有給残り2日の時に3日連続した有給取得を試みて、「有給残高が足りません」と出る。また、残高は消費されない" do
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 5))
+
+        expect {
+          ApplicationRecord.transaction do
+            exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
+            PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1)
+            exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
+            PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_2)
+            exception_3 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 5))
+            PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_3)
+          end
+        }.to raise_error(RuntimeError, "有給残高が足りません")
+        expect(grant1.remaining_leaves[:days]).to eq(0)
+        expect(grant1.remaining_leaves[:hours]).to eq(4)
+        expect(grant2.remaining_leaves[:days]).to eq(2)
+        expect(grant2.remaining_leaves[:hours]).to eq(0)
+      end
     end
-    describe "create_transaction" do
+  # affected関連のがないかも
+  # 上のテスト全部create_transactionsのカモ
+  describe "create_transactions!" do
+    let!(:grant1) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
+    let!(:grant2) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
+    let!(:grant3) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
+
+    let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
+    let(:balance_1) { grant1.balances.first }
+
+    it "" do
     end
-
-    # context "有給休暇申請が行われており、同じ就業時間ルール内で申請されている。" do
-    #   let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10) }
-    #   let(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
-    #   let(:balance_1) { FactoryBot.create(:paid_leave_balance, paid_leave_grant: grant, employee_rule: user_rule_fulltime, effective_from: Date.new(2026, 4, 1)) }
-
-    #   it "1日の有給使用により、有給残高は9日に変化" do
-    #     exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave")
-    #     exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_days: 1, work_date_exception: exception_1)
-
-    #     result = PaidLeaves::BalanceCalculator.new(grant: grant).remaining_leaves
-    #     expect(result[:days]).to eq(9)
-    #     expect(result[:hours]).to eq(0)
-    #   end
-    #   it "6時間の有給使用により、有給残高は9日2時間に変化" do
-    #     exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 5, 2, 15, 0, 0))
-    #     exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "hourly_paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 360, work_date_exception: exception_2)
-    #     result = PaidLeaves::BalanceCalculator.new(grant: grant).remaining_leaves
-    #     expect(result[:days]).to eq(9)
-    #     expect(result[:hours]).to eq(2)
-    #   end
-    #   it "1日と5時間の有給使用により、有給残高は8日3時間に変化" do
-    #     exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave")
-    #     exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_days: 1, work_date_exception: exception_1)
-    #     exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 5, 2, 15, 0, 0))
-    #     exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "hourly_paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 300, work_date_exception: exception_2)
-    #     result = PaidLeaves::BalanceCalculator.new(grant: grant).remaining_leaves
-    #     expect(result[:days]).to eq(8)
-    #     expect(result[:hours]).to eq(3)
-    #   end
-    # end
-
-    # context "有給休暇申請が行われており、異なる就業時間ルール内で申請されている。" do
-    #   let(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10) }
-    #   let(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480, effective_from: Date.new(2026, 4, 1), expires_on: Date.new(2026, 4, 30)) }
-    #   let(:balance_1) { FactoryBot.create(:paid_leave_balance, paid_leave_grant: grant, employee_rule: user_rule_fulltime, effective_from: Date.new(2026, 4, 1)) }
-    #   let(:user_rule_six_hour_time) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 360, effective_from: Date.new(2026, 5, 1), expires_on: Date.new(2026, 5, 31)) }
-    #   let(:balance_2) { FactoryBot.create(:paid_leave_balance, paid_leave_grant: grant, employee_rule: user_rule_six_hour_time, effective_from: Date.new(2026, 5, 1)) }
-    #   let(:user_rule_seven_hour_time) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 420, effective_from: Date.new(2026, 6, 1), expires_on: Date.new(2026, 6, 30)) }
-    #   let(:balance_3) { FactoryBot.create(:paid_leave_balance, paid_leave_grant: grant, employee_rule: user_rule_seven_hour_time, effective_from: Date.new(2026, 6, 1)) }
-
-    #   it "8時間勤務時に1日,6時間勤務時に1日の有給使用により、有給残高は8日に変化" do
-    #     exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
-    #     exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_days: 1, work_date_exception: exception_1)
-    #     exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 5, 2), end_date: Date.new(2026, 5, 2))
-    #     exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_2, delta_days: 1, work_date_exception: exception_2)
-
-    #     result = PaidLeaves::BalanceCalculator.new(grant: grant).remaining_leaves
-    #     expect(result[:days]).to eq(8)
-    #     expect(result[:hours]).to eq(0)
-    #   end
-    #   it "8時間勤務時に4時間,6時間勤務時に3時間の有給使用により、有給残高は9日0時間(勤務時間変更時に端数切り上げなし)に変化" do
-    #     exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 13, 0, 0))
-    #     exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "hourly_paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 240, work_date_exception: exception_1)
-    #     exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave",  starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 5, 2, 12, 0, 0))
-    #     exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "hourly_paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_2, delta_minutes: 180,  work_date_exception: exception_2)
-
-    #     result = PaidLeaves::BalanceCalculator.new(grant: grant).remaining_leaves
-    #     expect(result[:days]).to eq(9)
-    #     expect(result[:hours]).to eq(0)
-    #   end
-    #   it "8時間勤務時に2時間,6時間勤務時に1日の有給使用により、有給残高は8日5時間(勤務時間変更時に端数切り上げあり)に変化" do
-    #     exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 11, 0, 0))
-    #     exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "hourly_paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 120, work_date_exception: exception_1)
-    #     exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 5, 2), end_date: Date.new(2026, 5, 2))
-    #     exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_2, delta_days: 1, work_date_exception: exception_2)
-
-    #     result = PaidLeaves::BalanceCalculator.new(grant: grant).remaining_leaves
-    #     expect(result[:days]).to eq(8)
-    #     expect(result[:hours]).to eq(5)
-    #   end
-    #   it "6時間勤務時に1時間,7時間勤務時に5時間の有給使用により、有給残高は9日1時間に変化" do
-    #     exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 5, 2, 9, 0, 0), ends_at: DateTime.new(2026, 5, 2, 10, 0, 0))
-    #     exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "hourly_paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_2, delta_minutes: 60, work_date_exception: exception_1)
-    #     exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 6, 2, 9, 0, 0), ends_at: DateTime.new(2026, 6, 2, 14, 0, 0))
-    #     exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_2, exception_type: "hourly_paid_leave")
-    #     FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_3, delta_minutes: 300, work_date_exception: exception_2)
-    #     result = PaidLeaves::BalanceCalculator.new(grant: grant).remaining_leaves
-    #     expect(result[:days]).to eq(9)
-    #     expect(result[:hours]).to eq(1)
-    #   end
-    # end
+  end
+  describe "create_transaction" do
+  end
   end
 end
