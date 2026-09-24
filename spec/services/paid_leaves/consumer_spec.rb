@@ -21,7 +21,7 @@ RSpec.describe PaidLeaves::Consumer, type: :service do
       end
     end
 
-    context "有給残高が残り1時間" do
+    context "取得テスト_有給残高が残り1時間" do
       let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1) }
       let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
       let(:balance_1) { grant.balances.first }
@@ -54,7 +54,7 @@ RSpec.describe PaidLeaves::Consumer, type: :service do
       end
     end
 
-    context "有給残高が残り2日" do
+    context "取得テスト_有給残高が残り2日" do
       let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 2) }
       let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
       let(:balance_1) { grant.balances.first }
@@ -83,7 +83,7 @@ RSpec.describe PaidLeaves::Consumer, type: :service do
         }.to raise_error(RuntimeError, "有給残高が足りません")
       end
     end
-    context "有給残高が残り4時間、残り2日の2つがある" do
+    context "取得テスト_有給残高が残り4時間、残り2日の2つがある" do
       let!(:grant1) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
       let!(:grant2) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 2, granted_on: Date.new(2026, 4, 1), expires_on: Date.new(2028, 3, 31)) }
       let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
@@ -145,20 +145,48 @@ RSpec.describe PaidLeaves::Consumer, type: :service do
         expect(grant2.remaining_leaves[:hours]).to eq(0)
       end
     end
-  # affected関連のがないかも
-  # 上のテスト全部create_transactionsのカモ
-  describe "create_transactions!" do
-    let!(:grant1) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
-    let!(:grant2) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
-    let!(:grant3) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
 
-    let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
-    let(:balance_1) { grant1.balances.first }
+    context "履歴積みなおし_有給残高が2025年に配られた2日(残り1日)と2026年に配られた10日(残り10日)がある" do
+      let!(:grant1) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 2, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
+      let!(:grant2) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10, granted_on: Date.new(2026, 4, 1), expires_on: Date.new(2028, 3, 31)) }
+      let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
+      let(:balance_1) { grant1.balances.first }
+      let(:balance_2) { grant2.balances.first }
 
-    it "" do
+      before do
+        exception_request_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", start_date: Date.new(2026, 5, 3), end_date: Date.new(2026, 5, 3))
+        exception_1_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_paid_leave)
+        PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1_paid_leave)
+      end
+      it "残りの残高が1日と10日で、残り残高1に5月3日のtransactionがある" do
+        expect(grant1.remaining_leaves).to eq({ days: 1, hours: 0 })
+        except(balance_1.transactions.count).to eq(1)
+        expect(balance_1.transactions.first.effective_on).to eq(Date.new(2026, 5, 3))
+        expect(grant1.remaining_leaves).to eq({ days: 10, hours: 0 })
+        except(balance_1.transactions.count).to eq(0)
+      end
+
+      it "有給残り2日の時に2日連続した有給取得を試みて、エラーが出ず成功する" do
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 4))
+        expect {
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
+          PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1)
+          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
+          PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_2)
+        }.not_to raise_error
+      end
+      it "有給残り2日の時に3日連続した有給取得を試みて、「有給残高が足りません」と出る" do
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 5))
+
+        expect {
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
+          PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1)
+          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
+          PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_2)
+          exception_3 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 5))
+          PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_3)
+        }.to raise_error(RuntimeError, "有給残高が足りません")
+      end
     end
-  end
-  describe "create_transaction" do
-  end
   end
 end
