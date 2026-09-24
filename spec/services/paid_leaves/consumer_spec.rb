@@ -14,7 +14,7 @@ RSpec.describe PaidLeaves::Consumer, type: :service do
     context "有給休暇がない" do
       it "「有給休暇が付与されていません」と出る" do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave")
-        exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave")
+        exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 2))
         expect {
           PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1)
       }.to raise_error(RuntimeError, "有給休暇が付与されていません")
@@ -28,26 +28,26 @@ RSpec.describe PaidLeaves::Consumer, type: :service do
 
       before do
         exception_request_7hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 16, 0, 0))
-        exception_1_7hour_paid_leave = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_7hour_paid_leave, exception_type: "hourly_paid_leave")
+        exception_1_7hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_7hour_paid_leave)
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 420, work_date_exception: exception_1_7hour_paid_leave)
       end
       it "有給残り1時間の時に1時間の有給取得を試みてエラーが出ない" do
-        exception_request_1hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 13, 0, 0))
-        exception_1_1hour_paid_leave = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1hour_paid_leave, exception_type: "hourly_paid_leave")
+        exception_request_1hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 10, 0, 0))
+        exception_1_1hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_1hour_paid_leave)
         expect {
           PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1_1hour_paid_leave)
         }.not_to raise_error
       end
       it "有給残り1時間の時に1日の有給取得を試みて「有給残高が足りません」と出る" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave")
-        exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave")
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
+        exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 2))
         expect {
           PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1)
         }.to raise_error(RuntimeError, "有給残高が足りません")
       end
       it "有給残り1時間の時に4時間の有給取得を試みて「有給残高が足りません」と出る" do
-        exception_request_4hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 13, 0, 0))
-        exception_1_4hour_paid_leave = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_4hour_paid_leave, exception_type: "hourly_paid_leave")
+        exception_request_4hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 13, 0, 0))
+        exception_1_4hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_4hour_paid_leave)
         expect {
           PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1_4hour_paid_leave)
         }.to raise_error(RuntimeError, "有給残高が足りません")
@@ -64,9 +64,9 @@ RSpec.describe PaidLeaves::Consumer, type: :service do
       it "有給残り2日の時に2日連続した有給取得を試みて、エラーが出ず成功する" do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 4))
         expect {
-          exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave", work_date: Date.new(2026, 4, 3))
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
           PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1)
-          exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave", work_date: Date.new(2026, 4, 4))
+          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
           PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_2)
         }.not_to raise_error
       end
@@ -74,11 +74,11 @@ RSpec.describe PaidLeaves::Consumer, type: :service do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 5))
 
         expect {
-          exception_1 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave", work_date: Date.new(2026, 4, 3))
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
           PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_1)
-          exception_2 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave", work_date: Date.new(2026, 4, 4))
+          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
           PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_2)
-          exception_3 = FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request_1, exception_type: "paid_leave", work_date: Date.new(2026, 4, 5))
+          exception_3 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 5))
           PaidLeaves::Consumer.new(employee: user_1).consume(new_exception: exception_3)
         }.to raise_error(RuntimeError, "有給残高が足りません")
       end

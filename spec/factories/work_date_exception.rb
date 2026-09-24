@@ -1,11 +1,21 @@
 FactoryBot.define do
   factory :work_date_exception do
-    employee { nil }
-    work_date_exception_request { nil }
-    exception_type { nil }
+    employee
+    work_date_exception_request
     usage_status { :pending }
-    work_date { Date.new(2026, 05, 01) }
-    starts_at { DateTime.new(2026, 05, 01, 9, 0, 0) }
-    ends_at { DateTime.new(2026, 05, 01, 12, 0, 0) }
+    trait :paid_leave do
+      exception_type { "paid_leave" }
+      after(:build) do |exception|
+        if exception.work_date.blank?
+          raise ArgumentError, ":paid_leave を使う場合は work_date を指定してください"
+        end
+      end
+    end
+    trait :hourly_paid_leave do
+      exception_type { "hourly_paid_leave" }
+      starts_at { work_date_exception_request.starts_at }
+      ends_at   { work_date_exception_request.ends_at }
+      work_date { starts_at.to_date }
+    end
   end
 end
