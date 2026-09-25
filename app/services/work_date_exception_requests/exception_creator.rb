@@ -1,5 +1,5 @@
 module WorkDateExceptionRequests
-  class CreateExceptions
+  class ExceptionCreator
     class CreationError < StandardError; end
     def initialize(exception_request:)
       @exception_request = exception_request
@@ -19,7 +19,7 @@ module WorkDateExceptionRequests
               ends_at: @exception_request.ends_at,
               exception_type: @exception_request.request_type
             )
-          PaidLeaves::Consumer.new(employee: @employee).consume(new_exception: exception)
+          PaidLeaves::TransactionRebuilder.new(employee: @employee, work_date: @exception_request.starts_at).execute()
           @exception_request.notifications.create!(
             notification_type: :pending,
             recipient_employee: @employee,
@@ -27,19 +27,18 @@ module WorkDateExceptionRequests
           )
         end
       else
-        if @exception_request.request_type == "paid_leave"
-          consumer = PaidLeaves::Consumer.new(employee: @employee)
-        end
         ApplicationRecord.transaction do
           @exception_request.save!
           (@exception_request.start_date..@exception_request.end_date).each do |date|
-            exception = @exception_request.work_date_exceptions.create!(
+            @exception_request.work_date_exceptions.create!(
               usage_status: :pending,
               employee: @employee,
               work_date: date,
               exception_type: @exception_request.request_type
             )
-            consumer.consume(new_exception: exception) if @exception_request.request_type == "paid_leave"
+          end
+          if @exception_request.request_type == "paid_leave"
+            PaidLeaves::TransactionRebuilder.new(employee: @employee, work_date: @exception_request.start_date).execute
           end
           @exception_request.notifications.create!(
             notification_type: :pending,

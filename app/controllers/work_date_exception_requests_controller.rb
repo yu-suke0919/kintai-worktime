@@ -17,10 +17,10 @@ class WorkDateExceptionRequestsController < ApplicationController
       params[:end_date] = params[:ends_at]
     end
     @exception_request = @employee.work_date_exception_requests.build(params)
-    WorkDateExceptionRequests::CreateExceptions.new(
+    WorkDateExceptionRequests::ExceptionCreator.new(
       exception_request: @exception_request
     ).call
-  rescue WorkDateExceptionRequests::CreateExceptions::CreationError => e
+  rescue WorkDateExceptionRequests::ExceptionCreator::CreationError => e
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
   else
