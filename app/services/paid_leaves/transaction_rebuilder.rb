@@ -26,6 +26,7 @@ module PaidLeaves
             hour_leaves_length = (exception.ends_at - exception.starts_at) / 3600
             create_transactions!(0, hour_leaves_length, exception)
         else
+            create_transactions!(0, 0, exception)
             raise "不正な呼び出し"
         end
       end
