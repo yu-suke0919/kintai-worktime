@@ -33,7 +33,7 @@ class MonthlyAttendanceClosingsController < ApplicationController
       closing.monthly_attendance_closing_approvals.create!(approver_id: @employee.manager.id, status: :pending, approval_order: 1)
     end
 
-    redirect_to redirect_to employee_attendances_path(@employee), notice: "成功しました。"
+    redirect_to employee_attendances_path(@employee), notice: "成功しました。"
   end
 
   def show
