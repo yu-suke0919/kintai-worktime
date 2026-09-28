@@ -10,15 +10,19 @@ class Admin::WorkDateExceptionRequestsController < ApplicationController
   end
 
   def approve_request
-    exception_request = @employee.work_date_exception_requests.find(params[:id])
-    if exception_request.update(status: 1, approved_at: Time.current, approved_by_id: current_employee.id)
-      (exception_request.start_date..exception_request.end_date).each do |date|
-        @employee.work_date_exceptions.create!(work_date: date, exception_type: exception_request.request_type.to_s)
-      end
+    ActiveRecord::Base.transaction do
+      exception_request = @employee.work_date_exception_requests.lock.find(params[:id])
+      exception_request.update(status: 1, approved_at: Time.current, approved_by_id: current_employee.id)
+      exception_request.work_date_exceptions.each do |exception|{
+
+      }
+      # (exception_request.start_date..exception_request.end_date).each do |date|
+      #   # ここ修正
+      #   @employee.work_date_exceptions.create!(work_date: date, exception_type: exception_request.request_type.to_s)
+      # end
       redirect_to admin_employee_work_date_exception_requests_path(@employee), notice: "承認に成功しました"
-    else
+      rescue ActiveRecord::RecordInvalid => e
       redirect_to admin_employee_work_date_exception_requests_path(@employee), alert: "不明なエラー:employee_exception_request"
-    end
   end
 
   def reject_request
