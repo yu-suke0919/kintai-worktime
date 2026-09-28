@@ -5,9 +5,8 @@ RSpec.describe WorkDateExceptionRequests::ExceptionCreator, type: :service do
   let(:user_manager) { FactoryBot.create(:employee, email: "manager@gmail.com", role: :manager) }
 
   describe "for_new_paid_leave_grant!" do
-    let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1) }
-
     context "有給休暇の取得(残高1日)" do
+      let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 1) }
       let!(:rule_20260401) { FactoryBot.create(:employee_rule, employee: user_1, effective_from: grant.granted_on, expires_on: grant.expires_on) }
 
       it "1日の有給休暇を取得してエラーが出ず就業日例外が生成される。" do
@@ -48,6 +47,54 @@ RSpec.describe WorkDateExceptionRequests::ExceptionCreator, type: :service do
         }.to raise_error(WorkDateExceptionRequests::ExceptionCreator::CreationError, "残高が足りません")
         expect(grant.remaining_leaves).to eq(days: 0, hours: 0)
         expect(user_1.work_date_exceptions.count).to eq(1)
+      end
+    end
+
+    context "有給休暇の取得(残高2日)かつ、ルールが4月末で終了" do
+      let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 2) }
+      let!(:rule_20260401) { FactoryBot.create(:employee_rule, employee: user_1, effective_from: Date.new(2026, 4, 1), expires_on: Date.new(2026, 4, 30)) }
+
+      it "4月2日の有給休暇を1日取得し、エラーが出ず就業日例外が生成される。" do
+        expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
+        WorkDateExceptionRequests::ExceptionCreator.new(exception_request: exception_request_1).call()
+        expect(grant.remaining_leaves).to eq(days: 1, hours: 0)
+        expect(user_1.work_date_exceptions.find_by(work_date: Date.new(2026, 4, 2))).to be_present
+      end
+
+      it "4月30日~5月1日の有給休暇を取得し、エラーが出て就業日例外が生成されない。" do
+        expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 30), end_date: Date.new(2026, 5, 1))
+        expect {
+          WorkDateExceptionRequests::ExceptionCreator.new(exception_request: exception_request_1).call()
+        }.to raise_error(WorkDateExceptionRequests::ExceptionCreator::CreationError, "残高が足りません")
+        expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
+        expect(user_1.work_date_exceptions.count).to eq(0)
+      end
+    end
+
+    context "有給休暇の取得(残高2日)、ルールは4月末で終わるルールと5月から始まるルールがある" do
+      let!(:grant) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 2) }
+      let!(:rule_20260401) { FactoryBot.create(:employee_rule, employee: user_1, effective_from: Date.new(2026, 4, 1), expires_on: Date.new(2026, 4, 30)) }
+      let!(:rule_20260501) { FactoryBot.create(:employee_rule, employee: user_1, effective_from: Date.new(2026, 5, 1), expires_on: Date.new(2026, 5, 30)) }
+
+
+      it "4月2日の有給休暇を1日取得し、エラーが出ず就業日例外が生成される。" do
+        expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
+        WorkDateExceptionRequests::ExceptionCreator.new(exception_request: exception_request_1).call()
+        expect(grant.remaining_leaves).to eq(days: 1, hours: 0)
+        expect(user_1.work_date_exceptions.find_by(work_date: Date.new(2026, 4, 2))).to be_present
+      end
+
+      it "4月30日~5月1日の有給休暇を取得し、エラーが出て就業日例外が生成されない。" do
+        expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 30), end_date: Date.new(2026, 5, 1))
+        expect {
+          WorkDateExceptionRequests::ExceptionCreator.new(exception_request: exception_request_1).call()
+        }.to raise_error(WorkDateExceptionRequests::ExceptionCreator::CreationError, "残高が足りません")
+        expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
+        expect(user_1.work_date_exceptions.count).to eq(0)
       end
     end
   end
