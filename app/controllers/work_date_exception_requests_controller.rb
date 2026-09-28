@@ -2,6 +2,7 @@ class WorkDateExceptionRequestsController < ApplicationController
   before_action :authenticate_employee!
   before_action :ensure_owner!
   before_action :set_employee, only: [ :new, :edit, :create, :update ]
+  before_action :set_total_paid_leave_balance
   def new
     @exception_request = WorkDateExceptionRequest.new()
   end
@@ -10,22 +11,27 @@ class WorkDateExceptionRequestsController < ApplicationController
     @exception_request = WorkDateExceptionRequest.find(params[:id])
   end
   def create
-    @exception_request = @employee.work_date_exception_requests.build(request_params)
-    if @exception_request.save
-      @exception_request.notifications.create!(
-        notification_type: :pending,
-        recipient_employee: @employee,
-        message_text: "振替/休暇申請が完了しました。"
-      )
-      redirect_to notifications_path, notice: "振替/休暇申請を完了しました。"
-    else
-      render :new, status: :unprocessable_entity
+    params = request_params
+    if params[:request_type] == "hourly_paid_leave"
+      params[:start_date] = params[:starts_at]
+      params[:end_date] = params[:ends_at]
     end
+    @exception_request = @employee.work_date_exception_requests.build(params)
+    WorkDateExceptionRequests::ExceptionCreator.new(
+      exception_request: @exception_request
+    ).call
+  rescue WorkDateExceptionRequests::ExceptionCreator::CreationError => e
+    flash.now[:alert] = e.message
+    render :new, status: :unprocessable_entity
+  else
+    redirect_to notifications_path, notice: "振替/休暇申請を完了しました。"
   end
+
   def update
     @exception_request = WorkDateExceptionRequest.find(params[:id])
     if @exception_request.update(request_params)
       @exception_request.notifications.create!(
+
         notification_type: :pending,
         recipient_employee: @employee,
         message_text: "振替/休暇申請の修正が完了しました。"
@@ -45,7 +51,11 @@ class WorkDateExceptionRequestsController < ApplicationController
     @employee = current_employee
   end
 
+  def set_total_paid_leave_balance
+    @total_paid_leave_balance = @employee.current_total_paid_leave_balance
+  end
+
   def request_params
-    params.require(:work_date_exception_request).permit(:request_type, :start_date, :end_date, :reason)
+    params.require(:work_date_exception_request).permit(:request_type, :start_date, :end_date, :starts_at, :ends_at, :reason)
   end
 end

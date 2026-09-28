@@ -1,0 +1,8 @@
+= render "shared/page_description",
+  title: "従業員_有給休暇一覧画面",
+  descriptions: [ \
+    "#{@employee.name}さんの付与された有給休暇一覧画面です。",
+  ]
+
+= render partial: "shared/paid_leave_grants",locals: {paid_leave_grants: @paid_leave_grants}
+        

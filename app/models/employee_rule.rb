@@ -2,6 +2,7 @@ class EmployeeRule < ApplicationRecord
   validates :effective_from, presence: true
   validates :expires_on, presence: true
   belongs_to :employee
+  after_commit :synchronize_paid_leave_balances
   WEEKDAY_MASK ={
     sunday: 1,
     monday: 2,
@@ -32,5 +33,9 @@ class EmployeeRule < ApplicationRecord
     self.required_workdays_mask = values
       .map { |key|EmployeeRule::WEEKDAY_MASK[key.to_sym] }
       .inject(:+)
+  end
+
+  def synchronize_paid_leave_balances
+    PaidLeaveBalances::Synchronizer.for_new_employee_rule!(self)
   end
 end

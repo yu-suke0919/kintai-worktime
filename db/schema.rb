@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_19_060047) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_16_055217) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -116,15 +116,54 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_060047) do
     t.index ["recipient_employee_id"], name: "index_notifications_on_recipient_employee_id"
   end
 
+  create_table "paid_leave_balances", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "effective_from", null: false
+    t.bigint "employee_rule_id", null: false
+    t.bigint "paid_leave_grant_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_rule_id"], name: "index_paid_leave_balances_on_employee_rule_id"
+    t.index ["paid_leave_grant_id"], name: "index_paid_leave_balances_on_paid_leave_grant_id"
+  end
+
+  create_table "paid_leave_grants", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "employee_id", null: false
+    t.date "expires_on", null: false
+    t.bigint "granted_by_id"
+    t.integer "granted_minutes", null: false
+    t.date "granted_on", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_paid_leave_grants_on_employee_id"
+    t.index ["granted_by_id"], name: "index_paid_leave_grants_on_granted_by_id"
+  end
+
+  create_table "paid_leave_transactions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "delta_days", null: false
+    t.integer "delta_minutes", null: false
+    t.date "effective_on", null: false
+    t.bigint "paid_leave_balance_id", null: false
+    t.text "reason", null: false
+    t.integer "transaction_type", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "work_date_exception_id", null: false
+    t.index ["paid_leave_balance_id"], name: "index_paid_leave_transactions_on_paid_leave_balance_id"
+    t.index ["work_date_exception_id"], name: "index_paid_leave_transactions_on_work_date_exception_id"
+  end
+
   create_table "work_date_exception_requests", force: :cascade do |t|
     t.datetime "approved_at"
     t.integer "approved_by_id"
     t.datetime "created_at", null: false
     t.bigint "employee_id", null: false
-    t.date "end_date", null: false
+    t.date "end_date"
+    t.datetime "ends_at"
+    t.integer "leave_unit"
     t.text "reason"
     t.integer "request_type", null: false
-    t.date "start_date", null: false
+    t.date "start_date"
+    t.datetime "starts_at"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["employee_id"], name: "index_work_date_exception_requests_on_employee_id"
@@ -133,10 +172,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_060047) do
   create_table "work_date_exceptions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "employee_id", null: false
+    t.datetime "ends_at"
     t.integer "exception_type", null: false
+    t.datetime "starts_at"
     t.datetime "updated_at", null: false
+    t.integer "usage_status", null: false
     t.date "work_date", null: false
+    t.bigint "work_date_exception_request_id", null: false
     t.index ["employee_id"], name: "index_work_date_exceptions_on_employee_id"
+    t.index ["work_date_exception_request_id"], name: "index_work_date_exceptions_on_work_date_exception_request_id"
   end
 
   add_foreign_key "attendance_edit_requests", "attendances"
@@ -148,6 +192,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_19_060047) do
   add_foreign_key "monthly_attendance_closing_approvals", "monthly_attendance_closings"
   add_foreign_key "monthly_attendance_closings", "employees"
   add_foreign_key "notifications", "employees", column: "recipient_employee_id"
+  add_foreign_key "paid_leave_balances", "employee_rules"
+  add_foreign_key "paid_leave_balances", "paid_leave_grants"
+  add_foreign_key "paid_leave_grants", "employees"
+  add_foreign_key "paid_leave_grants", "employees", column: "granted_by_id"
+  add_foreign_key "paid_leave_transactions", "paid_leave_balances"
+  add_foreign_key "paid_leave_transactions", "work_date_exceptions"
   add_foreign_key "work_date_exception_requests", "employees"
   add_foreign_key "work_date_exceptions", "employees"
+  add_foreign_key "work_date_exceptions", "work_date_exception_requests"
 end

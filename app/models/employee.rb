@@ -13,9 +13,23 @@ class Employee < ApplicationRecord
   has_many :work_date_exception_requests, dependent: :destroy
   has_many :work_date_exceptions, dependent: :destroy
   has_many :monthly_attendance_closings, dependent: :destroy
+  has_many :paid_leave_grants, dependent: :destroy
+  has_many :granted_paid_leave_grants, class_name: "PaidLeaveGrant", foreign_key: "granted_by_id"
 
   def has_request_attendances
     self.attendances.select { |a|a.attendance_edit_request.present? }
+  end
+
+  def current_total_paid_leave_balance
+    current_remaining_leaves = { days: 0, hours: 0 }
+    self.paid_leave_grants
+      .where(granted_on: ..Date.today)
+      .where(expires_on: Date.today..).each do |grant|
+        remaining_leaves = grant.remaining_leaves
+        current_remaining_leaves[:days] += remaining_leaves[:days]
+        current_remaining_leaves[:hours] += remaining_leaves[:hours]
+      end
+    current_remaining_leaves
   end
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable,:registerable,
