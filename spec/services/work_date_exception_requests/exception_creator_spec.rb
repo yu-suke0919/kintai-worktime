@@ -87,7 +87,7 @@ RSpec.describe WorkDateExceptionRequests::ExceptionCreator, type: :service do
         expect(user_1.work_date_exceptions.find_by(work_date: Date.new(2026, 4, 2))).to be_present
       end
 
-      it "4月30日~5月1日の有給休暇を取得し、エラーが出ず就業日例外が生成されない。" do
+      it "4月30日~5月1日の有給休暇を取得し、エラーが出ず就業日例外が生成される。" do
         expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 30), end_date: Date.new(2026, 5, 1))
         WorkDateExceptionRequests::ExceptionCreator.new(exception_request: exception_request_1).call()
