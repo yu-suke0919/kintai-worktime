@@ -3,8 +3,7 @@ class MonthlyAttendanceClosingsController < ApplicationController
   before_action :set_employee
   before_action :owner_or_admin_required
   def index
-    permitted = params.permit(:selected_year)
-    match = permitted[:selected_year]&.match(/\A(\d{4})\z/)
+    match = params[:selected_year]&.match(/\A(\d{4})\z/)
     if match
       @selected_year = match[0].to_i
     else

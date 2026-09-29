@@ -17,8 +17,7 @@ class AttendancesController < ApplicationController
   }.freeze
 
   def index
-    permitted = params.permit(:select_month)
-    match = permitted[:select_month]&.match(/\A(\d{4})-(0[0-9]|1[0-2])\z/)
+    match = params[:select_month]&.match(/\A(\d{4})-(0[0-9]|1[0-2])\z/)
     if match
       @date = Date.new(match[1].to_i, match[2].to_i, 1)
     else
