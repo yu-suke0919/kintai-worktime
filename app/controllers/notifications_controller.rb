@@ -1,7 +1,7 @@
 class NotificationsController < ApplicationController
   before_action :authenticate_employee!
   def index
-    @notifications = current_employee.notifications
+    @notifications = current_employee.notifications.includes(:notifiable)
   end
 
   def show
