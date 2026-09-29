@@ -14,7 +14,7 @@ class Admin::EmployeesController < ApplicationController
   end
 
   def subordinates
-    @subordinates = current_employee.subordinates
+    @subordinates = current_employee.subordinates.includes(:attendance_edit_request, :work_date_exception_requests)
   end
 
   def show
