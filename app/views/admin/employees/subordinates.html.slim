@@ -21,13 +21,13 @@ table.table.table-hover
       tr
         td= link_to employee.name, employee
         td= employee.role
-        td= employee.has_request_attendances.count
-        - if employee.has_request_attendances.count == 0
+        td= employee.attendance_edit_request.size
+        - if employee.attendance_edit_request.size == 0
           td= AttendanceEditRequest.human_attribute_name(:list)
         - else
           td= link_to AttendanceEditRequest.human_attribute_name(:list), admin_employee_attendance_edit_requests_path(employee.id)
-        td= employee.work_date_exception_requests.count
-        - if employee.work_date_exception_requests.count == 0
+        td= employee.work_date_exception_requests.size
+        - if employee.work_date_exception_requests.size == 0
           td= WorkDateExceptionRequest.human_attribute_name(:list)
         - else
           td= link_to WorkDateExceptionRequest.human_attribute_name(:list), admin_employee_work_date_exception_requests_path(employee.id)
