@@ -1,9 +1,10 @@
 class AttendanceEditRequestsController < ApplicationController
   before_action :authenticate_employee!
   before_action :ensure_owner!
-  before_action :set_attendance, only: [ :show, :new, :edit, :create, :update ]
+  before_action :set_attendance, only: [ :show, :new, :create, :update ]
   def index
-    @has_request_attendances = current_employee.has_request_attendances
+    # 諸説:月別で表示すべきでは？
+    @has_request_attendances = current_employee.has_request_attendances.includes(:attendance_edit_request)
   end
   def show
   end
@@ -27,6 +28,8 @@ class AttendanceEditRequestsController < ApplicationController
   end
 
   def edit
+    @employee = current_employee
+    @attendance = @employee.attendances.includes(:attendance_edit_request).find_by(worked_on: params[:attendance_worked_on])
     @edit_request = @attendance.attendance_edit_request
   end
 
