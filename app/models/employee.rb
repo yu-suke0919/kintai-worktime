@@ -17,7 +17,7 @@ class Employee < ApplicationRecord
   has_many :granted_paid_leave_grants, class_name: "PaidLeaveGrant", foreign_key: "granted_by_id"
 
   def has_request_attendances
-    self.attendances.select { |a|a.attendance_edit_request.present? }
+    self.attendances.joins(:attendance_edit_request)
   end
 
   def current_total_paid_leave_balance
