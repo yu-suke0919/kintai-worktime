@@ -12,7 +12,7 @@ module PaidLeaves
     def execute
       raise "有給休暇が付与されていません" if @grants.empty?
       affected_exceptions = []
-      @employee.work_date_exceptions.where(work_date: @date..).order(work_date: :asc).each do |affected_exception|
+      @employee.work_date_exceptions.where(work_date: @date.., exception_type: %i[paid_leave hourly_paid_leave]).order(work_date: :asc).each do |affected_exception|
         affected_exceptions.push(affected_exception)
         affected_exception.paid_leave_transactions.destroy_all
       end
@@ -26,7 +26,6 @@ module PaidLeaves
             hour_leaves_length = (exception.ends_at - exception.starts_at) / 3600
             create_transactions!(0, hour_leaves_length, exception)
         else
-            create_transactions!(0, 0, exception)
             raise "不正な呼び出し"
         end
       end
