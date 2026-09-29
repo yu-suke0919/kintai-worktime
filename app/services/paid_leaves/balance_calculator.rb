@@ -7,7 +7,7 @@ module PaidLeaves
     def remaining_leaves
       remaining_leaves = { days: @grant.granted_minutes/480, hours: 0 }
       before_work_hours = 0
-      @grant.balances.order(:effective_from).each do |balance|
+      @grant.balances.includes(:employee_rule).order(:effective_from).each do |balance|
         current_work_hours = (balance.employee_rule.scheduled_work_minutes / 60).ceil
         if before_work_hours > 0
           remaining_leaves[:hours] = (1.0*remaining_leaves[:hours] / before_work_hours * current_work_hours).ceil
@@ -42,7 +42,7 @@ module PaidLeaves
       history = []
       remaining_leaves = { days: @grant.granted_minutes/480, hours: 0 }
       before_work_hours = 0
-      @grant.balances.order(:effective_from).each do |balance|
+      @grant.balances.includes(:employee_rule).order(:effective_from).each do |balance|
         current_work_hours = (balance.employee_rule.scheduled_work_minutes / 60).ceil
         history.push(
           BalanceHistoryItem.new(
