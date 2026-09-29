@@ -306,6 +306,7 @@ ja:
         paid_leave: 有給休暇
         hospitalization: 入院
         special_leave: 冠婚葬祭
+        hourly_paid_leave: 時間有給休暇
     
     work_date_exception_request:
       request_type:
