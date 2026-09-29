@@ -30,8 +30,8 @@ RSpec.describe Employee, type: :model do
     user_1.attendances.create(worked_on: '2026-05-01')
     user_1.attendances.create(worked_on: '2026-05-02')
     user_1.attendances.create(worked_on: '2026-05-03')
-    user_1.attendances.find_by(worked_on: '2026-05-02').create_attendance_edit_request(employee_id: user_1.id)
-    user_1.attendances.find_by(worked_on: '2026-05-03').create_attendance_edit_request(employee_id: user_1.id)
+    user_1.attendances.includes(:attendance_edit_request).find_by(worked_on: '2026-05-02').create_attendance_edit_request(employee_id: user_1.id)
+    user_1.attendances.includes(:attendance_edit_request).find_by(worked_on: '2026-05-03').create_attendance_edit_request(employee_id: user_1.id)
     expect(user_1.has_request_attendances.count).to eq 2
   end
 end
