@@ -67,7 +67,7 @@ RSpec.describe WorkDateExceptionRequests::ExceptionCreator, type: :service do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 30), end_date: Date.new(2026, 5, 1))
         expect { # 諸説あり
           WorkDateExceptionRequests::ExceptionCreator.new(exception_request: exception_request_1).call()
-        }.not_to raise_error(WorkDateExceptionRequests::ExceptionCreator::CreationError, "残高が足りません")
+        }.not_to raise_error# (WorkDateExceptionRequests::ExceptionCreator::CreationError, "残高が足りません")
         expect(grant.remaining_leaves).to eq(days: 0, hours: 0)
         expect(user_1.work_date_exceptions.count).to eq(2)
       end
