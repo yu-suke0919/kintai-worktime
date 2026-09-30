@@ -3,7 +3,7 @@ class Admin::AttendanceEditRequestsController < ApplicationController
   before_action :admin_role_required
   before_action :set_employee
   def index
-    @has_request_attendances = @employee.has_request_attendances
+    @has_request_attendances = @employee.has_request_attendances.includes(:attendance_edit_request)
   end
 
   def approve_edit_request

@@ -81,4 +81,7 @@ Rails.application.configure do
   config.assets.debug = true
   config.assets.compile = true
   config.assets.digest = false
+
+  config.active_record.strict_loading_by_default = true
+  config.active_record.strict_loading_mode = :n_plus_one_only
 end

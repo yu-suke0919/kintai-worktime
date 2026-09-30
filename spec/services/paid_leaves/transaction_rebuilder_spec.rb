@@ -144,8 +144,8 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       let!(:grant1) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 2, granted_on: Date.new(2025, 4, 1), expires_on: Date.new(2027, 3, 31)) }
       let!(:grant2) { FactoryBot.create(:paid_leave_grant, employee: user_1, granted_by: user_manager, granted_days: 10, granted_on: Date.new(2026, 4, 1), expires_on: Date.new(2028, 3, 31)) }
       let!(:user_rule_fulltime) { FactoryBot.create(:employee_rule, employee: user_1, scheduled_work_minutes: 480) }
-      let(:balance_1) { grant1.balances.first }
-      let(:balance_2) { grant2.balances.first }
+      let(:balance_1) { grant1.balances.includes(:transactions).first }
+      let(:balance_2) { grant2.balances.includes(:transactions).first }
 
       before do
         exception_request_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 5, 3), end_date: Date.new(2026, 5, 3))

@@ -3,8 +3,7 @@ class MonthlyAttendanceClosingsController < ApplicationController
   before_action :set_employee
   before_action :owner_or_admin_required
   def index
-    permitted = params.permit(:selected_year)
-    match = permitted[:selected_year]&.match(/\A(\d{4})\z/)
+    match = params[:selected_year]&.match(/\A(\d{4})\z/)
     if match
       @selected_year = match[0].to_i
     else
@@ -47,7 +46,7 @@ class MonthlyAttendanceClosingsController < ApplicationController
   def closing_params
     params.require(:monthly_attendance_closing).permit(:target_month)
   end
-
+  # 諸説,adminはadminページ見た方がview内でadmin?admin?聞く回数が減る。画面次第で違う行を渡したい時はpartialを渡すpartialで
   def owner_or_admin_required
     redirect_to employee_attendances_path(current_employee), alert: "エラーが発生しました" if current_employee.id != params[:employee_id].to_i && current_employee.role == "member"
   end
