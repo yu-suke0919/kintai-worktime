@@ -49,7 +49,7 @@ class AttendanceEditRequestsController < ApplicationController
 
   def set_attendance
     @employee = current_employee
-    @attendance = @employee.attendances.find_by(worked_on: params[:attendance_worked_on])
+    @attendance = @employee.attendances.find_or_create_by(worked_on: params[:attendance_worked_on])
   end
 
   def ensure_owner!
