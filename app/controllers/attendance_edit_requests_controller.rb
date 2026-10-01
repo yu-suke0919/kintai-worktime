@@ -84,6 +84,11 @@ class AttendanceEditRequestsController < ApplicationController
   end
 
   def build_time_change_text(symbol, original_time, requested_time)
-    "#{Attendance.human_attribute_name(symbol)}:#{I18n.l(original_time, format: :short_time)}→#{I18n.l(requested_time, format: :short_time)}"
+    if original_time.nil?
+      "#{Attendance.human_attribute_name(symbol)}:未打刻→#{I18n.l(requested_time, format: :short_time)}"
+
+    else
+      "#{Attendance.human_attribute_name(symbol)}:#{I18n.l(original_time, format: :short_time)}→#{I18n.l(requested_time, format: :short_time)}"
+    end
   end
 end
