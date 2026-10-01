@@ -11,10 +11,10 @@ class MonthlyChartPresenter
         {
           attendance_id: attendance.id,
           date: date,
-          started_minutes: ((attendance.started_at - workdate_zerohour).to_i)/60,
-          finished_minutes: ((attendance.finished_at - workdate_zerohour).to_i)/60,
-          break_started_minutes: ((attendance.break_started_at - workdate_zerohour).to_i)/60,
-          break_finished_minutes: ((attendance.break_finished_at - workdate_zerohour).to_i)/60
+          started_minutes: attendance.started_at ? ((attendance.started_at - workdate_zerohour).to_i)/60 : nil,
+          finished_minutes: attendance.finished_at ? ((attendance.finished_at - workdate_zerohour).to_i)/60 : nil,
+          break_started_minutes: attendance.break_started_at ? ((attendance.break_started_at - workdate_zerohour).to_i)/60 : nil,
+          break_finished_minutes: attendance.break_finished_at ? ((attendance.break_finished_at - workdate_zerohour).to_i)/60 : nil
         }
       else
         {
