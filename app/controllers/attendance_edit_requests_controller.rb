@@ -36,8 +36,8 @@ class AttendanceEditRequestsController < ApplicationController
       @attendance.attendance_edit_request.notifications.create(
         notification_type: :pending,
         recipient_employee: current_employee,
-        message_text: "打刻時間申請の修正が完了しました。\n" + create_text_edit_diff)
-      redirect_to employee_attendances_path, notice: "勤怠修正申請修正を完了しました。"
+        message_text: "打刻時間申請を修正しました。\n" + create_text_edit_diff)
+      redirect_to employee_attendances_path, notice: "打刻時間申請を修正しました。"
     else
       render :edit, status: :unprocessable_entity
     end
