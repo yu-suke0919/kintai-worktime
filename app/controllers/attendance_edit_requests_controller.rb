@@ -1,7 +1,7 @@
 class AttendanceEditRequestsController < ApplicationController
   before_action :authenticate_employee!
   before_action :ensure_owner!
-  before_action :set_attendance, only: [ :show, :new, :create, :update ]
+  before_action :set_attendance, only: [ :show, :new, :edit, :create, :update ]
   def index
     # 諸説:月別で表示すべきでは？
     @has_request_attendances = current_employee.has_request_attendances.includes(:attendance_edit_request)
@@ -10,7 +10,7 @@ class AttendanceEditRequestsController < ApplicationController
   end
 
   def new
-    @edit_request = AttendanceEditRequest.new
+    @edit_request = AttendanceEditRequest.new(attendance: @attendance)
   end
 
   def create
@@ -28,8 +28,6 @@ class AttendanceEditRequestsController < ApplicationController
   end
 
   def edit
-    @employee = current_employee
-    @attendance = @employee.attendances.includes(:attendance_edit_request).find_by(worked_on: params[:attendance_worked_on])
     @edit_request = @attendance.attendance_edit_request
   end
 
@@ -38,8 +36,8 @@ class AttendanceEditRequestsController < ApplicationController
       @attendance.attendance_edit_request.notifications.create(
         notification_type: :pending,
         recipient_employee: current_employee,
-        message_text: "打刻時間申請の修正が完了しました。\n" + create_text_edit_diff)
-      redirect_to employee_attendances_path, notice: "勤怠修正申請修正を完了しました。"
+        message_text: "打刻時間申請を修正しました。\n" + create_text_edit_diff)
+      redirect_to employee_attendances_path, notice: "打刻時間申請を修正しました。"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -49,7 +47,7 @@ class AttendanceEditRequestsController < ApplicationController
 
   def set_attendance
     @employee = current_employee
-    @attendance = @employee.attendances.find_by(worked_on: params[:attendance_worked_on])
+    @attendance = @employee.attendances.includes(:attendance_edit_request).find_or_create_by(worked_on: params[:attendance_worked_on])
   end
 
   def ensure_owner!
@@ -84,6 +82,11 @@ class AttendanceEditRequestsController < ApplicationController
   end
 
   def build_time_change_text(symbol, original_time, requested_time)
-    "#{Attendance.human_attribute_name(symbol)}:#{I18n.l(original_time, format: :short_time)}→#{I18n.l(requested_time, format: :short_time)}"
+    if original_time.nil?
+      "#{Attendance.human_attribute_name(symbol)}:未打刻→#{I18n.l(requested_time, format: :short_time)}"
+
+    else
+      "#{Attendance.human_attribute_name(symbol)}:#{I18n.l(original_time, format: :short_time)}→#{I18n.l(requested_time, format: :short_time)}"
+    end
   end
 end
