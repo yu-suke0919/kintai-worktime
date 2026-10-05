@@ -8,7 +8,8 @@ class WorkDateExceptionRequest < ApplicationRecord
     paid_leave: 10,
     hospitalization: 11,
     special_leave: 12,
-    hourly_paid_leave: 13
+    hourly_paid_leave: 13,
+    holiday_work: 21
   }
   enum :status, {
     pending: 0, approved: 1, rejected: 2
