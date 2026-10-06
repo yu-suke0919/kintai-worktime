@@ -31,6 +31,20 @@ class Employee < ApplicationRecord
       end
     current_remaining_leaves
   end
+
+  def rule_on(date)
+    date = Date.today if date.nil?
+    result = employee.employee_rules
+      .where(effective_from: (..date))
+      .where(expires_on: (date..))
+      .to_a
+    if result.count > 1
+      raise MultipleRuleError, "複数のルールが見つかりました"
+    elsif result.size = 0
+      raise NoRuleError, "ルールが見つかりませんでした"
+    end
+    result.first
+  end
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable,:registerable,
   devise :database_authenticatable,
