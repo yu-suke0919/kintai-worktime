@@ -7,16 +7,19 @@ class WorkDateException < ApplicationRecord
     Set[:holiday_work, :paid_leave],
     Set[:holiday_work, :hourly_paid_leave],
     Set[:special_leave, :holiday_work]
+    Set[]
 ].freeze
   validate :validate_same_date_exception_combination
   validate :validate_exception_type_for_work_date
 
   enum :exception_type, {
     paid_leave: 10,
-    hourly_paid_leave: 13,
     hospitalization: 11,
     special_leave: 12,
-    holiday_work: 21
+    hourly_paid_leave: 13,
+    anniversary_holiday: 14,
+    
+    holiday_work: 20
   }
   enum :usage_status, {
     pending: 0,
