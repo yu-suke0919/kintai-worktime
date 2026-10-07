@@ -45,6 +45,10 @@ class Employee < ApplicationRecord
     end
     result.first
   end
+
+  def workday?(date)
+    self.rule_on(date).workday?(date)
+  end
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable,:registerable,
   devise :database_authenticatable,
