@@ -7,10 +7,8 @@ class WorkDateException < ApplicationRecord
     Set[:holiday_work, :paid_leave],
     Set[:holiday_work, :hourly_paid_leave],
     Set[:special_leave, :holiday_work]
-    Set[]
 ].freeze
-  validate :validate_same_date_exception_combination
-  validate :validate_exception_type_for_work_date
+  validate :work_date_exceptions_must_be_consistent
 
   enum :exception_type, {
     paid_leave: 10,
@@ -18,7 +16,7 @@ class WorkDateException < ApplicationRecord
     special_leave: 12,
     hourly_paid_leave: 13,
     anniversary_holiday: 14,
-    
+
     holiday_work: 20
   }
   enum :usage_status, {
@@ -27,26 +25,36 @@ class WorkDateException < ApplicationRecord
     unused: 2
   }
 
-  def validate_same_date_exception_combination
+  def work_date_exceptions_must_be_consistent
     exist_exceptions = self.employee.work_date_exceptions
       .where(work_date: self.work_date)
       .where.not(id: self.id)
       .pluck(:exception_type)
+    exist_exceptions << self.exception_type
 
-      return if exist_exceptions.empty?
+    if exist_exceptions.size == 1
 
-      current_combination = Set.new(exist_exceptions + [ self.exception_type ])
+      if exist_exceptions[0] == :holiday_work
+        if !self.employee.workday?(self.work_date)
+          errors.add(:date, "は就業日ではないため、休暇を設定できません。")
+        end
+      else
+        if self.employee.workday?(self.work_date)
+          errors.add(:date, "は就業日であるため、休日出勤を設定できません。")
+        end
+      end
+    elsif exist_exceptions.size > 1
+      current_combination = Set.new(exist_exceptions)
+
       return if ALLOWED_COMBINATIONS.include?(current_combination)
 
       if current_combination.where { |num| num / 10 == 1 }.count >= 2
-        error.add(:date, "にすでに休暇や時間単位有給休暇が設定されており、例外日を作成できません。")
+        errors.add(:date, "にすでに休暇や時間単位有給休暇が設定されており、例外日を作成できません。")
       elsif current_combination.where { |num| num / 10 == 2 }.count >= 2
-        error.add(:date, "にすでに休日出勤が設定されており、例外日を作成できません。")
+        errors.add(:date, "にすでに休日出勤が設定されており、例外日を作成できません。")
       else
-        error.add(:date, "不明な就業日例外エラーが発生しました。")
+        errors.add(:date, "不明な就業日例外エラーが発生しました。")
       end
-  end
-
-  def validate_exception_type_for_work_date
+    end
   end
 end
