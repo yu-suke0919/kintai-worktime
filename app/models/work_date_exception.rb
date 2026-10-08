@@ -33,8 +33,7 @@ class WorkDateException < ApplicationRecord
     exist_exceptions << self.exception_type
 
     if exist_exceptions.size == 1
-
-      if exist_exceptions[0] == :holiday_work
+      if exist_exceptions[0] != :holiday_work
         if !self.employee.workday?(self.work_date)
           errors.add(:date, "は就業日ではないため、休暇を設定できません。")
         end
