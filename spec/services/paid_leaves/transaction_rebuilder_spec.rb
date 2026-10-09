@@ -12,6 +12,7 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
     # 付与された有給休暇の残りを1日、1時間単位で返す関数
     # 5日と4時間であれば、{days => 5,hours => 4}が返却値となる。
     context "有給休暇がない" do
+      let!(:user_rule) { FactoryBot.create(:employee_rule, employee: user_1) }
       it "「有給休暇が付与されていません」と出る" do
         exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave")
         exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 2))
