@@ -46,10 +46,10 @@ class WorkDateException < ApplicationRecord
       current_combination = Set.new(exist_exceptions)
 
       return if ALLOWED_COMBINATIONS.include?(current_combination)
-
-      if current_combination.where { |num| num / 10 == 1 }.count >= 2
+      # ここenumベースで判断しないといけない
+      if current_combination.count { |num| num / 10 == 1 } >= 2
         errors.add(:date, "にすでに休暇や時間単位有給休暇が設定されており、例外日を作成できません。")
-      elsif current_combination.where { |num| num / 10 == 2 }.count >= 2
+      elsif current_combination.count { |num| num / 10 == 2 } >= 2
         errors.add(:date, "にすでに休日出勤が設定されており、例外日を作成できません。")
       else
         errors.add(:date, "不明な就業日例外エラーが発生しました。")
