@@ -47,6 +47,8 @@ class WorkDateException < ApplicationRecord
 
       return if ALLOWED_COMBINATIONS.include?(current_combination)
       # ここenumベースで判断しないといけない
+      # workdateexceptionrequestの命名を変えて、会社による制定でも使えるようにする
+      # enumはrequestを参照する
       if current_combination.count { |num| num / 10 == 1 } >= 2
         errors.add(:date, "にすでに休暇や時間単位有給休暇が設定されており、例外日を作成できません。")
       elsif current_combination.count { |num| num / 10 == 2 } >= 2
