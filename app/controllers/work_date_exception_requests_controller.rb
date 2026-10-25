@@ -16,7 +16,7 @@ class WorkScheduleChangeCasesController < ApplicationController
       params[:start_date] = params[:starts_at]
       params[:end_date] = params[:ends_at]
     end
-    @exception_request = @employee.work_date_exception_requests.build(params)
+    @exception_request = @employee.work_schedule_change_cases.build(params)
     WorkScheduleChangeCases::ExceptionCreator.new(
       exception_request: @exception_request
     ).call

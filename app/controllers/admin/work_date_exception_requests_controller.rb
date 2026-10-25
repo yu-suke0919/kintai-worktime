@@ -3,7 +3,7 @@ class Admin::WorkScheduleChangeCasesController < ApplicationController
   before_action :admin_role_required
   before_action :set_employee
   def index
-    @exception_requests = @employee.work_date_exception_requests
+    @exception_requests = @employee.work_schedule_change_cases
   end
 
   def show
@@ -11,27 +11,27 @@ class Admin::WorkScheduleChangeCasesController < ApplicationController
 
   def approve_request
     WorkScheduleChangeCase.transaction do
-      exception_request = @employee.work_date_exception_requests.lock.find(params[:id])
+      exception_request = @employee.work_schedule_change_cases.lock.find(params[:id])
       exception_request.update!(status: 1, approved_at: Time.current, approved_by_id: current_employee.id)
       exception_request.work_date_exceptions.each do |exception|
         exception.update!(usage_status: :unused)
     end
-      redirect_to admin_employee_work_date_exception_requests_path(@employee), notice: "承認に成功しました"
+      redirect_to admin_employee_work_schedule_change_cases_path(@employee), notice: "承認に成功しました"
     rescue ActiveRecord::RecordInvalid => e
-      redirect_to admin_employee_work_date_exception_requests_path(@employee), alert: "不明なエラー:employee_exception_request"
+      redirect_to admin_employee_work_schedule_change_cases_path(@employee), alert: "不明なエラー:employee_exception_request"
     end
   end
 
   def reject_request
     WorkScheduleChangeCase.transaction do
-      exception_request = @employee.work_date_exception_requests.lock.find(params[:id])
+      exception_request = @employee.work_schedule_change_cases.lock.find(params[:id])
       exception_request.update!(status: 2, approved_at: Time.current, approved_by_id: current_employee.id)
       exception_request.work_date_exceptions.each do |exception|
         exception.destroy!
       end
-      redirect_to admin_employee_work_date_exception_requests_path(@employee), notice: "却下に成功しました"
+      redirect_to admin_employee_work_schedule_change_cases_path(@employee), notice: "却下に成功しました"
     rescue ActiveRecord::RecordInvalid => e
-      redirect_to admin_employee_work_date_exception_requests_path(@employee), alert: "不明なエラー:employee_exception_request"
+      redirect_to admin_employee_work_schedule_change_cases_path(@employee), alert: "不明なエラー:employee_exception_request"
     end
   end
 
