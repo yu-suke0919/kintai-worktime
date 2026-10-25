@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :work_date_exception do
     employee
-    work_date_exception_request
+    work_schedule_change_case
     usage_status { :pending }
     trait :paid_leave do
       exception_type { "paid_leave" }
@@ -13,8 +13,8 @@ FactoryBot.define do
     end
     trait :hourly_paid_leave do
       exception_type { "hourly_paid_leave" }
-      starts_at { work_date_exception_request.starts_at }
-      ends_at   { work_date_exception_request.ends_at }
+      starts_at { work_schedule_change_case.starts_at }
+      ends_at   { work_schedule_change_case.ends_at }
       work_date { starts_at.to_date }
     end
   end

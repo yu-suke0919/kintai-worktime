@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
   let(:user_1) { FactoryBot.create(:employee) }
   let(:user_manager) { FactoryBot.create(:employee, email: "manager@gmail.com", role: :manager) }
-  # let(:exception_request) { FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: :paid_leave) }
-  # let(:exception) { FactoryBot.create(:work_date_exception, employee: user_1, work_date_exception_request: exception_request, exception_type: :paid_leave) }
+  # let(:exception_request) { FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: :paid_leave) }
+  # let(:exception) { FactoryBot.create(:work_date_exception, employee: user_1, work_schedule_change_case: exception_request, exception_type: :paid_leave) }
 
   # let(:balance) { FactoryBot.create(:paid_leave_balance, paid_leave_grant: grant, employee_rule: user_rule, effective_from: Date.new(2026, 4, 1)) }
   # let(:transaction) { FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance, delta_days: 1, work_date_exception: exception) }
@@ -14,8 +14,8 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
     context "有給休暇がない" do
       let!(:user_rule) { FactoryBot.create(:employee_rule, employee: user_1) }
       it "「有給休暇が付与されていません」と出る" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave")
-        exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 2))
+        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave")
+        exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 2))
         expect {
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1.work_date).execute()
       }.to raise_error(RuntimeError, "有給休暇が付与されていません")
@@ -28,27 +28,27 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       let(:balance_1) { grant.balances.first }
 
       before do
-        exception_request_7hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 16, 0, 0))
-        exception_1_7hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_7hour_paid_leave)
+        exception_request_7hour_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 16, 0, 0))
+        exception_1_7hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_schedule_change_case: exception_request_7hour_paid_leave)
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 420, work_date_exception: exception_1_7hour_paid_leave)
       end
       it "有給残り1時間の時に1時間の有給取得を試みてエラーが出ない" do
-        exception_request_1hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 10, 0, 0))
-        exception_1_1hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_1hour_paid_leave)
+        exception_request_1hour_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 10, 0, 0))
+        exception_1_1hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_schedule_change_case: exception_request_1hour_paid_leave)
         expect {
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1_1hour_paid_leave.work_date).execute()
         }.not_to raise_error
       end
       it "有給残り1時間の時に1日の有給取得を試みて「残高が足りません」と出る" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
-        exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 2))
+        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
+        exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 2))
         expect {
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1.work_date).execute()
         }.to raise_error(RuntimeError, "残高が足りません")
       end
       it "有給残り1時間の時に4時間の有給取得を試みて「残高が足りません」と出る" do
-        exception_request_4hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 13, 0, 0))
-        exception_1_4hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_4hour_paid_leave)
+        exception_request_4hour_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 13, 0, 0))
+        exception_1_4hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_schedule_change_case: exception_request_4hour_paid_leave)
         expect {
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1_4hour_paid_leave.work_date).execute()
         }.to raise_error(RuntimeError, "残高が足りません")
@@ -63,20 +63,20 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       before do
       end
       it "有給残り2日の時に2日連続した有給取得を試みて、エラーが出ず成功する" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 4))
+        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 4))
         expect {
-          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
-          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 3))
+          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 4))
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1.work_date).execute()
         }.not_to raise_error
       end
       it "有給残り2日の時に3日連続した有給取得を試みて、「残高が足りません」と出る" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 5))
+        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 5))
 
         expect {
-          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
-          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
-          exception_3 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 5))
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 3))
+          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 4))
+          exception_3 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 5))
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1.work_date).execute()
         }.to raise_error(RuntimeError, "残高が足りません")
       end
@@ -88,8 +88,8 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       let(:balance_1) { grant1.balances.first }
 
       before do
-        exception_request_4hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 13, 0, 0))
-        exception_1_4hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_4hour_paid_leave)
+        exception_request_4hour_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 2, 9, 0, 0), ends_at: DateTime.new(2026, 4, 2, 13, 0, 0))
+        exception_1_4hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_schedule_change_case: exception_request_4hour_paid_leave)
         FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance_1, delta_minutes: 240, work_date_exception: exception_1_4hour_paid_leave)
       end
       it "before do の内容が適用(grant1の残高を消費)しているか" do
@@ -99,9 +99,9 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
         expect(grant2.remaining_leaves[:hours]).to eq(0)
       end
       it "有給残り4時間+2日の時に1日の有給取得を試みて、エラーが出ず成功し、grant2に1日と4時間が残っている" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 3))
+        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 3))
         expect {
-          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 3))
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1.work_date).execute()
         }.not_to raise_error
 
@@ -111,10 +111,10 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
         expect(grant2.remaining_leaves[:hours]).to eq(4)
       end
       it "有給残り4時間+2日の時に2日連続した有給取得を試みて、エラーが出ず成功し、grant2に4時間が残っている" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 4))
+        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 4))
         expect {
-          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
-          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 3))
+          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 4))
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1.work_date).execute()
         }.not_to raise_error
 
@@ -124,13 +124,13 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
         expect(grant2.remaining_leaves[:hours]).to eq(4)
       end
       it "有給残り2日の時に3日連続した有給取得を試みて、「残高が足りません」と出る。また、残高は消費されない" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 5))
+        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 5))
 
         expect {
           ApplicationRecord.transaction do
-            exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
-            exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
-            exception_3 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 5))
+            exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 3))
+            exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 4))
+            exception_3 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 5))
             PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1.work_date).execute()
           end
         }.to raise_error(RuntimeError, "残高が足りません")
@@ -149,8 +149,8 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       let(:balance_2) { grant2.balances.includes(:transactions).first }
 
       before do
-        exception_request_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 5, 3), end_date: Date.new(2026, 5, 3))
-        exception_1_paid_leave = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_paid_leave, work_date: Date.new(2026, 5, 3))
+        exception_request_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 5, 3), end_date: Date.new(2026, 5, 3))
+        exception_1_paid_leave = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_paid_leave, work_date: Date.new(2026, 5, 3))
         PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1_paid_leave.work_date).execute()
       end
       it "残りの残高が1日と10日で、残り残高1に5月3日のtransactionがある" do
@@ -162,10 +162,10 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       end
 
       it "4月3~4日の有給を取得した時、5月3日の有給は積み直されてgrant2の残高を利用する" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 4))
+        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 4))
         expect {
-          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
-          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 4))
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 3))
+          exception_2 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 4))
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1.work_date).execute()
         }.not_to raise_error
         expect(grant1.remaining_leaves).to eq({ days: 0, hours: 0 })
@@ -179,12 +179,12 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       end
 
       it "4月3日に終日、4日に4時間の有給を取得した時、5月3日の有給は積み直されて4時間分grant2の残高を利用する" do
-        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 3))
-        exception_request_4hour_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 4, 9, 0, 0), ends_at: DateTime.new(2026, 4, 4, 13, 0, 0))
+        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 3), end_date: Date.new(2026, 4, 3))
+        exception_request_4hour_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 4, 9, 0, 0), ends_at: DateTime.new(2026, 4, 4, 13, 0, 0))
 
         expect {
-          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request_1, work_date: Date.new(2026, 4, 3))
-          exception_2 = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_4hour_paid_leave)
+          exception_1 = FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request_1, work_date: Date.new(2026, 4, 3))
+          exception_2 = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_schedule_change_case: exception_request_4hour_paid_leave)
           PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_1.work_date).execute()
         }.not_to raise_error
         expect(grant1.remaining_leaves).to eq({ days: 0, hours: 0 })
@@ -216,8 +216,8 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       let(:balance_4_from_5_1) { grant2.balances.find_by(effective_from: Date.new(2026, 5, 1)) }
 
       before do
-        exception_request_hourly_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 1, 2, 9, 0, 0), ends_at: DateTime.new(2026, 1, 2, 12, 0, 0))
-        exception_request_3hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_hourly_paid_leave)
+        exception_request_hourly_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 1, 2, 9, 0, 0), ends_at: DateTime.new(2026, 1, 2, 12, 0, 0))
+        exception_request_3hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_schedule_change_case: exception_request_hourly_paid_leave)
         PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_request_3hour_paid_leave.work_date).execute()
       end
 
@@ -235,8 +235,8 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       end
 
       it "フルタイム時に有給4時間を取得、有給の単位が変わり[1日4時間,10日]になりそこから4時間引かれて、残りの残高が[1日,10日]になる" do
-        exception_request_hourly_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 3, 2, 9, 0, 0), ends_at: DateTime.new(2026, 3, 2, 13, 0, 0))
-        exception_request_4hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_hourly_paid_leave)
+        exception_request_hourly_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 3, 2, 9, 0, 0), ends_at: DateTime.new(2026, 3, 2, 13, 0, 0))
+        exception_request_4hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_schedule_change_case: exception_request_hourly_paid_leave)
         PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_request_4hour_paid_leave.work_date).execute()
 
         expect(grant1.remaining_leaves).to eq({ days: 1, hours: 0 })
@@ -250,8 +250,8 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
       end
 
       it "フルタイム前の時短勤務時に追加で有給3時間を取得、残りの残高が[1日,10日]になる" do
-        exception_request_hourly_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 2, 2, 9, 0, 0), ends_at: DateTime.new(2026, 2, 2, 12, 0, 0))
-        exception_request_3hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_hourly_paid_leave)
+        exception_request_hourly_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 2, 2, 9, 0, 0), ends_at: DateTime.new(2026, 2, 2, 12, 0, 0))
+        exception_request_3hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_schedule_change_case: exception_request_hourly_paid_leave)
         PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_request_3hour_paid_leave.work_date).execute()
 
         expect(grant1.remaining_leaves).to eq({ days: 1, hours: 0 })
@@ -262,8 +262,8 @@ RSpec.describe PaidLeaves::TransactionRebuilder, type: :service do
         expect(balance_1_from_1_1.transactions.find_by(effective_on: Date.new(2026, 2, 2)).delta_minutes).to eq(180)
       end
       it "フルタイム前の時短勤務時に追加で有給2時間を取得、残りの残高が[1日1時間,10日]になり、フルタイム時の変換で時間が繰り上がり、[1日2時間,10日]となる" do
-        exception_request_hourly_paid_leave = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 2, 2, 9, 0, 0), ends_at: DateTime.new(2026, 2, 2, 11, 0, 0))
-        exception_request_2hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_date_exception_request: exception_request_hourly_paid_leave)
+        exception_request_hourly_paid_leave = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 2, 2, 9, 0, 0), ends_at: DateTime.new(2026, 2, 2, 11, 0, 0))
+        exception_request_2hour_paid_leave = FactoryBot.create(:work_date_exception, :hourly_paid_leave, employee: user_1, work_schedule_change_case: exception_request_hourly_paid_leave)
         PaidLeaves::TransactionRebuilder.new(employee: user_1, work_date: exception_request_2hour_paid_leave.work_date).execute()
 
         expect(grant1.remaining_leaves).to eq({ days: 1, hours: 2 })

@@ -1,7 +1,7 @@
 class WorkDateException < ApplicationRecord
   belongs_to :employee
   has_many :paid_leave_transactions
-  belongs_to :work_date_exception_request
+  belongs_to :work_schedule_change_case
 
   ALLOWED_COMBINATIONS = [
     Set[:holiday_work, :paid_leave],
