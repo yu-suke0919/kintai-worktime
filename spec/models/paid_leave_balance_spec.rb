@@ -32,8 +32,8 @@ RSpec.describe PaidLeaveBalance, type: :model do
 
   describe "balanceが持つtransactions" do
     let!(:tr1) { FactoryBot.create(:paid_leave_transaction, paid_leave_balance: balance, delta_days: 1, effective_on: Date.new(2026, 5, 1), work_date_exception: exception, transaction_type: :use) }
-    let(:exception_request) { FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: :paid_leave) }
-    let(:exception) { FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_date_exception_request: exception_request, work_date: Date.new(2026, 5, 1)) }
+    let(:exception_request) { FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: :paid_leave) }
+    let(:exception) { FactoryBot.create(:work_date_exception, :paid_leave, employee: user_1, work_schedule_change_case: exception_request, work_date: Date.new(2026, 5, 1)) }
 
     context "transactionが1つ" do
       it "トランザクションが1つ生成" do
