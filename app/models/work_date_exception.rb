@@ -1,7 +1,7 @@
 class WorkDateException < ApplicationRecord
   belongs_to :employee
   has_many :paid_leave_transactions
-  belongs_to :work_schedule_change_case
+  belongs_to :work_date_exception_request
 
   ALLOWED_COMBINATIONS = [
     Set[:holiday_work, :paid_leave],
@@ -44,14 +44,13 @@ class WorkDateException < ApplicationRecord
       end
     elsif exist_exceptions.size > 1
       current_combination = Set.new(exist_exceptions)
-
       return if ALLOWED_COMBINATIONS.include?(current_combination)
       # ここenumベースで判断しないといけない
       # workdateexceptionrequestの命名を変えて、会社による制定でも使えるようにする
       # enumはrequestを参照する
-      if current_combination.count { |num| num / 10 == 1 } >= 2
+      if exist_exceptions.all? { |exception_type|%w[paid_leave,hospitalization,special_leave,hourly_paid_leave,anniversary_holiday].include?(exception_type) }
         errors.add(:date, "にすでに休暇や時間単位有給休暇が設定されており、例外日を作成できません。")
-      elsif current_combination.count { |num| num / 10 == 2 } >= 2
+      elsif exist_exceptions.all? { |exception_type|%w[holiday_work].include?(exception_type) }
         errors.add(:date, "にすでに休日出勤が設定されており、例外日を作成できません。")
       else
         errors.add(:date, "不明な就業日例外エラーが発生しました。")

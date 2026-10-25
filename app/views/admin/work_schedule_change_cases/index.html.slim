@@ -22,7 +22,7 @@ table.table.table-hover
   tbody
     - @exception_requests.each do |er|
       tr
-        td= I18n.t("enums.work_schedule_change_case.request_type.#{er.request_type}")
+        td= I18n.t("enums.work_date_exception_request.request_type.#{er.request_type}")
         - if er.start_date.nil?
           td= l er.starts_at,formats: :default
           td= l er.ends_at,formats: :default
@@ -40,8 +40,8 @@ table.table.table-hover
         - else
           td= '-'
         - if er.status == "pending"
-          td= button_to I18n.t("helpers.request.approve"),approve_request_admin_employee_work_schedule_change_case_path(er.employee,er)
-          td= button_to I18n.t("helpers.request.reject"),reject_request_admin_employee_work_schedule_change_case_path(er.employee,er)
+          td= button_to I18n.t("helpers.request.approve"),approve_request_admin_employee_work_date_exception_request_path(er.employee,er)
+          td= button_to I18n.t("helpers.request.reject"),reject_request_admin_employee_work_date_exception_request_path(er.employee,er)
         - else
           td=
           td=

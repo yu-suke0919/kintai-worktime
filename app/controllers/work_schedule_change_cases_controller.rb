@@ -56,6 +56,6 @@ class WorkScheduleChangeCasesController < ApplicationController
   end
 
   def request_params
-    params.require(:work_schedule_change_case).permit(:request_type, :start_date, :end_date, :starts_at, :ends_at, :reason)
+    params.require(:work_date_exception_request).permit(:request_type, :start_date, :end_date, :starts_at, :ends_at, :reason)
   end
 end

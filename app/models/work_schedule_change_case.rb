@@ -29,7 +29,7 @@ class WorkScheduleChangeCase < ApplicationRecord
 
 
   def self.request_options
-    request_types.map { |k, _| [ I18n.t("enums.work_schedule_change_case.request_type.#{k}"), k ] }.to_h
+    request_types.map { |k, _| [ I18n.t("enums.work_date_exception_request.request_type.#{k}"), k ] }.to_h
   end
 
   def request_overview

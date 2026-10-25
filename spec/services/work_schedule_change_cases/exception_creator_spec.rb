@@ -11,7 +11,7 @@ RSpec.describe WorkScheduleChangeCases::ExceptionCreator, type: :service do
 
       it "1日の有給休暇を取得してエラーが出ず就業日例外が生成される。" do
         expect(grant.remaining_leaves).to eq(days: 1, hours: 0)
-        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
         WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_1).call()
         expect(grant.remaining_leaves).to eq(days: 0, hours: 0)
         expect(user_1.work_date_exceptions.find_by(work_date: Date.new(2026, 4, 2))).to be_present
@@ -19,7 +19,7 @@ RSpec.describe WorkScheduleChangeCases::ExceptionCreator, type: :service do
 
       it "2日の有給休暇を取得してエラーが出て就業日例外が生成されない。" do
         expect(grant.remaining_leaves).to eq(days: 1, hours: 0)
-        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 3))
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 3))
         expect {
           WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_1).call()
         }.to raise_error(WorkScheduleChangeCases::ExceptionCreator::CreationError, "残高が足りません")
@@ -29,7 +29,7 @@ RSpec.describe WorkScheduleChangeCases::ExceptionCreator, type: :service do
 
       it "2時間の有給休暇を取得してエラーが出ず就業日例外が生成される。" do
         expect(grant.remaining_leaves).to eq(days: 1, hours: 0)
-        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 11, 0, 0))
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 11, 0, 0))
         WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_1).call()
         expect(grant.remaining_leaves).to eq(days: 0, hours: 6)
         expect(user_1.work_date_exceptions.find_by(work_date: Date.new(2026, 4, 3))).to be_present
@@ -37,11 +37,11 @@ RSpec.describe WorkScheduleChangeCases::ExceptionCreator, type: :service do
 
       it "1日の有給休暇を取得したあと、2時間の有給取得をしてエラーが出て就業日例外が生成されない。" do
         expect(grant.remaining_leaves).to eq(days: 1, hours: 0)
-        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
         WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_1).call()
 
         expect(grant.remaining_leaves).to eq(days: 0, hours: 0)
-        exception_request_2 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 11, 0, 0))
+        exception_request_2 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "hourly_paid_leave", starts_at: DateTime.new(2026, 4, 3, 9, 0, 0), ends_at: DateTime.new(2026, 4, 3, 11, 0, 0))
         expect {
           WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_2).call()
         }.to raise_error(WorkScheduleChangeCases::ExceptionCreator::CreationError, "残高が足りません")
@@ -56,7 +56,7 @@ RSpec.describe WorkScheduleChangeCases::ExceptionCreator, type: :service do
 
       it "4月2日の有給休暇を1日取得し、エラーが出ず就業日例外が生成される。" do
         expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
-        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
         WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_1).call()
         expect(grant.remaining_leaves).to eq(days: 1, hours: 0)
         expect(user_1.work_date_exceptions.find_by(work_date: Date.new(2026, 4, 2))).to be_present
@@ -64,7 +64,7 @@ RSpec.describe WorkScheduleChangeCases::ExceptionCreator, type: :service do
 
       it "4月30日~5月1日の有給休暇を取得し、エラーが出ず就業日例外が生成される。" do
         expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
-        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 30), end_date: Date.new(2026, 5, 1))
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 30), end_date: Date.new(2026, 5, 1))
         expect { # 諸説あり
           WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_1).call()
         }.not_to raise_error# (WorkScheduleChangeCases::ExceptionCreator::CreationError, "残高が足りません")
@@ -81,7 +81,7 @@ RSpec.describe WorkScheduleChangeCases::ExceptionCreator, type: :service do
 
       it "4月2日の有給休暇を1日取得し、エラーが出ず就業日例外が生成される。" do
         expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
-        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 2), end_date: Date.new(2026, 4, 2))
         WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_1).call()
         expect(grant.remaining_leaves).to eq(days: 1, hours: 0)
         expect(user_1.work_date_exceptions.find_by(work_date: Date.new(2026, 4, 2))).to be_present
@@ -89,7 +89,7 @@ RSpec.describe WorkScheduleChangeCases::ExceptionCreator, type: :service do
 
       it "4月30日~5月1日の有給休暇を取得し、エラーが出ず就業日例外が生成される。" do
         expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
-        exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 30), end_date: Date.new(2026, 5, 1))
+        exception_request_1 = FactoryBot.create(:work_date_exception_request, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 30), end_date: Date.new(2026, 5, 1))
         WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_1).call()
         expect(grant.remaining_leaves).to eq(days: 0, hours: 0)
         expect(user_1.work_date_exceptions.count).to eq(2)
