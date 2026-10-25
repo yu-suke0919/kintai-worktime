@@ -158,12 +158,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_15_054649) do
     t.integer "exception_type", null: false
     t.datetime "updated_at", null: false
     t.date "work_date", null: false
-    t.bigint "work_date_exception_request_id", null: false
+    t.bigint "work_schedule_change_case_id", null: false
     t.integer "usage_status", null: false
     t.datetime "starts_at"
     t.datetime "ends_at"
     t.index ["employee_id"], name: "index_work_date_exceptions_on_employee_id"
-    t.index ["work_date_exception_request_id"], name: "index_work_date_exceptions_on_work_date_exception_request_id"
+    t.index ["work_schedule_change_case_id"], name: "index_work_date_exceptions_on_work_schedule_change_case_id"
   end
 
   create_table "work_schedule_change_cases", force: :cascade do |t|
@@ -199,6 +199,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_15_054649) do
   add_foreign_key "paid_leave_transactions", "paid_leave_balances"
   add_foreign_key "paid_leave_transactions", "work_date_exceptions"
   add_foreign_key "work_date_exceptions", "employees"
-  add_foreign_key "work_date_exceptions", "work_schedule_change_cases", column: "work_date_exception_request_id"
+  add_foreign_key "work_date_exceptions", "work_schedule_change_cases"
   add_foreign_key "work_schedule_change_cases", "employees"
 end
