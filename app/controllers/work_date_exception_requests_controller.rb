@@ -1,14 +1,14 @@
-class WorkDateExceptionRequestsController < ApplicationController
+class WorkScheduleChangeCasesController < ApplicationController
   before_action :authenticate_employee!
   before_action :ensure_owner!
   before_action :set_employee, only: [ :new, :edit, :create, :update ]
   before_action :set_total_paid_leave_balance
   def new
-    @exception_request = WorkDateExceptionRequest.new()
+    @exception_request = WorkScheduleChangeCase.new()
   end
 
   def edit
-    @exception_request = WorkDateExceptionRequest.find(params[:id])
+    @exception_request = WorkScheduleChangeCase.find(params[:id])
   end
   def create
     params = request_params
@@ -17,10 +17,10 @@ class WorkDateExceptionRequestsController < ApplicationController
       params[:end_date] = params[:ends_at]
     end
     @exception_request = @employee.work_date_exception_requests.build(params)
-    WorkDateExceptionRequests::ExceptionCreator.new(
+    WorkScheduleChangeCases::ExceptionCreator.new(
       exception_request: @exception_request
     ).call
-  rescue WorkDateExceptionRequests::ExceptionCreator::CreationError => e
+  rescue WorkScheduleChangeCases::ExceptionCreator::CreationError => e
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
   else
@@ -28,7 +28,7 @@ class WorkDateExceptionRequestsController < ApplicationController
   end
 
   def update
-    @exception_request = WorkDateExceptionRequest.find(params[:id])
+    @exception_request = WorkScheduleChangeCase.find(params[:id])
     if @exception_request.update(request_params)
       @exception_request.notifications.create!(
 

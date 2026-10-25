@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Admin::WorkDateExceptionRequests", type: :request do
+RSpec.describe "Admin::WorkScheduleChangeCases", type: :request do
   let(:user_not_manager) { FactoryBot.create(:employee) }
   let(:user_manager) { FactoryBot.create(:employee, email: "manager@email", role: :manager) }
 

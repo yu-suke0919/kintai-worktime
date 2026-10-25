@@ -1,2 +1,2 @@
-module WorkDateExceptionRequestsHelper
+module WorkScheduleChangeCasesHelper
 end

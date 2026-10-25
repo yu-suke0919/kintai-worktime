@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 # Specs in this file have access to a helper object that includes
-# the Admin::WorkDateExceptionRequestsHelper. For example:
+# the Admin::WorkScheduleChangeCasesHelper. For example:
 #
-# describe Admin::WorkDateExceptionRequestsHelper do
+# describe Admin::WorkScheduleChangeCasesHelper do
 #   describe "string concat" do
 #     it "concats two strings with spaces" do
 #       expect(helper.concat_strings("this","that")).to eq("this that")
 #     end
 #   end
 # end
-RSpec.describe Admin::WorkDateExceptionRequestsHelper, type: :helper do
+RSpec.describe Admin::WorkScheduleChangeCasesHelper, type: :helper do
   pending "add some examples to (or delete) #{__FILE__}"
 end

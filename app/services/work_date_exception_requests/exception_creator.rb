@@ -1,4 +1,4 @@
-module WorkDateExceptionRequests
+module WorkScheduleChangeCases
   class ExceptionCreator
     class CreationError < StandardError; end
     def initialize(exception_request:)

@@ -1,4 +1,4 @@
-class WorkDateExceptionRequest < ApplicationRecord
+class WorkScheduleChangeCase < ApplicationRecord
   belongs_to :employee
   has_many :work_date_exceptions, dependent: :destroy
   has_many :notifications, as: :notifiable, dependent: :nullify

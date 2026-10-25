@@ -1,4 +1,4 @@
-class Admin::WorkDateExceptionRequestsController < ApplicationController
+class Admin::WorkScheduleChangeCasesController < ApplicationController
   before_action :authenticate_employee!
   before_action :admin_role_required
   before_action :set_employee
@@ -10,7 +10,7 @@ class Admin::WorkDateExceptionRequestsController < ApplicationController
   end
 
   def approve_request
-    WorkDateExceptionRequest.transaction do
+    WorkScheduleChangeCase.transaction do
       exception_request = @employee.work_date_exception_requests.lock.find(params[:id])
       exception_request.update!(status: 1, approved_at: Time.current, approved_by_id: current_employee.id)
       exception_request.work_date_exceptions.each do |exception|
@@ -23,7 +23,7 @@ class Admin::WorkDateExceptionRequestsController < ApplicationController
   end
 
   def reject_request
-    WorkDateExceptionRequest.transaction do
+    WorkScheduleChangeCase.transaction do
       exception_request = @employee.work_date_exception_requests.lock.find(params[:id])
       exception_request.update!(status: 2, approved_at: Time.current, approved_by_id: current_employee.id)
       exception_request.work_date_exceptions.each do |exception|
