@@ -65,7 +65,7 @@ RSpec.describe WorkScheduleChangeCases::ExceptionCreator, type: :service do
       it "4月30日~5月1日の有給休暇を取得し、エラーが出て就業日例外が生成されない。" do
         expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
         exception_request_1 = FactoryBot.create(:work_schedule_change_case, employee: user_1, request_type: "paid_leave", start_date: Date.new(2026, 4, 30), end_date: Date.new(2026, 5, 1))
-        expect { # 諸説あり
+        expect {
           WorkScheduleChangeCases::ExceptionCreator.new(exception_request: exception_request_1).call()
       }.to raise_error(Employee::NoRuleError)
         expect(grant.remaining_leaves).to eq(days: 2, hours: 0)
