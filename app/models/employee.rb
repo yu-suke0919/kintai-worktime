@@ -1,4 +1,6 @@
 class Employee < ApplicationRecord
+  class MultipleRuleError < StandardError; end
+  class NoRuleError < StandardError; end
   enum :role, { member: 0, manager: 1, admin: 2 }
 
   belongs_to :manager, class_name: "Employee", optional: true
