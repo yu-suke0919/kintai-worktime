@@ -1,4 +1,4 @@
-class WorkDateExceptionRequest < ApplicationRecord
+class WorkScheduleChangeCase < ApplicationRecord
   belongs_to :employee
   has_many :work_date_exceptions, dependent: :destroy
   has_many :notifications, as: :notifiable, dependent: :nullify
@@ -8,7 +8,10 @@ class WorkDateExceptionRequest < ApplicationRecord
     paid_leave: 10,
     hospitalization: 11,
     special_leave: 12,
-    hourly_paid_leave: 13
+    hourly_paid_leave: 13,
+    anniversary_holiday: 14,
+
+    holiday_work: 20
   }
   enum :status, {
     pending: 0, approved: 1, rejected: 2
@@ -26,7 +29,7 @@ class WorkDateExceptionRequest < ApplicationRecord
 
 
   def self.request_options
-    request_types.map { |k, _| [ I18n.t("enums.work_date_exception_request.request_type.#{k}"), k ] }.to_h
+    request_types.map { |k, _| [ I18n.t("enums.work_schedule_change_case.request_type.#{k}"), k ] }.to_h
   end
 
   def request_overview

@@ -20,7 +20,7 @@ ja:
       employee: 従業員
       attendance: 勤怠データ
       employee_rule: 従業員ルール
-      work_date_exception_request: 振替/休暇申請
+      work_schedule_change_case: 振替/休暇申請
       attendance_edit_request: 打刻時間修正申請
       employee_rule: 就業規則
     attributes:
@@ -75,7 +75,7 @@ ja:
       employee_work_date_exception:
         exception_type: 例外種別
         work_date: 日付
-      work_date_exception_request:
+      work_schedule_change_case:
         count: 休日出勤/休暇申請件数
         list: 休日出勤/休暇申請一覧
         approved_at: 承認/否認日
@@ -308,7 +308,7 @@ ja:
         special_leave: 冠婚葬祭
         hourly_paid_leave: 時間有給休暇
     
-    work_date_exception_request:
+    work_schedule_change_case:
       request_type:
         paid_leave: 有給休暇
         hourly_paid_leave: 時間有給休暇

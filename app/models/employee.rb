@@ -1,4 +1,6 @@
 class Employee < ApplicationRecord
+  class MultipleRuleError < StandardError; end
+  class NoRuleError < StandardError; end
   enum :role, { member: 0, manager: 1, admin: 2 }
 
   belongs_to :manager, class_name: "Employee", optional: true
@@ -10,7 +12,7 @@ class Employee < ApplicationRecord
   has_many :attendance_edit_request
   has_many :notifications, foreign_key: :recipient_employee_id, dependent: :destroy, inverse_of: :recipient_employee
   has_many :employee_rules, dependent: :destroy
-  has_many :work_date_exception_requests, dependent: :destroy
+  has_many :work_schedule_change_cases, dependent: :destroy
   has_many :work_date_exceptions, dependent: :destroy
   has_many :monthly_attendance_closings, dependent: :destroy
   has_many :paid_leave_grants, dependent: :destroy
@@ -30,6 +32,24 @@ class Employee < ApplicationRecord
         current_remaining_leaves[:hours] += remaining_leaves[:hours]
       end
     current_remaining_leaves
+  end
+
+  def rule_on(date)
+    date = Date.today if date.nil?
+    result = self.employee_rules
+      .where(effective_from: (..date))
+      .where(expires_on: (date..))
+      .to_a
+    if result.count > 1
+      raise MultipleRuleError, "複数のルールが見つかりました"
+    elsif result.size == 0
+      raise NoRuleError, "ルールが見つかりませんでした"
+    end
+    result.first
+  end
+
+  def workday?(date)
+    self.rule_on(date).workday?(date)
   end
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable,:registerable,

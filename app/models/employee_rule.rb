@@ -28,6 +28,10 @@ class EmployeeRule < ApplicationRecord
     array.join(",")
   end
 
+  def workday?(date)
+    (self.required_workdays_mask & (1 << date.wday)) != 0
+  end
+
   def in_office_days=(values)
     return if values.nil?
     self.required_workdays_mask = values
