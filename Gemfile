@@ -23,7 +23,7 @@ gem "slim-rails", "~> 4"
 gem "html2slim", github: "slim-template/html2slim", ref: "4c3562d"
 gem "bootstrap", "~> 5.3"
 gem "dartsass-rails", "~> 0.5"
-gem "devise" "~> 5"
+gem "devise", "~> 5"
 gem "kaminari"
 
 gem "rails-i18n"
