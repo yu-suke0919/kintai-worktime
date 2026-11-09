@@ -20,7 +20,7 @@ gem "jbuilder"
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 gem "slim-rails", "~> 4"
-gem "html2slim", github: "slim-template/html2slim", ref: "4c3562d"
+gem "html2slim", github: "slim-template/html2slim", ref: "4c3526d"
 gem "bootstrap", "~> 5.3"
 gem "dartsass-rails", "~> 0.5"
 gem "devise", "~> 5"
