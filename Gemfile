@@ -19,15 +19,15 @@ gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
-gem "slim-rails"
-gem "html2slim", github: "slim-template/html2slim"
-gem "bootstrap"
-gem "dartsass-rails"
-gem "devise"
+gem "slim-rails", "~> 4"
+gem "html2slim", github: "slim-template/html2slim", ref: "4c3526d"
+gem "bootstrap", "~> 5.3"
+gem "dartsass-rails", "~> 0.5"
+gem "devise", "~> 5"
 gem "kaminari"
 
 gem "rails-i18n"
-gem "devise-i18n-views"
+gem "devise-i18n"
 
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
