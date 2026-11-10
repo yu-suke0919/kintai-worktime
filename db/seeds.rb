@@ -10,7 +10,6 @@
 #
 ATTENDANCE_START_DATE = Date.new(2026, 4, 1)
 ATTENDANCE_LATEST_DATE = Date.yesterday
-
 employees = []
 # 管理人生成
 admin = Employee.create!(name: "管理人", email: "admin@email", password: "000000", role: "admin")
@@ -19,10 +18,24 @@ employees.push(admin)
 [ 'A', 'B' ].each do |char|
   manager = Employee.create!(name: "リーダー#{char}", email: "leader#{char}@email", password: "000000", role: "manager", manager_id: 1)
   employees.push(manager)
+  manager.paid_leave_grants.create!(
+    granted_by: admin,
+    granted_days: 10,
+    granted_minutes: 4800,
+    granted_on: ATTENDANCE_START_DATE.advance(months: 6),
+    expires_on: ATTENDANCE_START_DATE.advance(months: 30)
+  )
   # 従業員生成
   (1..3).each do |num|
     member = Employee.create!(name: "メンバー#{char}#{num}", email: "member#{char}#{num}@email", password: "000000", role: "member", manager_id: manager.id)
     employees.push(member)
+    member.paid_leave_grants.create!(
+      granted_by: manager,
+      granted_days: 10,
+      granted_minutes: 4800,
+      granted_on: ATTENDANCE_START_DATE.advance(months: 6),
+      expires_on: ATTENDANCE_START_DATE.advance(months: 30)
+    )
   end
 end
 
