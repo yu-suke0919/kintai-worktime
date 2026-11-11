@@ -97,7 +97,8 @@ employees.each do |employee|
       )
       end
     else
-      attendance.stamp_break_start(time: Time.zone.local(date.year, date.month, date.day, 12, rand(0..5)))
+      attendance.stamp_start(time: Time.zone.local(date.year, date.month, date.day, 12, 0))
+      attendance.stamp_break_start(time: Time.zone.local(date.year, date.month, date.day, 12, rand(1..5)))
       attendance.stamp_break_finish(time: Time.zone.local(date.year, date.month, date.day, 13, rand(55..59)))
       attendance.stamp_finish(time: Time.zone.local(date.year, date.month, date.day, 17, rand(0..59)))
 
@@ -113,7 +114,7 @@ employees.each do |employee|
           message_text: "打刻時間修正の申請が完了しました。"
         )
       else
-        attendance.update(
+        attendance.update!(
         started_at: attendance.attendance_edit_request.requested_started_at,
         finished_at: attendance.attendance_edit_request.requested_finished_at,
         break_started_at: attendance.attendance_edit_request.requested_break_started_at,
@@ -134,7 +135,6 @@ LEADER_LABEL.each do |label|
     # 先月にworkschedulechandecaseの承諾済みのを入れる
     # たまにpaidleave以外の休暇を入れる、休日出勤を入れる
     # 先月までmonthlyAttendanceClosingを入れる
-    # ateendance_edit_requestがなんかおかしい
     # ここSEEDSにコメントを入れる
     request_type = :paid_leave
     start_date = (Date.current.next_day..).lazy.select { |d|d.on_weekday? }.first(rand(1..7)).last
