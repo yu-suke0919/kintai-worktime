@@ -11,7 +11,7 @@ class Admin::WorkScheduleChangeCasesController < ApplicationController
 
   def approve_request
     WorkScheduleChangeCase.transaction do
-      exception_request = @employee.work_schedule_change_cases.lock.find(params[:id])
+      exception_request = @employee.work_schedule_change_cases.lock.preload(:work_date_exceptions).find(params[:id])
       exception_request.update!(status: 1, approved_at: Time.current, approved_by_id: current_employee.id)
       exception_request.work_date_exceptions.each do |exception|
         exception.update!(usage_status: :unused)
@@ -24,9 +24,10 @@ class Admin::WorkScheduleChangeCasesController < ApplicationController
 
   def reject_request
     WorkScheduleChangeCase.transaction do
-      exception_request = @employee.work_schedule_change_cases.lock.find(params[:id])
+      exception_request = @employee.work_schedule_change_cases.lock.preload(:work_date_exceptions, work_date_exceptions: :paid_leave_transactions).find(params[:id])
       exception_request.update!(status: 2, approved_at: Time.current, approved_by_id: current_employee.id)
       exception_request.work_date_exceptions.each do |exception|
+        exception.paid_leave_transactions.destroy_all
         exception.destroy!
       end
       redirect_to admin_employee_work_schedule_change_cases_path(@employee), notice: "却下に成功しました"
