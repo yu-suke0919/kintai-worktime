@@ -2,12 +2,12 @@
 service: kintai_worktime
 
 # Name of the container image (use your-user/app-name on external registries).
-image: kintai_worktime
+image: yu-suke0919/kintai_worktime
 
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - kintai-worktime.yu-suke-works.com
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -20,14 +20,17 @@ servers:
 #
 # Don't use this when deploying to multiple web servers (then you have to terminate SSL at your load balancer).
 #
-# proxy:
-#   ssl: true
-#   host: app.example.com
+proxy:
+  ssl: true
+  host: kintai-worktime.yu-suke-works.com
 
 # Where you keep your container images.
 registry:
   # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
-  server: localhost:5555
+  server: ghcr.io
+  username: yu-suke0919
+  password:
+    - KAMAL_REGISTRY_PASSWORD
 
   # Needed for authenticated registries.
   # username: your-user
@@ -81,6 +84,9 @@ asset_path: /rails/public/assets
 # Configure the image builder.
 builder:
   arch: amd64
+  cache:
+    type: gha
+    options: mode=max
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server
@@ -93,8 +99,8 @@ builder:
   #   - RAILS_MASTER_KEY
 
 # Use a different ssh user than root
-# ssh:
-#   user: app
+ssh:
+  user: ubuntu
 
 # Use accessory services (secrets come from .kamal/secrets).
 # accessories:
