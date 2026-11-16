@@ -160,8 +160,8 @@ jobs:
   deploy:
     needs: [scan_ruby,scan_js,lint,test,system-test]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    
-    uses: ./.github/workflows/release.yml
+    permissions:
+      contents: read
+      packages: write
+    uses: ./.github/workflows/cd.yml
     secrets: inherit
-    
-
