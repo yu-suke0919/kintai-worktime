@@ -42,7 +42,8 @@ gem "solid_cable"
 gem "bootsnap", require: false
 
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
-gem "kamal", require: false
+# 後述のtoolsグループに移動
+# gem "kamal", require: false
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
@@ -79,6 +80,10 @@ group :test do
   gem "selenium-webdriver"
 
   gem "shoulda-matchers", "~> 8.0"
+end
+
+group :tools do
+  gem "kamal", "~> 2"
 end
 
 gem "fiddle", "~> 1.1"
