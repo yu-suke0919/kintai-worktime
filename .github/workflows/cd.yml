@@ -2,6 +2,12 @@ name: CD
 
 on:
   workflow_call:
+  workflow_dispatch:
+    inputs:
+      command:
+        type: choice
+        options: [deploy, setup]
+        default: deploy
 
 concurrency:
   group: deploy-production
