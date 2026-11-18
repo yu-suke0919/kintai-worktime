@@ -86,6 +86,6 @@ group :tools do
   gem "kamal", "~> 2"
 end
 
-gem "fiddle", "~> 1.1"
+# gem "fiddle", "~> 1.1"
 
 gem "ruby-vips", "~> 2.0"
