@@ -111,7 +111,7 @@ ssh:
 # Use accessory services (secrets come from .kamal/secrets).
 env:
   clear:
-    DB_HOST: kintai-worktime-postgres
+    DB_HOST: kintai_worktime-postgres
     WEB_CONCURRENCY: 1
   secret:
     - RAILS_MASTER_KEY
