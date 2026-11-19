@@ -69,7 +69,6 @@ yarn-debug.log*
 /public/uploads
 
 #追加
-config/database.yml
 config/credentials/production.key
 /app/assets/builds/*
 !/app/assets/builds/.keep
