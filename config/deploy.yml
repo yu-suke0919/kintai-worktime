@@ -124,7 +124,7 @@ accessories:
     env:
       clear:
         POSTGRES_USER: kintai_worktime
-        POSTGRES_DB: kintai_worktime-production
+        POSTGRES_DB: kintai_worktime_production
       secret:
         - KINTAI_WORKTIME_DATABASE_PASSWORD
     directories:
