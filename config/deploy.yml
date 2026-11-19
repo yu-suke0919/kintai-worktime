@@ -22,7 +22,7 @@ servers:
 #
 proxy:
   ssl: true
-  host: kintai_worktime.yu-suke-works.com
+  host: kintai-worktime.yu-suke-works.com
 
 # Where you keep your container images.
 registry:
@@ -109,13 +109,6 @@ ssh:
   proxy_command: "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p --region ap-southeast-2"
 
 # Use accessory services (secrets come from .kamal/secrets).
-env:
-  clear:
-    DB_HOST: kintai_worktime-postgres
-    WEB_CONCURRENCY: 1
-  secret:
-    - RAILS_MASTER_KEY
-    - KINTAI_WORKTIME_DATABASE_PASSWORD
 
 accessories:
   postgres:
@@ -126,7 +119,7 @@ accessories:
         POSTGRES_USER: kintai_worktime
         POSTGRES_DB: kintai_worktime_production
       secret:
-        - KINTAI_WORKTIME_DATABASE_PASSWORD
+        - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql
 #   redis:
