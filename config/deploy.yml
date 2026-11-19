@@ -22,7 +22,7 @@ servers:
 #
 proxy:
   ssl: true
-  host: kintai_worktime.yu-suke-works.com
+  host: kintai-worktime.yu-suke-works.com
 
 # Where you keep your container images.
 registry:
@@ -41,7 +41,6 @@ registry:
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
-  BUNDLE_ONLY: tools
   secret:
     - RAILS_MASTER_KEY
     - BASIC_AUTH_USER
@@ -49,7 +48,7 @@ env:
     - KINTAI_WORKTIME_DATABASE_PASSWORD
 
   clear:
-    DB_HOST: kintai-worktime-postgres
+    DB_HOST: kintai_worktime-postgres
     WEB_CONCURRENCY: 1
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
@@ -109,13 +108,6 @@ ssh:
   proxy_command: "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p --region ap-southeast-2"
 
 # Use accessory services (secrets come from .kamal/secrets).
-env:
-  clear:
-    DB_HOST: kintai-worktime-postgres
-    WEB_CONCURRENCY: 1
-  secret:
-    - RAILS_MASTER_KEY
-    - KINTAI_WORKTIME_DATABASE_PASSWORD
 
 accessories:
   postgres:
@@ -124,9 +116,9 @@ accessories:
     env:
       clear:
         POSTGRES_USER: kintai_worktime
-        POSTGRES_DB: kintai_worktime-production
+        POSTGRES_DB: kintai_worktime_production
       secret:
-        - KINTAI_WORKTIME_DATABASE_PASSWORD
+        - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql
 #   redis:
